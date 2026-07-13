@@ -1,0 +1,44 @@
+{
+  "repo_meta": {
+    "name": "WebBound Official Rules",
+    "version": "1.1.1"
+  },
+  "sources": [
+    {
+      "id": "sangtacviet.vip",
+      "name": "SangTacViet",
+      "domain": "sangtacviet.vip",
+      "rule_url": "./rules/sangtacviet.vip.json",
+      "version": "1.0.1",
+      "author": "WebBound",
+      "description": "SangTacViet (sangtacviet.vip) — Vietnamese MTL. Requires Force Hybrid Mode.",
+      "icon": "📗",
+      "language": "vi",
+      "featured": true
+    },
+    {
+      "id": "novel543.com",
+      "name": "Novel543",
+      "domain": "novel543.com",
+      "rule_url": "./rules/novel543.com.json",
+      "version": "1.1.0",
+      "author": "WebBound",
+      "description": "Novel543 (novel543.com) — Chinese web novels. Requires Force Hybrid Mode (Cloudflare).",
+      "icon": "📕",
+      "language": "zh",
+      "featured": true
+    },
+    {
+      "id": "piaotia.com",
+      "name": "Piaotia",
+      "domain": "piaotia.com",
+      "rule_url": "./rules/piaotia.com.json",
+      "version": "1.0.0",
+      "author": "WebBound",
+      "description": "Piaotia (piaotia.com) — Chinese web novels.",
+      "icon": "📕",
+      "language": "zh",
+      "featured": true
+    }
+  ]
+}
