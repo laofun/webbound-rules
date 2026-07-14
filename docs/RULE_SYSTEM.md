@@ -347,9 +347,14 @@ Net/URL: `resolveUrl(url, base)`, `fetchJson(url)`, `batchFetch(urls, concurrenc
 4. Fill the schema in §2. Start with `parser_type: "generic"`.
 5. If selectors can't express it → switch to `scriptable` and write the §6 object.
 6. Test it first (import the JSON in the extension's Settings and run a crawl).
-   Only once it works, **publish** it: save to `rules/<domain>.json`, register it in
-   `repo.json`, validate, and open a PR — see [`../README.md`](../README.md#add-or-update-a-rule).
-   This repo is the published catalog, so untested rules don't belong here.
+   Only once it works, **publish** it to this repo via the `src/` toolchain:
+   `npm run new <domain>`, split the rule into `rule.json` (+ `parser.js` for
+   scriptable), add a fixture test, then `npm test && npm run build` — the build
+   generates `rules/<domain>.json` + `repo.json`. Commit both the `src/` sources
+   and the generated files, then open a PR — see
+   [`../README.md`](../README.md#add-or-update-a-rule). `rules/` and `repo.json`
+   are build output; never hand-edit them. This repo is the published catalog,
+   so untested rules don't belong here.
 
 ### Testing checklist
 - Detection shows `matched` on the TOC page (not `wrong-page`).
@@ -451,6 +456,10 @@ OUTPUT: only the JSON (and, for scriptable, the script as a JSON-escaped string 
 element; remove strips ads/nav; pagination strategy is consistent; domain has no
 www. Explain your selector choices in 2-3 lines after the JSON.
 ````
+
+> The prompt yields one JSON. To publish it in this repo, split it into
+> `src/<domain>/` (`rule.json` + `parser.js` for scriptable) and build — see
+> [`WRITE_A_RULE_WITH_AI.md`](WRITE_A_RULE_WITH_AI.md#after-you-get-the-json).
 
 ---
 

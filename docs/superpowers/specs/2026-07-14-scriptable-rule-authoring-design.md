@@ -143,6 +143,9 @@ block holding the repo.json-only fields.
   today). No extra escaping — same as the current published file.
 - `marketplace.featured` defaults to `false` if omitted. `marketplace.name`
   defaults to `domain` if omitted. `marketplace.icon` defaults to `""`.
+  `marketplace.description` (the marketplace-facing blurb, usually shorter than
+  the developer-facing rule `description`) defaults to the rule's own
+  `description` if omitted.
 
 ### `src/<domain>/parser.js` (parser expression) — contract
 
@@ -281,7 +284,7 @@ Mapping from `src/<domain>/rule.json`:
 | `rule_url` | `"./rules/" + domain + ".json"` |
 | `version` | `version` |
 | `author` | `author` |
-| `description` | `description` |
+| `description` | `marketplace.description` ?? `description` |
 | `icon` | `marketplace.icon` ?? `""` |
 | `language` | `language` |
 | `featured` | `marketplace.featured` ?? `false` |
