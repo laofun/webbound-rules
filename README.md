@@ -9,12 +9,24 @@ read one site (where the title, chapter list, and chapter body live). This is th
 
 ```
 webbound-rules/
-├── repo.json                 # index — lists every rule in this repo
-├── rules/
-│   └── <domain>.json         # one rule per site
+├── package.json              # dev toolchain: build / check / new / test / test:live
+├── src/
+│   ├── repo.meta.json        # repo index name + version
+│   ├── _ctx/                 # vendored runtime ctx + DOM shim + drift check (do not hand-edit)
+│   └── <domain>/             # ONE folder per site — the source of truth
+│       ├── rule.json         #   rule fields + a `marketplace` block
+│       ├── parser.js         #   scriptable only: the ({ extractToC, extractChapter, ... }) object
+│       ├── samples.json      #   { book_url, chapter_url } for `npm run test:live`
+│       ├── fixtures/         #   saved HTML/JSON responses for offline tests
+│       └── *.test.mjs        #   offline assertions against the fixtures
+├── rules/<domain>.json       # GENERATED — do not edit by hand
+├── repo.json                 # GENERATED index — do not edit by hand
 └── docs/
     └── RULE_SYSTEM.md        # full rule-authoring reference (generic + scriptable)
 ```
+
+> **`rules/` and `repo.json` are build output.** Edit files under `src/`, then run
+> `npm run build`. CI (`npm test`) rejects a PR whose generated files are stale.
 
 ## Use it in the extension
 
@@ -28,48 +40,54 @@ https://raw.githubusercontent.com/laofun/webbound-rules/main/repo.json
 
 ## Add or update a rule
 
-1. **Write the rule** at `rules/<domain>.json`. Start by copying an existing rule
-   (`rules/novel543.com.json`) and read [`docs/RULE_SYSTEM.md`](docs/RULE_SYSTEM.md) —
-   it is the single source of truth, and §9 has an AI Prompt Pack that generates a
-   working rule from a page's HTML.
-2. **Register it** in `repo.json` under `sources[]`:
+Rules are authored under `src/<domain>/` and compiled to `rules/` + `repo.json`.
+Requires **Node ≥ 22**. Once: `npm install`.
 
-   ```json
-   {
-     "id": "example.com",
-     "name": "Example Site",
-     "domain": "example.com",
-     "rule_url": "./rules/example.com.json",
-     "version": "1.0.0",
-     "author": "WebBound",
-     "description": "Short one-liner shown on the browse card.",
-     "icon": "📖",
-     "language": "zh",
-     "featured": true
-   }
-   ```
-
-3. **Keep versions in sync.** The `version` in the `repo.json` entry MUST equal the
-   `version` inside the rule file. Bump **both** (semver) on every change — installed
-   users only see an _Update_ when the version rises.
-4. **Validate** before committing:
+1. **Scaffold** the folder:
 
    ```bash
-   node -e '
-   const fs=require("fs");
-   const repo=JSON.parse(fs.readFileSync("repo.json"));
-   for(const s of repo.sources){
-     const f=s.rule_url.replace(/^\.\//,"");
-     if(!fs.existsSync(f)) throw new Error("missing "+f);
-     const r=JSON.parse(fs.readFileSync(f));
-     if(r.version!==s.version) throw new Error("version drift: "+s.id+" repo="+s.version+" rule="+r.version);
-   }
-   console.log("ok:", repo.sources.length, "rule(s)");'
+   npm run new example.com             # scriptable (default)
+   npm run new example.com -- --generic # CSS-selector rule
    ```
 
-5. Open a **Pull Request**.
+2. **Fill it in** (see [`docs/WRITE_A_RULE_WITH_AI.md`](docs/WRITE_A_RULE_WITH_AI.md)
+   and [`docs/RULE_SYSTEM.md`](docs/RULE_SYSTEM.md)):
+   - `src/example.com/rule.json` — `selectors`, `config`, `version`, `language`,
+     `description`, and a `marketplace` block (`name`, `icon`, `featured`, and an
+     optional `description` that overrides the browse-card blurb).
+   - **Scriptable:** put the `({ extractToC, extractChapter, extractMetadata })`
+     object in `src/example.com/parser.js` — real JavaScript, no JSON escaping.
+   - `samples.json` — a real `book_url` and `chapter_url`.
+
+3. **Add an offline test.** Save the TOC + chapter responses under `fixtures/` and
+   assert against them in `src/example.com/toc.test.mjs` / `chapter.test.mjs`. Copy
+   `src/sangtacviet.vip/*.test.mjs` as the template — they build the runtime ctx via
+   the vendored `createScriptableContext`, so a green test means the extension parses
+   the same bytes the same way.
+
+4. **Test and build:**
+
+   ```bash
+   npm test                          # ctx drift + generated-files check + every *.test.mjs
+   npm run build                     # regenerate rules/example.com.json + repo.json
+   npm run test:live example.com     # optional: hit the real site once
+   ```
+
+   Unlike the old JSON-only check, `npm run build` **evaluates** `parser.js`, so
+   broken scriptable JavaScript fails here — not later in the extension.
+
+5. **Commit both** the `src/` sources and the regenerated `rules/` + `repo.json`,
+   then open a **Pull Request**.
+
+**Versioning.** Set `version` in `src/<domain>/rule.json`; the build copies it into
+`repo.json`. Bump it (semver) on every change — installed users only see an _Update_
+when the version rises.
 
 ## `repo.json` source fields
+
+`repo.json` is generated from each `src/<domain>/rule.json`: `name` / `icon` /
+`featured` / `description` come from its `marketplace` block, the rest from the
+rule's top-level fields. The table documents the generated output.
 
 | Field         | Required | Notes                                                                                                                                        |
 | ------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------- |

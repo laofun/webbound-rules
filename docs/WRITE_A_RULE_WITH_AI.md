@@ -23,8 +23,9 @@ deep reference if a site fights back.
 2. **Paste the prompt below into the AI, then paste your HTML into the slots** at
    the bottom of it. Send.
 
-3. **Save the AI's JSON** to `rules/<domain>.json`, register it in `repo.json`, and
-   validate. See [After you get the JSON](#after-you-get-the-json).
+3. **Scaffold, split, and build.** Run `npm run new <domain>`, drop the AI's script
+   into `parser.js` and the rest into `rule.json`, add fixtures + a test, then
+   `npm test && npm run build`. See [After you get the JSON](#after-you-get-the-json).
 
 ---
 
@@ -191,35 +192,42 @@ rule, its `script` should follow this same shape.
 
 ## After you get the JSON
 
-1. **Save** the AI's output to `rules/<domain>.json` (e.g. `rules/example.com.json`).
-2. **Register** it in `repo.json` under `sources[]` — copy an existing entry, set
-   `id`, `domain`, `rule_url: "./rules/<domain>.json"`, and a `version` that
-   **matches** the `version` inside the rule file.
-3. **Validate** from the repo root:
+You compile rules from `src/<domain>/`; `rules/` and `repo.json` are generated.
+Requires **Node ≥ 22** and a one-time `npm install`.
+
+1. **Scaffold** the folder: `npm run new <domain>` (add `-- --generic` for a
+   CSS-selector rule).
+
+2. **Split the AI's JSON into** `src/<domain>/`:
+   - top-level rule fields (`domain`, `url_pattern`, `parser_type`, `selectors`,
+     `config`, `version`, `language`, `description`) → `rule.json`, plus a
+     `marketplace` block (`{ name, icon, featured }`, optional `description` for the
+     browse card);
+   - for scriptable rules, the `script` value → `parser.js` as **real JavaScript**
+     (the `({ extractToC, ... })` object — no JSON escaping);
+   - a real `book_url` + `chapter_url` → `samples.json`.
+
+   You never hand-edit `rules/` or `repo.json`.
+
+3. **Add an offline test.** Save the TOC + chapter responses under `fixtures/` and
+   assert against them in `src/<domain>/*.test.mjs`. Copy
+   `src/sangtacviet.vip/toc.test.mjs` + `chapter.test.mjs` — they build the real
+   runtime ctx via the vendored `createScriptableContext`, so a green test means the
+   extension will parse the same bytes the same way.
+
+4. **Test, build, and (optionally) smoke live:**
 
    ```bash
-   node -e '
-   const fs=require("fs");
-   const repo=JSON.parse(fs.readFileSync("repo.json"));
-   for(const s of repo.sources){
-     const f=s.rule_url.replace(/^\.\//,"");
-     if(!fs.existsSync(f)) throw new Error("missing "+f);
-     const r=JSON.parse(fs.readFileSync(f));
-     if(r.version!==s.version) throw new Error("version drift: "+s.id+" repo="+s.version+" rule="+r.version);
-   }
-   console.log("ok:", repo.sources.length, "rule(s)");'
+   npm test                     # drift + generated-file check + all *.test.mjs
+   npm run build                # write rules/<domain>.json + repo.json
+   npm run test:live <domain>   # optional: fetch the real site once
    ```
 
-   This checks that every rule file parses as JSON and that its version matches
-   `repo.json`. A scriptable `script` that is broken JavaScript will still pass this
-   (it's a string) — test it in the extension.
+   `npm run build` evaluates `parser.js`, so broken scriptable JavaScript fails
+   locally now instead of silently shipping.
 
-4. **Test in the extension**: Marketplace → install the rule → open a book on the
-   site → run a crawl. If the TOC is empty, the content is junk, or a scriptable
-   rule throws, see the troubleshooting table in
-   [`RULE_SYSTEM.md`](RULE_SYSTEM.md).
-
-5. **Commit** and open a Pull Request.
+5. **Commit both** `src/` and the regenerated `rules/` + `repo.json`, then open a
+   Pull Request.
 
 ---
 
