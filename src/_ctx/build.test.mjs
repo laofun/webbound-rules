@@ -58,4 +58,14 @@ rejects(() => generate(makeSrc('a.com', base('scriptable'), '({ async extractToC
 rejects(() => generate(makeSrc('a.com', base('generic'), '({})')), /must NOT have a parser\.js/, 'generic with parser.js');
 rejects(() => generate(makeSrc('a.com', { ...base('generic'), domain: 'b.com' }, null)), /!= folder name/, 'domain != folder');
 
-console.log('OK: build generate() — outputs canonical, validation rejects the 4 bad configs');
+// --- marketplace default-fallbacks fire when the block is absent ---
+{
+  const { repoJson: rj } = generate(makeSrc('a.com', base('generic'), null));
+  const s = JSON.parse(rj).sources.find(x => x.domain === 'a.com');
+  A(s.name === 'a.com', 'fallback: name should default to domain — ' + s.name);
+  A(s.icon === '', 'fallback: icon should default to "" — ' + JSON.stringify(s.icon));
+  A(s.featured === false, 'fallback: featured should default to false — ' + s.featured);
+  A(s.description === 'd', 'fallback: description should default to meta.description — ' + s.description);
+}
+
+console.log('OK: build generate() — outputs canonical, validation rejects the 4 bad configs, marketplace fallbacks default');
