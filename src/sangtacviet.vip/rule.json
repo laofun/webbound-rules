@@ -1,0 +1,42 @@
+{
+  "domain": "sangtacviet.vip",
+  "url_pattern": "sangtacviet\\.vip/truyen/",
+  "parser_type": "scriptable",
+  "selectors": {
+    "title": "#book_name2",
+    "author": "i.cap h2",
+    "cover": "meta[property='og:image']@content",
+    "desc": "#book-sumary",
+    "status": "",
+    "genres": "",
+    "toc": {
+      "list_container": "",
+      "item": "",
+      "total_page": "",
+      "next_page": "",
+      "page_url_pattern": ""
+    },
+    "chapter": {
+      "content": "#maincontent",
+      "remove": [
+        "script",
+        "style",
+        "ins"
+      ]
+    }
+  },
+  "config": {
+    "pagination_mode": "single_page_ajax",
+    "rate_limit_ms": 1500
+  },
+  "version": "1.0.1",
+  "author": "WebBound",
+  "language": "vi",
+  "description": "sangtacviet.vip — Vietnamese MTL. Requires Force Hybrid Mode. ToC from getchapterlist AJAX and chapter body from readchapter AJAX — both Referer-gated, so ctx.fetch must run in-tab (same-origin) to carry the Referer. extractChapter fetches readchapter (GET) and flattens the <i> translation tokens.",
+  "marketplace": {
+    "name": "SangTacViet",
+    "icon": "📗",
+    "featured": true,
+    "description": "SangTacViet (sangtacviet.vip) — Vietnamese MTL. Requires Force Hybrid Mode."
+  }
+}
