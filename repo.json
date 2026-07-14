@@ -5,18 +5,6 @@
   },
   "sources": [
     {
-      "id": "sangtacviet.vip",
-      "name": "SangTacViet",
-      "domain": "sangtacviet.vip",
-      "rule_url": "./rules/sangtacviet.vip.json",
-      "version": "1.0.1",
-      "author": "WebBound",
-      "description": "SangTacViet (sangtacviet.vip) — Vietnamese MTL. Requires Force Hybrid Mode.",
-      "icon": "📗",
-      "language": "vi",
-      "featured": true
-    },
-    {
       "id": "novel543.com",
       "name": "Novel543",
       "domain": "novel543.com",
@@ -38,6 +26,18 @@
       "description": "Piaotia (piaotia.com) — Chinese web novels.",
       "icon": "📕",
       "language": "zh",
+      "featured": true
+    },
+    {
+      "id": "sangtacviet.vip",
+      "name": "SangTacViet",
+      "domain": "sangtacviet.vip",
+      "rule_url": "./rules/sangtacviet.vip.json",
+      "version": "1.0.1",
+      "author": "WebBound",
+      "description": "SangTacViet (sangtacviet.vip) — Vietnamese MTL. Requires Force Hybrid Mode.",
+      "icon": "📗",
+      "language": "vi",
       "featured": true
     }
   ]

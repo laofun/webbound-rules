@@ -19,7 +19,11 @@
     },
     "chapter": {
       "content": "#content",
-      "remove": ["#content h1", "#content toplink", "#content table"]
+      "remove": [
+        "#content h1",
+        "#content toplink",
+        "#content table"
+      ]
     },
     "info": {
       "remove": [

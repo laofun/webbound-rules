@@ -18,7 +18,10 @@
     },
     "chapter": {
       "content": ".chapter-content .content",
-      "remove": [".gadBlock", ".adBlock"]
+      "remove": [
+        ".gadBlock",
+        ".adBlock"
+      ]
     }
   },
   "script": "({ async extractToC(ctx){ const P=(h)=>new DOMParser().parseFromString(h,'text/html'); const pick=(d)=>Array.from(d.querySelectorAll('ul.one.two-700.three-900.all > li a')); let base=ctx.url, doc=P(ctx.html), a=pick(doc); if(!a.length){ const l=doc.querySelector('.chaplist div.more > a'); base=l?new URL(l.getAttribute('href'),ctx.url).toString():ctx.url.replace(/[/]+$/,'')+'/dir'; doc=P(await ctx.fetch(base)); a=pick(doc); if(!a.length) a=Array.from(doc.querySelectorAll('.chaplist a[href]')); } return a.map(x=>({title:ctx.utils.cleanText(x.textContent||''),url:new URL(x.getAttribute('href'),base).toString()})).filter(c=>c.title&&c.url); }, async extractMetadata(ctx){ const P=(h)=>new DOMParser().parseFromString(h,'text/html'); let doc=P(ctx.html); if(!doc.querySelector('.media-content.info > .title')) doc=P(await ctx.fetch(ctx.url)); const t=(s)=>{const e=doc.querySelector(s);return e?ctx.utils.cleanText(e.textContent||''):'';}; const img=doc.querySelector('.cover.full img'); const src=img?(img.getAttribute('src')||img.getAttribute('data-src')||''):''; const d=doc.querySelector('.intro.is-hidden-mobile'); const g=Array.from(doc.querySelectorAll('p.meta > span > a')).map(x=>ctx.utils.cleanText(x.textContent||'')).filter(Boolean); return { title:t('.media-content.info > .title'), author:t('#detail > div.media > div.media-content.info > p.meta span.author'), cover:src?new URL(src,ctx.url).toString():'', description:d?ctx.utils.sanitize(d.innerHTML):'', genres:g.join(', ') }; }, async extractChapter(ctx){ const doc=new DOMParser().parseFromString(ctx.html,'text/html'); const el=doc.querySelector('.chapter-content .content')||doc.querySelector('.chapter-content'); if(!el) return ''; el.querySelectorAll('.gadBlock, .adBlock, script, style, ins').forEach(n=>n.remove()); return ctx.utils.sanitize(el.innerHTML); } })",
