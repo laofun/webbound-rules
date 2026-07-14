@@ -1,0 +1,16 @@
+{
+  "name": "webbound-rules",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/build.mjs --check",
+    "watch": "node --watch-path=./src scripts/build.mjs",
+    "new": "node scripts/new.mjs",
+    "test": "node scripts/test.mjs",
+    "test:live": "node scripts/test-live.mjs"
+  },
+  "devDependencies": {
+    "linkedom": "^0.18.0"
+  }
+}
