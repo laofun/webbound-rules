@@ -1,7 +1,7 @@
 {
   "repo_meta": {
     "name": "WebBound Official Rules",
-    "version": "1.1.1"
+    "version": "1.2.0"
   },
   "sources": [
     {
@@ -38,6 +38,18 @@
       "description": "SangTacViet (sangtacviet.vip) — Vietnamese MTL. Requires Force Hybrid Mode.",
       "icon": "📗",
       "language": "vi",
+      "featured": true
+    },
+    {
+      "id": "storiluna.com",
+      "name": "StoriLuna",
+      "domain": "storiluna.com",
+      "rule_url": "./rules/storiluna.com.json",
+      "version": "1.0.0",
+      "author": "WebBound",
+      "description": "StoriLuna — English book and chapter summaries.",
+      "icon": "🌙",
+      "language": "en",
       "featured": true
     }
   ]

@@ -27,7 +27,7 @@ A(JSON.stringify(Object.keys(n543)) === JSON.stringify(
   'novel543: wrong key order — ' + Object.keys(n543));
 
 const repo = JSON.parse(repoJson);
-A(repo.sources.map(s => s.domain).join(',') === 'novel543.com,piaotia.com,sangtacviet.vip',
+A(repo.sources.map(s => s.domain).join(',') === 'novel543.com,piaotia.com,sangtacviet.vip,storiluna.com',
   'repo.json: sources not sorted by domain');
 A(JSON.stringify(Object.keys(repo.sources[0])) === JSON.stringify(
   ['id','name','domain','rule_url','version','author','description','icon','language','featured']),

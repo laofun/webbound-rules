@@ -1,0 +1,45 @@
+{
+  "domain": "storiluna.com",
+  "url_pattern": "^https?://(?:www\\.)?storiluna\\.com/books/[0-9a-f-]{36}/?(?:[?#].*)?$",
+  "parser_type": "generic",
+  "selectors": {
+    "title": "main h1",
+    "author": "main h1 + p|after:by |trim",
+    "cover": "meta[property='og:image']@content",
+    "desc": "#overview .book-description",
+    "status": "",
+    "genres": "main section:first-of-type .grid > div:first-child > div:last-child",
+    "toc": {
+      "list_container": "aside nav[aria-label='Contents navigation']",
+      "item": "aside nav[aria-label='Contents navigation'] a[href*='/chapters/']",
+      "total_page": "",
+      "next_page": "",
+      "page_url_pattern": "",
+      "toc_url": ""
+    },
+    "chapter": {
+      "content": "main div.min-w-0",
+      "remove": [
+        "header",
+        "nav[aria-label='Chapter navigation']",
+        "script",
+        "style",
+        "ins"
+      ]
+    }
+  },
+  "config": {
+    "pagination_mode": "single_page_ajax",
+    "rate_limit_ms": 1000
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "en",
+  "description": "storiluna.com — English book summaries with one static table of contents and summary pages for each chapter.",
+  "marketplace": {
+    "name": "StoriLuna",
+    "icon": "🌙",
+    "featured": true,
+    "description": "StoriLuna — English book and chapter summaries."
+  }
+}
