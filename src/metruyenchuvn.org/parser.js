@@ -24,7 +24,7 @@
     }
 
     const getChaptersFromDoc = (d) => {
-      const anchors = Array.from(d.querySelectorAll('#chapter-list a[href], .chapter a[href], a[href*="/chuong-"]'));
+      const anchors = Array.from(d.querySelectorAll('.book-info-chapter #chapter-list ul li a, #chapter-list ul li a, ul li a'));
       const list = [];
       const seen = new Set();
       for (const a of anchors) {

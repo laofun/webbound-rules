@@ -10,7 +10,7 @@
     "status": ".label-status",
     "genres": ".li--genres a",
     "toc": {
-      "item": "#chapter-list a[href]"
+      "item": ".book-info-chapter #chapter-list ul li a"
     },
     "chapter": {
       "content": ".truyen",
