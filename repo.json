@@ -5,6 +5,18 @@
   },
   "sources": [
     {
+      "id": "metruyenchuvn.org",
+      "name": "Mê Truyện Chữ",
+      "domain": "metruyenchuvn.org",
+      "rule_url": "./rules/metruyenchuvn.org.json",
+      "version": "1.0.0",
+      "author": "WebBound",
+      "description": "metruyenchuvn.org — Truyện chữ online (Mê Truyện Chữ).",
+      "icon": "📖",
+      "language": "vi",
+      "featured": false
+    },
+    {
       "id": "novel543.com",
       "name": "Novel543",
       "domain": "novel543.com",

@@ -1,0 +1,41 @@
+{
+  "domain": "metruyenchuvn.org",
+  "url_pattern": "metruyenchuvn\\.org/",
+  "parser_type": "scriptable",
+  "selectors": {
+    "title": "h1[itemprop='name']",
+    "author": "a[itemprop='author']",
+    "cover": ".book-info-pic img@src",
+    "desc": "div[itemprop='description']",
+    "status": ".label-status",
+    "genres": ".li--genres a",
+    "toc": {
+      "item": "#chapter-list a[href]"
+    },
+    "chapter": {
+      "content": ".truyen",
+      "remove": [
+        "script",
+        "style",
+        "ins",
+        "iframe",
+        ".ads",
+        "#download-book"
+      ]
+    }
+  },
+  "config": {
+    "pagination_mode": "single_page_ajax",
+    "rate_limit_ms": 1000
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "vi",
+  "description": "metruyenchuvn.org — Vietnamese novel site with AJAX chapter list pagination.",
+  "marketplace": {
+    "name": "Mê Truyện Chữ",
+    "icon": "📖",
+    "featured": false,
+    "description": "metruyenchuvn.org — Truyện chữ online (Mê Truyện Chữ)."
+  }
+}
