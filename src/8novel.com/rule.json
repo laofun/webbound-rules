@@ -1,0 +1,46 @@
+{
+  "domain": "8novel.com",
+  "url_pattern": "8novel\\.com/novelbooks/",
+  "parser_type": "generic",
+  "selectors": {
+    "title": "meta[property='og:title']@content",
+    "author": "meta[property='og:novel:author']@content",
+    "cover": "meta[property='og:image']@content",
+    "desc": "meta[property='og:description']@content",
+    "status": "meta[property='og:novel:status']@content",
+    "genres": "meta[property='og:novel:category']@content",
+    "toc": {
+      "list_container": "#chapters",
+      "item": "#chapters a",
+      "total_page": "",
+      "next_page": "",
+      "page_url_pattern": "",
+      "toc_url": ""
+    },
+    "chapter": {
+      "content": "#text",
+      "remove": [
+        "script",
+        "style",
+        "ins",
+        "iframe",
+        "div[id*='div-gpt-ad']"
+      ]
+    }
+  },
+  "config": {
+    "pagination_mode": "single_page_ajax",
+    "rate_limit_ms": 1000,
+    "render_mode": "dynamic"
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "zh",
+  "description": "8novel.com — Infinite Light Novel (無限輕小說).",
+  "marketplace": {
+    "name": "無限輕小說",
+    "icon": "📖",
+    "featured": true,
+    "description": "無限輕小說 (8novel.com) — Light novel & web novel site."
+  }
+}

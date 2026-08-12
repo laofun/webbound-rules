@@ -17,6 +17,18 @@
       "featured": true
     },
     {
+      "id": "8novel.com",
+      "name": "無限輕小說",
+      "domain": "8novel.com",
+      "rule_url": "./rules/8novel.com.json",
+      "version": "1.0.0",
+      "author": "WebBound",
+      "description": "無限輕小說 (8novel.com) — Light novel & web novel site.",
+      "icon": "📖",
+      "language": "zh",
+      "featured": true
+    },
+    {
       "id": "metruyenchuvn.org",
       "name": "Mê Truyện Chữ",
       "domain": "metruyenchuvn.org",
