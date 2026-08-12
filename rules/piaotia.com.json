@@ -1,43 +1,43 @@
 {
   "domain": "piaotia.com",
-  "url_pattern": "https://www.piaotia.com/bookinfo/*",
+  "url_pattern": "piaotia\\.com/bookinfo/",
   "parser_type": "generic",
   "selectors": {
     "title": "h1",
-    "author": "#centerm #content > table > tbody > tr:nth-of-type(1) > td > table > tbody > tr:nth-of-type(2) > td:nth-of-type(2)|after:者：",
-    "cover": "td:nth-of-type(2) > a > img@src",
-    "desc": "#centerm #content > table > tbody > tr:nth-of-type(4) > td > table > tbody > tr > td:nth-of-type(2) > div|after:內容簡介：",
-    "status": "#centerm #content > table > tbody > tr:nth-of-type(1) > td > table > tbody > tr:nth-of-type(3) > td:nth-of-type(2)|after:文章状态：",
-    "genres": "#content > table > tbody > tr:nth-child(1) > td > table > tbody > tr:nth-child(2) > td:nth-child(1)|after: 别：",
+    "author": "tr:nth-of-type(2) td:nth-of-type(2)|after:者：|trim",
+    "cover": "img[src*='/files/article/image/']@src",
+    "desc": "td[width='80%'] tr:last-child td|after:內容簡介：|trim",
+    "status": "tr:nth-of-type(3) td:nth-of-type(2)|after:文章状态：|trim",
+    "genres": "tr:nth-of-type(2) td:nth-of-type(1)|after:别：|trim",
     "toc": {
-      "list_container": ".list",
-      "item": "ul > li > a",
+      "list_container": "div.centent",
+      "item": "div.centent ul li a",
       "total_page": "",
       "next_page": "",
       "page_url_pattern": "",
       "toc_url": "caption > a"
     },
     "chapter": {
-      "content": "#content",
+      "content": "body",
       "remove": [
-        "#content h1",
-        "#content toplink",
-        "#content table"
-      ]
-    },
-    "info": {
-      "remove": [
-        "#centerm #content > table > tbody > tr:nth-of-type(4) > td > table > tbody > tr > td:nth-of-type(2) > div a",
-        "span.hottext"
+        "h1",
+        ".toplink",
+        "table",
+        "#guild",
+        "#shop",
+        "#Commenddiv",
+        "#feit2",
+        "script",
+        "style"
       ]
     }
   },
   "config": {
-    "pagination_mode": "multi_page",
+    "pagination_mode": "single_page_ajax",
     "rate_limit_ms": 1000
   },
   "version": "1.0.0",
   "author": "WebBound",
   "language": "zh",
-  "description": "piaotia.com - Chinese web novels."
+  "description": "piaotia.com — Chinese web novels (飘天文学)."
 }
