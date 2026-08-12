@@ -1,0 +1,39 @@
+{
+  "domain": "52shuku.net",
+  "url_pattern": "52shuku\\.net/(?!.*_\\d+\\.html).+\\.html",
+  "parser_type": "generic",
+  "selectors": {
+    "title": "h1.article-title|before:_|trim",
+    "author": ".article-content a[href*='/zuozhe/']",
+    "cover": "",
+    "desc": ".article-content p:nth-of-type(2)",
+    "status": "",
+    "genres": ".article-content p:nth-of-type(3) a",
+    "toc": {
+      "list_container": ".article-content ul.list",
+      "item": ".article-content ul.list a",
+      "total_page": "",
+      "next_page": "",
+      "page_url_pattern": "",
+      "toc_url": ""
+    },
+    "chapter": {
+      "content": "#text",
+      "remove": [
+        "script",
+        "style",
+        "ins",
+        ".con_pc",
+        ".con_m"
+      ]
+    }
+  },
+  "config": {
+    "pagination_mode": "single_page_ajax",
+    "rate_limit_ms": 1000
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "zh",
+  "description": "52shuku.net — Chinese web novels repository."
+}

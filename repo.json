@@ -5,6 +5,18 @@
   },
   "sources": [
     {
+      "id": "52shuku.net",
+      "name": "52书库",
+      "domain": "52shuku.net",
+      "rule_url": "./rules/52shuku.net.json",
+      "version": "1.0.0",
+      "author": "WebBound",
+      "description": "52书库 (52shuku.net) — Chinese web novel site.",
+      "icon": "📚",
+      "language": "zh",
+      "featured": true
+    },
+    {
       "id": "metruyenchuvn.org",
       "name": "Mê Truyện Chữ",
       "domain": "metruyenchuvn.org",

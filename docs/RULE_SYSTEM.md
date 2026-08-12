@@ -152,6 +152,9 @@ Append `|op:arg` segments (applied left to right). Split happens on the **first
 
 Combine them: `"p.tag@title|after:：|trim"`. Unknown ops are skipped with a warning.
 
+> **Note on Browser/Tab Extraction & Parity**:
+> Metadata selectors containing `@attr` or `|transforms` (e.g. `"h1.article-title|before:_|trim"`) are safely supported across both Fast Fetch (Cheerio) and Hybrid Mode / Tab Extraction (`TabClient`). The crawler automatically splits off the selector head before calling `document.querySelector(head)` to prevent invalid selector DOMExceptions in the browser environment.
+
 > These extensions apply to the **generic** metadata selectors. Inside a
 > **scriptable** script you write plain JS instead (see §6).
 
