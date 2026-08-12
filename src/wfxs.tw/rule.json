@@ -1,0 +1,45 @@
+{
+  "domain": "wfxs.tw",
+  "url_pattern": "wfxs\\.tw/(xiaoshuo|booklist)/",
+  "parser_type": "generic",
+  "selectors": {
+    "title": "h1",
+    "author": "meta[property='og:novel:author']@content",
+    "cover": "meta[property='og:image']@content",
+    "desc": "#bookintro|after:簡介：|trim",
+    "status": "meta[property='og:novel:status']@content",
+    "genres": "meta[property='og:novel:category']@content",
+    "toc": {
+      "list_container": "#readerlists",
+      "item": "#readerlists a",
+      "total_page": "",
+      "next_page": "",
+      "page_url_pattern": "",
+      "toc_url": "a[href*='/booklist/']"
+    },
+    "chapter": {
+      "content": "div.content",
+      "remove": [
+        "script",
+        "style",
+        "ins",
+        "iframe",
+        ".tts-control-bar"
+      ]
+    }
+  },
+  "config": {
+    "pagination_mode": "single_page_ajax",
+    "rate_limit_ms": 1000
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "zh",
+  "description": "wfxs.tw — Chinese web novels (微風小說網).",
+  "marketplace": {
+    "name": "微風小說網",
+    "icon": "🍃",
+    "featured": true,
+    "description": "微風小說網 (wfxs.tw) — Chinese novel reader."
+  }
+}

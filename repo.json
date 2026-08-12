@@ -75,6 +75,18 @@
       "icon": "🌙",
       "language": "en",
       "featured": true
+    },
+    {
+      "id": "wfxs.tw",
+      "name": "微風小說網",
+      "domain": "wfxs.tw",
+      "rule_url": "./rules/wfxs.tw.json",
+      "version": "1.0.0",
+      "author": "WebBound",
+      "description": "微風小說網 (wfxs.tw) — Chinese novel reader.",
+      "icon": "🍃",
+      "language": "zh",
+      "featured": true
     }
   ]
 }
