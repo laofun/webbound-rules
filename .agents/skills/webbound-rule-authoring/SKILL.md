@@ -205,3 +205,22 @@ npm run test:live <domain>
    - If the user lands on an info/landing page that redirects to a `/booklist/` page, set `toc.toc_url` (e.g. `a[href*='/booklist/']`).
 5. **Alphabetical Domain Sorting**:
    - `repo.json` sources are sorted alphabetically by domain. `build.test.mjs` asserts this exact domain list. Always update `build.test.mjs` when adding a new domain.
+6. **Non-UTF8 Encoding (GBK / Big5)**:
+   - Chinese novel sites often use `GBK`, `GB2312`, or `Big5` encodings. Raw `curl` or `fetch().text()` can cause text corruption. Use the provided helper script `scripts/fetch-fixture.mjs` to auto-decode GBK/Big5 to UTF-8 when creating fixtures.
+
+---
+
+## 5. Helper Scripts
+
+- **`scripts/fetch-fixture.mjs`**:
+  Fetch and auto-decode HTML (supporting GBK, Big5, and UTF-8) to save clean test fixtures:
+  ```bash
+  node .agents/skills/webbound-rule-authoring/scripts/fetch-fixture.mjs <url> <output-filepath> [gbk|big5|utf-8]
+  ```
+
+---
+
+## 6. Reference Documentation
+
+- **[`references/SCRIPTABLE_API.md`](references/SCRIPTABLE_API.md)**: Full API reference for scriptable rules (`ctx`, `extractToC`, `extractChapter`, `extractMetadata`, `ctx.fetch`, `ctx.utils`).
+
