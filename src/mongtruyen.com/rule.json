@@ -1,0 +1,41 @@
+{
+  "domain": "mongtruyen.com",
+  "url_pattern": "mongtruyen\\.com/(?!.*(?:goi-thanh-vien|the-loai|hoan-thanh|truyen-cho-full|dang-nhap|img_data|templates|assets|sources)).+\\.html",
+  "parser_type": "scriptable",
+  "selectors": {
+    "title": ".mdv-san-pham-show-name",
+    "author": ".tac-gia-ten",
+    "cover": ".san-pham-book-item-show-image img@src",
+    "desc": ".mdv-san-pham-show-gioi-thieu-des",
+    "status": ".mdv-sps-tac-gia-tinh-trang-box",
+    "genres": ".san-pham-the-loai a",
+    "chapter": {
+      "content": "#noi_dung_truyen",
+      "remove": [
+        "script",
+        "style",
+        "ins",
+        "iframe",
+        ".ads",
+        ".copy-protection-overlay",
+        ".mt-hidden-watermark",
+        ".anti-copy-tooltip",
+        ".mt-chapter-loading"
+      ]
+    }
+  },
+  "config": {
+    "pagination_mode": "single_page_ajax",
+    "rate_limit_ms": 1000
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "vi",
+  "description": "mongtruyen.com — Vietnamese web novel site with AJAX pagination & shadow DOM content.",
+  "marketplace": {
+    "name": "Mộng Truyện",
+    "icon": "🌙",
+    "featured": false,
+    "description": "mongtruyen.com — Trang đọc truyện online Mộng Truyện."
+  }
+}

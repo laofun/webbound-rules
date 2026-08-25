@@ -41,6 +41,18 @@
       "featured": false
     },
     {
+      "id": "mongtruyen.com",
+      "name": "Mộng Truyện",
+      "domain": "mongtruyen.com",
+      "rule_url": "./rules/mongtruyen.com.json",
+      "version": "1.0.0",
+      "author": "WebBound",
+      "description": "mongtruyen.com — Trang đọc truyện online Mộng Truyện.",
+      "icon": "🌙",
+      "language": "vi",
+      "featured": false
+    },
+    {
       "id": "novel543.com",
       "name": "Novel543",
       "domain": "novel543.com",

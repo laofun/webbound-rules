@@ -32,12 +32,34 @@ const cookie = process.env[cookieEnv] || '';
 const rateMs = rule.config?.rate_limit_ms ?? 1000;
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
+const cookieJar = new Map();
+if (cookie) {
+  for (const item of cookie.split(';')) {
+    const [k, ...v] = item.trim().split('=');
+    if (k) cookieJar.set(k, v.join('='));
+  }
+}
+
 // Real fetch carrying the page as Referer (+ optional Cookie), rate-limited.
-const makeFetch = (referer) => async (url) => {
+const makeFetch = (referer) => async (url, init = {}) => {
   await sleep(rateMs);
-  const headers = { 'User-Agent': 'Mozilla/5.0 WebBound-rules-test', Referer: referer };
-  if (cookie) headers.Cookie = cookie;
-  const res = await fetch(url, { headers });
+  const cookieHeader = Array.from(cookieJar.entries()).map(([k, v]) => `${k}=${v}`).join('; ');
+  const headers = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    Referer: referer,
+    ...(init.headers || {})
+  };
+  if (cookieHeader) headers.Cookie = cookieHeader;
+  const res = await fetch(url, { ...init, headers });
+  const sc = res.headers.getSetCookie ? res.headers.getSetCookie() : [res.headers.get('set-cookie')];
+  if (sc && sc.length) {
+    for (const raw of sc) {
+      if (!raw) continue;
+      const [pair] = raw.split(';');
+      const [k, ...v] = pair.trim().split('=');
+      if (k) cookieJar.set(k, v.join('='));
+    }
+  }
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
   return res.text();
 };
