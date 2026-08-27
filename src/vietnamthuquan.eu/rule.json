@@ -1,0 +1,44 @@
+{
+  "domain": "vietnamthuquan.eu",
+  "url_pattern": "vietnamthuquan\\.eu/TacPham/(?!.*chuong-\\d+)[^/]+/?",
+  "parser_type": "scriptable",
+  "selectors": {
+    "title": ".vntq-reader-title",
+    "author": ".vntq-author-top a",
+    "cover": ".vntq-large-cover-box img@src",
+    "desc": "#vntqTextContent",
+    "status": "",
+    "genres": "",
+    "toc": {
+      "item": "#vntqTocList a"
+    },
+    "chapter": {
+      "content": "#vntqTextContent",
+      "remove": [
+        "script",
+        "style",
+        "ins",
+        "iframe",
+        ".ads",
+        ".advertisement",
+        "blockquote",
+        ".vntq-toolbar",
+        ".vntq-nav-bar"
+      ]
+    }
+  },
+  "config": {
+    "pagination_mode": "single_page_ajax",
+    "rate_limit_ms": 1000
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "vi",
+  "description": "vietnamthuquan.eu — Việt Nam Thư Quán (Thư viện Online) novel & literature reader.",
+  "marketplace": {
+    "name": "Việt Nam Thư Quán",
+    "icon": "📚",
+    "featured": false,
+    "description": "vietnamthuquan.eu — Việt Nam Thư Quán, Thư viện truyện, thơ, văn học online."
+  }
+}

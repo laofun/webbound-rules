@@ -1,0 +1,39 @@
+{
+  "domain": "vietnamthuquan.eu",
+  "url_pattern": "vietnamthuquan\\.eu/TacPham/(?!.*chuong-\\d+)[^/]+/?",
+  "parser_type": "scriptable",
+  "selectors": {
+    "title": ".vntq-reader-title",
+    "author": ".vntq-author-top a",
+    "cover": ".vntq-large-cover-box img@src",
+    "desc": "#vntqTextContent",
+    "status": "",
+    "genres": "",
+    "toc": {
+      "item": "#vntqTocList a"
+    },
+    "chapter": {
+      "content": "#vntqTextContent",
+      "remove": [
+        "script",
+        "style",
+        "ins",
+        "iframe",
+        ".ads",
+        ".advertisement",
+        "blockquote",
+        ".vntq-toolbar",
+        ".vntq-nav-bar"
+      ]
+    }
+  },
+  "script": "({\n  async extractToC(ctx) {\n    const P = (h) => new DOMParser().parseFromString(h, 'text/html');\n    let html = ctx.html;\n    let doc = P(html || '');\n\n    if (!html || !doc.querySelector('#vntqTocList')) {\n      try {\n        html = await ctx.fetch(ctx.url);\n        doc = P(html);\n      } catch (e) {}\n    }\n\n    const chapters = [];\n    const seen = new Set();\n\n    const tocAnchors = Array.from(doc.querySelectorAll('#vntqTocList a.vntq-toc-item, #vntqTocList a'));\n    for (const a of tocAnchors) {\n      const href = a.getAttribute('href');\n      const title = ctx.utils.cleanText(a.textContent || '');\n      if (href && href.includes('/chuong-') && title) {\n        const absoluteUrl = ctx.utils.resolveUrl(href, ctx.url);\n        if (!seen.has(absoluteUrl)) {\n          seen.add(absoluteUrl);\n          chapters.push({ title, url: absoluteUrl });\n        }\n      }\n    }\n\n    const theodoiBox = doc.querySelector('.vntq-theodoi-box');\n    const tuaId = theodoiBox?.getAttribute('data-id')\n      || (html.match(/tuaId\\s*=\\s*(\\d+)/) || [])[1]\n      || (ctx.url.match(/-(\\d+)\\/?(?:chuong-\\d+)?$/) || [])[1];\n\n    let slugTua = '';\n    const duongdan = theodoiBox?.getAttribute('data-duongdan') || '';\n    const duongdanMatch = duongdan.match(/\\/TacPham\\/([^/]+)/);\n    if (duongdanMatch) {\n      slugTua = duongdanMatch[1];\n    } else {\n      const urlSlugMatch = ctx.url.match(/\\/TacPham\\/([^/]+)/);\n      if (urlSlugMatch) slugTua = urlSlugMatch[1];\n    }\n\n    let maxPage = 1;\n    const options = doc.querySelectorAll('#vntqTocSelect option');\n    options.forEach((opt) => {\n      const val = parseInt(opt.getAttribute('value') || opt.textContent, 10);\n      if (!isNaN(val) && val > maxPage) maxPage = val;\n    });\n\n    if (tuaId && slugTua && maxPage > 1) {\n      for (let p = 2; p <= maxPage; p++) {\n        try {\n          const ajaxUrl = ctx.utils.resolveUrl(`/api/tacpham/get-mucluc?tuaId=${tuaId}&page=${p}&pageSize=100`, ctx.url);\n          const raw = await ctx.fetch(ajaxUrl);\n          let json = null;\n          try {\n            json = typeof raw === 'string' ? JSON.parse(raw) : raw;\n          } catch (e) {}\n\n          if (json && json.success && Array.isArray(json.chapters)) {\n            for (const ch of json.chapters) {\n              const chapterUrl = ctx.utils.resolveUrl(`/TacPham/${slugTua}/chuong-${ch.chuongId}`, ctx.url);\n              if (!seen.has(chapterUrl)) {\n                seen.add(chapterUrl);\n                chapters.push({\n                  title: ctx.utils.cleanText(ch.title || ''),\n                  url: chapterUrl,\n                });\n              }\n            }\n          }\n        } catch (err) {\n          // ignore fetch error on page\n        }\n      }\n    }\n\n    return chapters;\n  },\n\n  async extractChapter(ctx) {\n    const P = (h) => new DOMParser().parseFromString(h, 'text/html');\n    let html = ctx.html;\n    let doc = P(html || '');\n    if (!html || !doc.querySelector('#vntqTextContent, .vntq-text-content')) {\n      try {\n        html = await ctx.fetch(ctx.url);\n        doc = P(html);\n      } catch (e) {}\n    }\n    const el = doc.querySelector('#vntqTextContent') || doc.querySelector('.vntq-text-content');\n    if (!el) return '';\n    const clone = el.cloneNode(true);\n    clone.querySelectorAll('script, style, ins, iframe, .ads, .advertisement, blockquote, .vntq-toolbar, .vntq-nav-bar').forEach((n) => n.remove());\n    return ctx.utils.sanitize(clone.innerHTML);\n  },\n\n  async extractMetadata(ctx) {\n    const P = (h) => new DOMParser().parseFromString(h, 'text/html');\n    let html = ctx.html;\n    let doc = P(html || '');\n    if (!html || !doc.querySelector('.vntq-reader-title')) {\n      try {\n        html = await ctx.fetch(ctx.url);\n        doc = P(html);\n      } catch (e) {}\n    }\n    const t = (sel) => {\n      const el = doc.querySelector(sel);\n      return el ? ctx.utils.cleanText(el.textContent || '') : '';\n    };\n\n    const theodoi = doc.querySelector('.vntq-theodoi-box');\n    const title = theodoi?.getAttribute('data-tieude')\n      || t('.vntq-reader-title')\n      || t('h1');\n\n    const author = t('.vntq-author-top a') || t('.vntq-author-top');\n\n    const img = doc.querySelector('.vntq-large-cover-box img');\n    const coverSrc = img ? (img.getAttribute('src') || img.getAttribute('data-src') || '') : (theodoi?.getAttribute('data-anhbia') || '');\n\n    const chuongso = t('.chuongso_a');\n    let desc = '';\n    if (chuongso.toLowerCase().includes('giới thiệu') || chuongso.toLowerCase().includes('gioi thieu')) {\n      const descEl = doc.querySelector('#vntqTextContent, .vntq-text-content');\n      if (descEl) {\n        const clone = descEl.cloneNode(true);\n        clone.querySelectorAll('script, style, ins, iframe, .ads, blockquote').forEach((n) => n.remove());\n        desc = ctx.utils.sanitize(clone.innerHTML);\n      }\n    }\n\n    let genres = '';\n    const worksH3 = doc.querySelector('.vntq-author-works h3');\n    if (worksH3) {\n      const gm = worksH3.textContent.match(/\\((?:cùng\\s+thể\\s+loại\\s+)?([^)]+)\\)/i);\n      if (gm) genres = ctx.utils.cleanText(gm[1]);\n    }\n\n    return {\n      title,\n      author,\n      cover: coverSrc ? ctx.utils.resolveUrl(coverSrc, ctx.url) : '',\n      description: desc,\n      status: '',\n      genres,\n    };\n  },\n})",
+  "config": {
+    "pagination_mode": "single_page_ajax",
+    "rate_limit_ms": 1000
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "vi",
+  "description": "vietnamthuquan.eu — Việt Nam Thư Quán (Thư viện Online) novel & literature reader."
+}

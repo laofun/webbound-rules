@@ -1,0 +1,2794 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <title>Việt Nam Thư Quán - Thư viện Online</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google" content="notranslate">
+    <meta name="author" content="Pham huy hung"/>
+    <meta name="copyright" content="Copyright (c) vnthuquan-thuvienonline"/>
+    <link rel="SHORTCUT ICON" href="/images/vnthuquan.ico">
+    <meta name="description" content="Thu vien truyen, tho, Nhac, dien dan">
+    <meta name="viewport" content="width=device-width">
+    <meta name="generator" content="WordPress 4.2.1">
+    <link rel="stylesheet" href="/css/base.css?v=5"/>
+    <link rel="stylesheet" href="/css/danhsach.css?v=8"/>
+    <link rel="stylesheet" href="/css/reader.css?v=4"/>
+    <link rel="stylesheet" href="/css/truyen-theme.css?v=1"/>
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('vntq_dark_mode');
+                if (t === 'true') document.documentElement.setAttribute('data-theme', 'dark');
+            } catch (e) { }
+        })();
+    </script>
+    <style>
+    [data-theme="dark"] #content-wrapper {
+        --tr-bg-panel: #241c14;
+        --tr-bg-card: #2f2519;
+        --tr-bg-input: #1c150e;
+        --tr-border: #4a3c2c;
+        --tr-text-main: #e6d8c4;
+        --tr-text-muted: #b3a48f;
+        --tr-accent: #d1a25c;
+        --tr-accent-strong: #e8c084;
+
+        --vntq-heading: #e8c084;
+        --vntq-hover-accent: #d1a25c;
+        --vntq-text-main: #e6d8c4;
+        --vntq-shadow-accent: transparent;
+    }
+
+    [data-theme="dark"] #thanbai.nentruyen {
+        padding: 0 !important;
+        background-color: transparent !important;
+    }
+
+    [data-theme="dark"] #khungchinh {
+        background: var(--tr-bg-panel) !important;
+        border-radius: 14px;
+        margin: 0;
+        padding: 20px;
+        color: var(--tr-text-main) !important;
+        box-shadow: inset 0 3px 10px rgba(0,0,0,.35);
+    }
+
+    [data-theme="dark"] #khungchinh a {
+        color: var(--tr-accent) !important;
+    }
+
+    [data-theme="dark"] #khungchinh .chuto30,
+    [data-theme="dark"] #khungchinh .chuto40,
+    [data-theme="dark"] #khungchinh .chuto50,
+    [data-theme="dark"] #khungchinh .chutieude {
+        color: var(--tr-accent-strong) !important;
+        text-shadow: none !important;
+    }
+
+    [data-theme="dark"] #khungchinh .truyen_text,
+    [data-theme="dark"] #khungchinh .media {
+        color: var(--tr-text-main) !important;
+    }
+
+    [data-theme="dark"] #khungchinh div.chuhoavn:first-letter {
+        color: var(--tr-accent-strong) !important;
+    }
+
+    /* ===== Trang Tac Gia: tab "Tác Giả"/"Tác Phẩm" dung inline style JS (giong Nhac
+       Si/Ca Si ben Nhac) - "!important" van thang duoc inline style. ===== */
+    [data-theme="dark"] #khungchinh .nav-tabs a {
+        background: var(--tr-bg-card) !important;
+        border-color: var(--tr-border) !important;
+        color: var(--tr-text-main) !important;
+    }
+
+    [data-theme="dark"] #khungchinh #content-tacgia,
+    [data-theme="dark"] #khungchinh .vntq-text-content {
+        color: var(--tr-text-main) !important;
+    }
+
+    /* ===== Nut chon che do Sang/Toi ===== */
+    [data-theme="dark"] .truyen-theme-btn {
+        background: var(--tr-bg-card) !important;
+        border-color: var(--tr-border) !important;
+        color: var(--tr-text-main) !important;
+    }
+
+        [data-theme="dark"] .truyen-theme-btn.truyen-theme-active {
+            background: linear-gradient(135deg, #3d301f, #2f2519) !important;
+            border-color: var(--tr-accent) !important;
+            color: var(--tr-accent) !important;
+        }
+
+    /* ===== Khoi rieng trong sidebar (The loai / Khu vuc / Top ky / Dang doc) ===== */
+    [data-theme="dark"] .hentry.nentruyentrai {
+        background-image: none !important;
+        background-color: var(--tr-bg-card) !important;
+        padding: 12px !important;
+        border-radius: 10px;
+        margin-bottom: 10px !important;
+        color: var(--tr-text-main) !important;
+    }
+
+    [data-theme="dark"] .nentruyentrai .sidebar-title,
+    [data-theme="dark"] .vntq-sidebar-box .sidebar-title {
+        color: var(--tr-accent) !important;
+        border-bottom-color: var(--tr-border) !important;
+    }
+
+    /* .button_theloai (span "vien ngoai") la khoi mang background/box-shadow/border-radius
+       THAT SU (xem base.css) - the <a> ben trong chi la chu "display:inline", KHONG co
+       padding/radius rieng. Ban dau chi doi mau <a>, nen span van giu nguyen mau XAM GAN
+       TRANG cua che do Sang (#d1d4ca, chua bao gio duoc ghi de) - tao ra 2 lop mau chong
+       nhau (khoi trang ben ngoai + chu nen toi ben trong) rat xau tren nen toi, dung y
+       nguoi dung phan anh ("quá xấu luôn"). Sua dung: doi mau NEN + DO BONG cua chinh
+       span (khoi that su), con <a> chi con la chu mau, khong con nen rieng - giong dung
+       cau truc cua che do Sang (span la khoi, a chi la chu mau tren khoi do). */
+    [data-theme="dark"] .button_theloai {
+        background: var(--tr-bg-card) !important;
+        box-shadow: 0 3px 8px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.05) !important;
+    }
+
+    [data-theme="dark"] .button_theloai a {
+        background: transparent !important;
+        color: var(--tr-accent) !important;
+    }
+
+    [data-theme="dark"] .button_theloai:hover {
+        background: var(--tr-accent) !important;
+        box-shadow: 0 3px 10px rgba(0,0,0,.6) !important;
+    }
+
+    [data-theme="dark"] .button_theloai:hover a {
+        color: #241c14 !important;
+    }
+
+    /* ===== Khoi "Đang Đọc" (ViewComponent TruyenDangDoc, tu co style rieng
+       background trang cung trong file .cshtml cua no) ===== */
+    [data-theme="dark"] .vntq-sidebar-box {
+        background: var(--tr-bg-card) !important;
+        border-color: var(--tr-border) !important;
+    }
+
+    [data-theme="dark"] .vntq-sidebar-box h3 {
+        color: var(--tr-accent) !important;
+        border-bottom-color: var(--tr-accent) !important;
+    }
+
+    [data-theme="dark"] .vntq-sidebar-item a {
+        color: var(--tr-accent) !important;
+    }
+
+    [data-theme="dark"] .vntq-sidebar-chap {
+        color: var(--tr-text-muted) !important;
+    }
+
+    /* ===== The truyen trong danh sach chinh (markup kieu bootstrap cu) ===== */
+    [data-theme="dark"] #khungchinh .label-title,
+    [data-theme="dark"] #khungchinh .totalchuong {
+        color: var(--tr-text-muted) !important;
+    }
+
+    [data-theme="dark"] #khungchinh .truyen-title a,
+    [data-theme="dark"] #khungchinh .viethoachu a {
+        color: var(--tr-accent-strong) !important;
+    }
+
+    [data-theme="dark"] #khungchinh .author a {
+        color: var(--tr-accent) !important;
+    }
+
+    /* ===== Form nhap lieu tra cuu (neu co) ===== */
+    [data-theme="dark"] #khungchinh input[type=text],
+    [data-theme="dark"] #khungchinh input[type=search],
+    [data-theme="dark"] #khungchinh select,
+    [data-theme="dark"] #khungchinh textarea {
+        background: var(--tr-bg-input) !important;
+        border-color: var(--tr-border) !important;
+        color: var(--tr-text-main) !important;
+    }
+
+    /* ===== Phan trang (dung chung voi cac khu vuc khac) ===== */
+    [data-theme="dark"] .page-btn,
+    [data-theme="dark"] .page-number,
+    [data-theme="dark"] .goto-btn {
+        background: var(--tr-bg-card) !important;
+        color: var(--tr-accent) !important;
+        border-color: var(--tr-border) !important;
+    }
+
+    [data-theme="dark"] .current-page {
+        background: var(--tr-accent) !important;
+        color: #241c14 !important;
+        border-color: var(--tr-accent) !important;
+    }
+
+    [data-theme="dark"] .page-btn-disabled {
+        background: var(--tr-bg-panel) !important;
+        color: var(--tr-text-muted) !important;
+        border-color: var(--tr-border) !important;
+    }
+
+    [data-theme="dark"] .page-input {
+        background: var(--tr-bg-input) !important;
+        color: var(--tr-text-main) !important;
+        border-color: var(--tr-border) !important;
+    }
+</style>
+
+    <script src="/js/jquery-3.7.1.min.js"></script>
+    <script src="/js/xThuvien.js"></script>
+    <script src="/js/xVntq.js"></script>
+    <script src="/js/scrolltopcontrol.js"></script>
+    <script src="/js/vntq-author-carousel.js" defer></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E546XNQHGX"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-E546XNQHGX');
+</script>
+
+</head>
+
+<body class="jquery">
+
+
+    <div id="container">
+
+
+            <header>
+	<section id="global-nav">
+		<nav>
+				<ul class="links l_tinynav1">
+                <li><a href="/">Home</a></li>
+					<li class="dropdown"><a href="#">Menu Thư viện</a>
+						<ul>
+							
+<li class="submenu"><a href="/truyen">Trang Truyện</a></li>
+<li class="submenu"><a href="/Truyen/Theloai/review-sach-hay">Review Sách</a></li>
+<li class="submenu"><a href="/tho">Trang Thơ</a></li>
+<li class="submenu"><a href="/nhac">Nhạc Online</a></li>
+<li class="submenu"><a href="/phim">Phim Online</a></li>
+<li class="submenu"><a href="/anh">Tranh Ảnh</a></li>
+<li class="submenu"><a href="/amthuc">Ẩm Thực</a></li>
+<li class="submenu"><a href="/chuviet">Tiếng Việt</a></li>
+<li><a href="/DienDan">Diễn Đàn</a></li>
+
+
+						</ul>
+					</li>
+					
+                    
+				</ul>
+			</div>
+		</nav>
+	</section>
+</header>
+
+
+   <div id="logo-events" class="constrain clearfix">
+    <div class="site-logo">
+        <a href="/" title="Thư Viện Online">
+            <img src="/images/TIEUDE2af.png" alt="Viet Nam Thu Quan" />
+        </a>
+    </div>
+
+    <nav class="top-menu">
+        <ul>
+            <li><a href="/tro-giup" title="Ủng hộ website"><span class="vntq-navicon">❤️</span><span class="vntq-navtext">Ủng hộ</span></a></li>
+                <li><a href="/DienDan/TaiKhoan/DangNhap?returnUrl=%2FTacPham%2Ftran-van-truong-sinh-31200%2Fchuong-2"><span class="vntq-navicon">🔑</span><span class="vntq-navtext">Đăng nhập</span></a></li>
+    <li><a href="/DienDan/TaiKhoan/DangKy?returnUrl=%2FTacPham%2Ftran-van-truong-sinh-31200%2Fchuong-2"><span class="vntq-navicon">📝</span><span class="vntq-navtext">Đăng ký</span></a></li>
+
+
+        </ul>
+    </nav>
+</div>
+<style>
+    /* Truoc day co 1 khoi @media(max-width:768px){ #logo-events{...} .site-logo{...} }
+       o day ep lai vi tri logo tren man hinh nho - chinh la nguyen nhan gay 2 loi nguoi
+       dung bao 2026-08-04 (logo hở, thông tin member đè lên nhau): khoi nay CHONG voi 1
+       ban sao khac trong reader.css, 2 nguon khac nhau ap dung KHONG DONG BO tren cung 1
+       trang. Da GO BO han - dung chung 1 nguon duy nhat la base.css (giong het trang
+       chinh Views/Shared/_Header.cshtml, noi CHUA TUNG co loi nay vi khong co override
+       rieng). */
+    /* Khung chứa tổng thể dạng hộp chìm xuống nền */
+
+    .vntq-reader-wrapper {
+        --vntq-bg-light: #fbf7ee;
+        --vntq-text-light: #111111;
+        --vntq-shadow-light: rgba(0, 0, 0, 0.12) 0px 12px 28px, rgba(0, 0, 0, 0.06) 0px 4px 10px;
+        /* ĐÃ SỬA: Hạ hẳn tông màu nền chế độ tối xuống để sâu hơn nền xám bên ngoài */
+        --vntq-bg-dark: #121212;
+        --vntq-text-dark: #cbd5e1;
+        /* CHÌA KHÓA: Sử dụng đổ bóng INSET (hướng vào trong) tạo độ hút sâu như lòng hộp lún xuống */
+        --vntq-shadow-dark: inset 0px 8px 24px rgba(0, 0, 0, 0.9), inset 0px 2px 8px rgba(0, 0, 0, 0.95);
+        background-color: var(--vntq-bg-light);
+        color: var(--vntq-text-light);
+        box-shadow: var(--vntq-shadow-light);
+        max-width: 97%;
+        margin: 36px auto;
+        padding: 18px;
+        border-radius: 12px;
+        overflow-x: hidden;
+        border: 1px solid transparent; /* Khai báo viền mặc định để xử lý hiệu ứng mượt */
+        transition: background-color 0.3s, color 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+
+        /* Khi kích hoạt chế độ tối: Hộp sẽ lún sâu xuống */
+        .vntq-reader-wrapper.vntq-dark-mode {
+            background-color: var(--vntq-bg-dark);
+            color: var(--vntq-text-dark);
+            box-shadow: var(--vntq-shadow-dark);
+            border-color: #050505; /* Đường viền đen sắc cạnh tạo vết cắt sâu xuống bề mặt nền */
+        }
+
+    /* Điều chỉnh lại màu chữ các thông số thống kê trong chế độ tối để hài hòa độ chìm */
+    .vntq-dark-mode .vntq-stats-container {
+        color: #8892b0;
+    }
+
+    .vntq-dark-mode .vntq-nav-top {
+        border-bottom-color: #222222;
+    }
+
+    .vntq-dark-mode .vntq-nav-bottom {
+        border-top-color: #222222;
+    }
+
+    /* Khối cấu trúc Tên tác giả trên tên truyện */
+    /* Định dạng Tên tác giả ở chế độ Sáng */
+    .vntq-author-top {
+        font-family: tacgiavn, Arial, sans-serif !important;
+        font-size: 1.8em !important;
+        line-height: 1.3 !important;
+        color: #666633 !important;
+        text-transform: capitalize !important;
+        text-shadow: 4px 4px 4px #c0c2a2 !important;
+        text-align: center !important;
+        margin-bottom: 10px !important;
+        position: relative !important;
+        z-index: 3 !important;
+    }
+
+        /* Bắt buộc thẻ link <a> kế thừa màu của khối cha, không bị màu xanh mặc định đè lên */
+        .vntq-author-top a {
+            color: inherit !important;
+            text-decoration: none;
+        }
+
+            .vntq-author-top a:hover {
+                color: #9d6101 !important; /* Đổi màu nâu cam khi rê chuột */
+            }
+
+    /* Định dạng Tên tác giả ở chế độ Tối */
+    .vntq-dark-mode .vntq-author-top {
+        color: #d8d8b2 !important; /* Chuyển sang màu xám vàng nhạt để nổi rõ trên nền đen */
+        text-shadow: 3px 3px 4px #000000 !important; /* Đổi bóng đổ sang màu đen */
+    }
+
+        .vntq-dark-mode .vntq-author-top a:hover {
+            color: #ffca28 !important; /* Đổi màu vàng sáng khi rê chuột ở chế độ tối */
+        }
+
+    /* Định dạng tên truyện ở chế độ Sáng */
+    .vntq-reader-title {
+        font-family: tuadevn, "Times New Roman", serif !important;
+        font-size: 40px !important;
+        color: #004444 !important; /* Mã #044 */
+        padding: 4px 4px 6px 4px !important;
+        margin: 3px 4px 8px 0 !important;
+        line-height: 48px !important;
+        text-shadow: 4px 4px 4px #c0c2a2 !important;
+        text-align: center !important;
+        position: relative !important;
+        z-index: 3 !important;
+    }
+
+    /* Định dạng tên truyện ở chế độ Tối */
+    .vntq-dark-mode .vntq-reader-title {
+        color: #80deea !important; /* Đổi sang xanh ngọc nhạt, dịu mắt không bị chói */
+        text-shadow: 3px 3px 4px #000000 !important; /* Đổi bóng đổ sang đen để chữ nổi rõ trên nền tối */
+    }
+    /* Định dạng Tựa hồi ở chế độ Sáng */
+    .tuahoi_a {
+        font-family: music, "Times New Roman", serif !important;
+        color: #6c6c50 !important;
+        font-size: 1.8em !important;
+        line-height: 1.8 !important;
+        text-align: center !important;
+        text-indent: 0 !important;
+        text-shadow: 4px 4px 4px #9f9f90 !important;
+        font-weight: bold !important;
+        text-transform: capitalize !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* Định dạng Tựa hồi ở chế độ Tối */
+    .vntq-dark-mode .tuahoi_a {
+        color: #c4c4a3 !important; /* Màu xanh xám nhạt sáng hơn để nổi trên nền đen */
+        text-shadow: 3px 3px 4px #000000 !important; /* Đổi bóng đổ sang đen */
+    }
+
+    .vntq-reader-subtitle {
+        font-family: "Times New Roman", Times, serif;
+        font-size: 20px;
+        font-style: italic;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 15px;
+        opacity: 0.8;
+    }
+
+    /* Ảnh bìa lớn khổ 80% */
+    .vntq-large-cover-box {
+        text-align: center;
+        width: 100%;
+        margin: 0 0 25px 0;
+    }
+
+        .vntq-large-cover-box img {
+            width: 80%;
+            max-width: 640px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        }
+
+    /* Khối hiển thị thông số và xếp hạng lai */
+    .vntq-stats-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        margin-bottom: 25px;
+        color: #555;
+    }
+
+    .vntq-dark-mode .vntq-stats-container {
+        color: #aaa;
+    }
+
+    .vntq-stats-info span {
+        margin: 0 5px;
+        font-weight: bold;
+    }
+
+    .vntq-rating-block {
+        position: relative;
+        display: inline-block;
+        font-size: 28px;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    .vntq-rating-static {
+        color: #ddd;
+        position: relative;
+        display: inline-block;
+        transition: opacity 0.2s;
+    }
+
+    .vntq-stars-inner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        color: #ffca28;
+        width: var(--percent);
+    }
+
+    .vntq-rating-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        z-index: 2;
+        transition: opacity 0.2s;
+    }
+
+    .vntq-rating-block:hover .vntq-rating-input {
+        opacity: 1;
+    }
+
+    .vntq-rating-block:hover .vntq-rating-static {
+        opacity: 0.1;
+    }
+
+    .vntq-rating-stars-voter {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: center;
+    }
+
+        .vntq-rating-stars-voter input {
+            display: none;
+        }
+
+        .vntq-rating-stars-voter label {
+            color: #999;
+            padding: 0 2px;
+            transition: color 0.1s;
+        }
+
+            .vntq-rating-stars-voter label:hover,
+            .vntq-rating-stars-voter label:hover ~ label,
+            .vntq-rating-stars-voter input:checked ~ label {
+                color: #ffca28 !important;
+            }
+
+    /* Thanh điều hướng và nút tiến lùi */
+    .vntq-nav-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        margin: 20px 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .vntq-nav-top {
+        border-bottom: 1px solid #cccccc;
+    }
+
+    .vntq-nav-bottom {
+        border-top: 1px solid #cccccc;
+        margin-top: 40px;
+    }
+
+    .vntq-dark-mode .vntq-nav-top {
+        border-bottom-color: #444;
+    }
+
+    .vntq-dark-mode .vntq-nav-bottom {
+        border-top-color: #444;
+    }
+
+    .vntq-btn-nav {
+        display: inline-block;
+        text-decoration: none;
+        padding: 6px 16px;
+        background-color: #e9ecef;
+        color: #495057 !important;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        font-size: 15px;
+    }
+
+        .vntq-btn-nav:hover {
+            background-color: #dee2e6;
+            color: #212529 !important;
+        }
+
+    .vntq-btn-hidden {
+        visibility: hidden;
+        padding: 6px 16px;
+    }
+
+    .vntq-dark-mode .vntq-btn-nav {
+        background-color: #333;
+        color: #ccc !important;
+        border-color: #555;
+    }
+
+        .vntq-dark-mode .vntq-btn-nav:hover {
+            background-color: #444;
+            color: #fff !important;
+        }
+
+    .vntq-select-chuong {
+        max-width: 280px !important;
+        text-overflow: ellipsis; /* Tạo dấu 3 chấm nếu tên tựa hồi quá dài */
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .vntq-dark-mode .vntq-select-chuong, .vntq-dark-mode .vntq-input-number, .vntq-dark-mode .vntq-btn-submit {
+        background-color: #2a2a2a;
+        color: #ccc;
+        border-color: #555;
+    }
+
+    .vntq-input-number {
+        width: 60px;
+        text-align: center;
+        padding: 5px;
+    }
+
+    .vntq-btn-submit {
+        background-color: #007bff;
+        color: #ffffff;
+        border: none;
+        cursor: pointer;
+        padding: 5px 12px;
+    }
+
+    .vntq-jump-box {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-family: Arial, sans-serif;
+    }
+
+    /* Định dạng nội dung văn bản ở chế độ Sáng */
+    #vntqTextContent, .vntq-text-content, .truyen_text {
+        font-family: Bookerly, "Times New Roman", serif !important;
+        color: #666633 !important;
+        line-height: 150% !important;
+        text-align: justify !important;
+        padding-top: 10px !important;
+    }
+
+        /* Ép màu cho cả các thẻ p bên trong để không bị CSS khác ghi đè */
+        #vntqTextContent p, .vntq-text-content p, .truyen_text p {
+            color: inherit !important;
+        }
+
+    /* Định dạng nội dung văn bản ở chế độ Tối */
+    .vntq-dark-mode #vntqTextContent,
+    .vntq-dark-mode .vntq-text-content,
+    .vntq-dark-mode .truyen_text {
+        color: #b3b3a1 !important; /* Xám vàng nhạt, dịu mắt, chống mỏi mắt ban đêm */
+    }
+    /* --- CHẾ ĐỘ SÁNG --- */
+
+    /* Thay vì dùng 2em (phụ thuộc vào cha), ép cứng kích thước tiêu đề bằng px */
+    .vntq-text-content h1 {
+        color: #58584a;
+        font-family: tuadevn, serif !important;
+        font-size: 32px !important; /* Đổi từ em sang px để không bị phóng to quá cỡ */
+        font-weight: normal !important;
+        text-align: center !important;
+        text-shadow: 4px 4px 4px #c0c2a2 !important;
+        line-height: 1.5 !important;
+        margin-bottom: 20px !important;
+    }
+
+        /* Chữ hoa đầu dòng ngay sau h1 */
+        .vntq-text-content h1 + p:first-letter {
+            font-family: chuhoa, serif !important;
+            color: #004444 !important;
+            font-size: 400% !important;
+            margin: -0.1em 0.1em -0.1em 0 !important; /* Điều chỉnh lại lề margin để khớp với Bookerly */
+            font-weight: normal !important;
+            float: left !important;
+            line-height: 1 !important;
+        }
+
+    /* --- CHẾ ĐỘ TỐI --- */
+
+    /* Cấu trúc chuẩn khi vntq-dark-mode bọc ngoài vntq-text-content */
+    .vntq-dark-mode .vntq-text-content h1 {
+        color: #cbd5e1 !important;
+        text-shadow: 3px 3px 4px #000000 !important;
+    }
+
+        .vntq-dark-mode .vntq-text-content h1 + p:first-letter {
+            color: #80deea !important;
+        }
+
+    /* Cấu trúc dự phòng nếu class vntq-dark-mode bị dính chặt vào thẻ nội dung */
+    .vntq-text-content.vntq-dark-mode h1 {
+        color: #cbd5e1 !important;
+        text-shadow: 3px 3px 4px #000000 !important;
+    }
+
+        .vntq-text-content.vntq-dark-mode h1 + p:first-letter {
+            color: #80deea !important;
+        }
+
+
+    /* =========================================================
+           CHẾ ĐỘ SÁNG (LIGHT MODE) - H2, H3, H4, H6
+           ========================================================= */
+
+    .vntq-text-content h6 {
+        color: #58584a;
+        font-family: tuadevn, serif !important;
+        font-size: 36px !important; /* Đổi từ 2.3em sang px */
+        font-weight: normal !important;
+        text-align: center !important;
+        margin-bottom: 15px !important;
+    }
+
+    .vntq-text-content h3 {
+        color: #004444;
+        font-family: tacgiavn, sans-serif !important;
+        font-size: 34px !important; /* Đổi từ 2.3em sang px */
+        line-height: 1.3 !important;
+        text-align: center !important;
+        margin-bottom: 15px !important;
+    }
+
+    .vntq-text-content h2 {
+        color: #a6a364;
+        font-family: tuahoi2, serif !important;
+        font-size: 28px !important; /* Ép cứng kích thước px */
+        margin: 0.5em 0 15px 0 !important;
+        padding-bottom: 10px !important;
+        background: url(/images/gachngangtrangchinhH2.png) no-repeat left bottom;
+        clear: both;
+    }
+
+    .vntq-text-content h4 {
+        background: url(/images/gachgiua.png) no-repeat center;
+        margin: 24px auto;
+        width: 100%;
+        height: 6px;
+        clear: both;
+    }
+
+        /* Chữ hoa đầu dòng (Dropcap) sau H2, H3, H4 */
+        .vntq-text-content h2 + p:first-letter,
+        .vntq-text-content h3 + p:first-letter,
+        .vntq-text-content h4 + p:first-letter {
+            font-family: chuhoa, serif !important;
+            color: #004444 !important;
+            font-size: 400% !important;
+            margin: -0.1em 0.1em -0.1em 0 !important;
+            font-weight: normal !important;
+            float: left !important;
+            line-height: 1 !important;
+        }
+
+    /* =========================================================
+       TẠO CHỮ TO ĐẦU DÒNG (CHẶN TUYỆT ĐỐI NẾU ĐÃ CÓ ẢNH ĐỒ HỌA)
+       ========================================================= */
+    .vntq-text-content:not(.has-graphic-dropcap) p:first-of-type:first-letter,
+    .vntq-text-content:not(.has-graphic-dropcap) .chuhoavn p:first-of-type:first-letter {
+        font-family: chuhoa, serif !important;
+        color: #004444 !important;
+        font-size: 400% !important;
+        margin: -0.1em 0.1em -0.1em 0 !important;
+        font-weight: normal !important;
+        float: left !important;
+        line-height: 1 !important;
+    }
+
+    /* Khử thụt lề cho đoạn văn đầu tiên */
+    .vntq-text-content p:first-of-type,
+    .chuhoavn p:first-of-type {
+        text-indent: 0 !important;
+    }
+
+    /* =========================================================
+       MÀU CHỮ TO Ở CHẾ ĐỘ TỐI (CHẶN NẾU CÓ ẢNH)
+       ========================================================= */
+    .vntq-dark-mode .vntq-text-content:not(.has-graphic-dropcap) p:first-of-type:first-letter,
+    .vntq-text-content.vntq-dark-mode:not(.has-graphic-dropcap) p:first-of-type:first-letter {
+        color: #80deea !important;
+    }
+
+
+    /* =========================================================
+           CHẾ ĐỘ TỐI (DARK MODE) - CẤU TRÚC CHUẨN (CHA - CON)
+           ========================================================= */
+
+    .vntq-dark-mode .vntq-text-content h6 {
+        color: #cbd5e1 !important;
+    }
+
+    .vntq-dark-mode .vntq-text-content h3 {
+        color: #80deea !important; /* Xanh ngọc nhạt dịu mắt */
+    }
+
+    .vntq-dark-mode .vntq-text-content h2 {
+        color: #c2c08d !important;
+        text-shadow: 2px 2px 3px #000000 !important;
+    }
+
+        .vntq-dark-mode .vntq-text-content h2 + p:first-letter,
+        .vntq-dark-mode .vntq-text-content h3 + p:first-letter,
+        .vntq-dark-mode .vntq-text-content h4 + p:first-letter {
+            color: #80deea !important;
+        }
+
+
+    /* =========================================================
+           CHẾ ĐỘ TỐI (DARK MODE) - CẤU TRÚC DỰ PHÒNG (TRÊN CÙNG THẺ DỰ ÁN)
+           ========================================================= */
+
+    .vntq-text-content.vntq-dark-mode h6 {
+        color: #cbd5e1 !important;
+    }
+
+    .vntq-text-content.vntq-dark-mode h3 {
+        color: #80deea !important;
+    }
+
+    .vntq-text-content.vntq-dark-mode h2 {
+        color: #c2c08d !important;
+        text-shadow: 2px 2px 3px #000000 !important;
+    }
+
+        .vntq-text-content.vntq-dark-mode h2 + p:first-letter,
+        .vntq-text-content.vntq-dark-mode h3 + p:first-letter,
+        .vntq-text-content.vntq-dark-mode h4 + p:first-letter {
+            color: #80deea !important;
+        }
+
+    /* =========================================================
+       CHẾ ĐỘ SÁNG (LIGHT MODE)
+       (Màu văn bản thường mặc định: #666633)
+       ========================================================= */
+    .vntq-text-content b {
+        color: #9c4200 !important; /* Màu nâu hổ phách đậm để làm nổi bật khối chữ đậm */
+    }
+
+    .vntq-text-content i {
+        color: #005555 !important; /* Màu xanh teal đậm để phân biệt khối chữ nghiêng */
+    }
+
+        /* Trường hợp chữ vừa đậm vừa nghiêng (bọc lẫn nhau) */
+        .vntq-text-content b i,
+        .vntq-text-content i b {
+            color: #b32400 !important; /* Tông đỏ đất để nhấn mạnh đặc biệt */
+        }
+
+
+    /* =========================================================
+       CHẾ ĐỘ TỐI (DARK MODE) - CẤU TRÚC CHUẨN (CHA - CON)
+       (Màu văn bản thường mặc định: #b3b3a1)
+       ========================================================= */
+    .vntq-dark-mode .vntq-text-content b {
+        color: #e0af68 !important; /* Màu vàng cam ấm, dịu mắt và nổi bật trên nền tối */
+    }
+
+    .vntq-dark-mode .vntq-text-content i {
+        color: #80deea !important; /* Màu xanh ngọc nhạt, đồng bộ với màu tiêu đề tối */
+    }
+
+        .vntq-dark-mode .vntq-text-content b i,
+        .vntq-dark-mode .vntq-text-content i b {
+            color: #ff9e80 !important; /* Màu cam san hô dịu cho nhấn mạnh đặc biệt */
+        }
+
+
+    /* =========================================================
+       CHẾ ĐỘ TỐI (DARK MODE) - CẤU TRÚC DỰ PHÒNG (TRÊN CÙNG THẺ)
+       ========================================================= */
+    .vntq-text-content.vntq-dark-mode b {
+        color: #e0af68 !important;
+    }
+
+    .vntq-text-content.vntq-dark-mode i {
+        color: #80deea !important;
+    }
+
+        .vntq-text-content.vntq-dark-mode b i,
+        .vntq-text-content.vntq-dark-mode i b {
+            color: #ff9e80 !important;
+        }
+
+    /* Khối trượt tác phẩm cùng tác giả */
+    .vntq-author-works {
+        margin-top: 50px;
+        padding-top: 25px;
+        border-top: 2px solid #ddd;
+        position: relative;
+    }
+
+    .vntq-dark-mode .vntq-author-works {
+        border-top-color: #444;
+    }
+
+    .vntq-author-works h3 {
+        font-size: 20px;
+        margin-bottom: 15px;
+        font-family: Arial, sans-serif;
+    }
+
+        .vntq-author-works h3 a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+    .vntq-dark-mode .vntq-author-works h3 a {
+        color: #64b5f6;
+    }
+
+    .vntq-author-works h3 a:hover {
+        text-decoration: underline;
+    }
+
+    .vntq-carousel-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .vntq-carousel-track {
+        display: flex;
+        gap: 15px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        width: 100%;
+        padding: 10px 0;
+    }
+
+        .vntq-carousel-track::-webkit-scrollbar {
+            display: none;
+        }
+
+    .vntq-work-item {
+        flex: 0 0 calc(20% - 12px);
+        text-align: center;
+        text-decoration: none;
+        color: inherit;
+        font-family: Arial, sans-serif;
+    }
+
+        .vntq-work-item img {
+            width: 100%;
+            aspect-ratio: 2/3;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            margin-bottom: 8px;
+            transition: transform 0.2s;
+        }
+
+        .vntq-work-item:hover img {
+            transform: scale(1.03);
+        }
+
+        .vntq-work-item span {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 1.3;
+        }
+
+        .vntq-work-item:hover span {
+            color: #007bff;
+        }
+
+    .vntq-carousel-btn {
+        position: absolute;
+        z-index: 10;
+        background: rgba(0,0,0,0.4);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .vntq-btn-prev {
+        left: -15px;
+    }
+
+    .vntq-btn-next {
+        right: -15px;
+    }
+
+    /* CẤU HÌNH TỰ ĐỘNG CO GIÃN THÔNG MINH CHO THIẾT BỊ DI ĐỘNG */
+    @media (max-width: 768px) {
+        /* Tối ưu khung chứa wrapper */
+        .vntq-reader-wrapper {
+            padding: 9px;
+            max-width: 100%;
+            margin: 15px auto;
+        }
+        /* Thu nhỏ ảnh bìa */
+        .vntq-large-cover-box img {
+            width: 95%;
+        }
+        /* ==============================================
+                   BỔ SUNG: KHỬ LỖI TRANH CHẤP DIỆN TÍCH THANH ĐIỀU HƯỚNG
+                   ============================================== */
+        .vntq-nav-bar {
+            gap: 4px;
+            padding: 8px 0;
+            margin: 15px 0;
+        }
+        /* Thu nhỏ nút Tiến / Lùi để vừa vặn ngón tay mà không thô */
+        .vntq-btn-nav {
+            padding: 5px 10px;
+            font-size: 13px;
+            border-radius: 3px;
+        }
+
+        .vntq-btn-hidden {
+            padding: 5px 10px;
+        }
+        /* Thu hẹp Menu thả chọn chương */
+        .vntq-select-chuong {
+            padding: 5px 8px;
+            font-size: 13px;
+            min-width: 100px;
+            max-width: 120px;
+        }
+        /* Tối ưu hóa ô nhảy chương ở chân trang */
+        .vntq-jump-box {
+            gap: 4px;
+        }
+            /* Ẩn chữ "Chương:" trên mobile để lấy không gian cho 2 nút Tiến Lùi không bị đẩy tràn viền */
+            .vntq-jump-box span {
+                display: none;
+            }
+
+        .vntq-input-number {
+            width: 45px;
+            padding: 4px;
+            font-size: 13px;
+        }
+
+        .vntq-btn-submit {
+            padding: 4px 8px;
+            font-size: 13px;
+        }
+        /* Thu nhỏ danh sách tác phẩm chạy ngang */
+        .vntq-work-item {
+            flex: 0 0 calc(33.333% - 10px);
+        }
+
+        .vntq-btn-prev {
+            left: 0;
+        }
+
+        .vntq-btn-next {
+            right: 0;
+        }
+    }
+    /* =========================================================
+           CHẾ ĐỘ SÁNG (LIGHT MODE)
+           ========================================================= */
+    .chuongso_a {
+        font-family: tuahoi2, "Times New Roman", serif !important;
+        color: #6c6c50 !important;
+        font-size: 1.8em !important;
+        text-align: center !important;
+        text-indent: 0 !important;
+        text-shadow: 4px 4px 4px #c0c2a2 !important;
+        line-height: 1.5 !important;
+        margin-bottom: 10px !important;
+    }
+
+    /* =========================================================
+           CHẾ ĐỘ TỐI (DARK MODE)
+           ========================================================= */
+    /* Cấu trúc chuẩn khi vntq-dark-mode bọc ngoài wrapper */
+    .vntq-dark-mode .chuongso_a {
+        color: #c2c08d !important; /* Nâng sáng tông màu vàng xám gốc để đọc rõ trên nền tối */
+        text-shadow: 3px 3px 4px #000000 !important; /* Đổi bóng đổ sang màu đen để tạo độ nổi khối */
+    }
+
+    /* Cấu trúc dự phòng nếu class tối nằm trên cùng thẻ nội dung */
+    .vntq-text-content.vntq-dark-mode .chuongso_a {
+        color: #c2c08d !important;
+        text-shadow: 3px 3px 4px #000000 !important;
+    }
+    /* Thêm một breakpoint nhỏ hơn cho điện thoại màn hình hẹp hẳn (< 480px) */
+    @media (max-width: 480px) {
+        .vntq-reader-title {
+            font-size: 26px;
+        }
+
+        .vntq-text-content {
+            font-size: 19px;
+        }
+        /* Hạ bớt 1 size chữ trên đt nhỏ để cân đối tỷ lệ */
+        .vntq-work-item {
+            flex: 0 0 calc(50% - 8px);
+        }
+    }
+
+    /* CSS cho các hàng ký tự đặc biệt (***, ---, △△△) */
+    .vntq-separator {
+        text-align: center !important;
+        text-indent: 0 !important;
+        letter-spacing: 5px; /* Giãn các ký tự ra cho thoáng */
+        color: #888;
+        margin: 30px 0 !important;
+        font-weight: bold;
+    }
+
+    /* Đảm bảo chế độ tối hàng phân cách không bị chói */
+    .vntq-dark-mode .vntq-separator {
+        color: #555;
+    }
+
+    /* CSS canh giữa và hiển thị đẹp cho thẻ Img trong truyện */
+    .vntq-img-center {
+        text-align: center !important;
+        margin: 25px 0;
+    }
+
+        .vntq-img-center img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* Tạo viền đổ bóng nhẹ để ảnh nổi bật trên nền giấy */
+        }
+
+    .vntq-dark-mode .vntq-img-center img {
+        box-shadow: 0 4px 10px rgba(255,255,255,0.05); /* Đổ bóng sáng nhẹ trong chế độ tối */
+    }
+
+    .vntq-toolbar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px; /* Thay đổi số này để tăng giảm khoảng cách giữa 3 nút */
+    }
+    /* Khối lịch sử đọc dở dang dạng danh sách chữ */
+    .vntq-reading-history {
+        margin-top: 40px;
+        padding-top: 25px;
+        border-top: 2px solid #ddd;
+    }
+
+    .vntq-dark-mode .vntq-reading-history {
+        border-top-color: #444;
+    }
+
+    .vntq-reading-history h3 {
+        font-size: 20px;
+        margin-bottom: 15px;
+        font-family: Arial, sans-serif;
+    }
+
+    .vntq-history-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 5px 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .vntq-history-item-text {
+        font-size: 16px;
+    }
+
+        .vntq-history-item-text a {
+            text-decoration: none;
+            color: #0056b3;
+            font-weight: bold;
+        }
+
+    .vntq-dark-mode .vntq-history-item-text a {
+        color: #64b5f6;
+    }
+
+    .vntq-history-item-text a:hover {
+        text-decoration: underline;
+    }
+
+    .vntq-history-chap {
+        font-weight: normal;
+        font-style: italic;
+        color: #666;
+        margin-left: 5px;
+    }
+
+    .vntq-dark-mode .vntq-history-chap {
+        color: #aaa;
+    }
+    /* CSS bổ sung hỗ trợ giao diện tối cho phần giới thiệu */
+    .vntq-dark-mode {
+        background-color: #1a1a1a !important;
+        color: #e0e0e0 !important;
+    }
+
+        .vntq-dark-mode .vntq-metadata-header h1 {
+            color: #80deea !important;
+        }
+
+        .vntq-dark-mode .vntq-metadata-header p {
+            color: #aaa !important;
+        }
+
+        .vntq-dark-mode .vntq-intro-box {
+            background-color: #2a2a2a !important;
+            border-left-color: #80deea !important;
+        }
+
+        .vntq-dark-mode .vntq-intro-text {
+            color: #ccc !important;
+        }
+
+        .vntq-dark-mode .vntq-intro-box h3 {
+            color: #80deea !important;
+        }
+
+    
+    @media (max-width: 768px) {
+        .vntq-pdf-viewer-box
+
+    {
+        height: 600px !important;
+    }
+
+    .vntq-title {
+        font-size: 22px !important;
+    }
+
+    }
+
+    /* Chế độ sáng (Mặc định) */
+    blockquote {
+        margin: 0.5em 8px auto;
+        padding: 2px;
+        background: #f3f0e0;
+        border: solid 6px #d8d8ba;
+    }
+
+        blockquote p {
+            margin: 0;
+            padding: 5px 15px 12px;
+            font-style: italic;
+            color: #6c6c50;
+            background: url(/images/bg_blockquote.png);
+            font: normal 1.25em/1.2 "Times New Roman", Times, serif;
+        }
+
+    /* Chế độ tối */
+    .vntq-dark-mode blockquote {
+        background: #2a2a24 !important;
+        border-color: #4a4a3f !important;
+    }
+
+        /* "#content blockquote p" trong base.css (co ID, khong !important) tu dat
+           background-color:#f2f2f2 rieng cho the <p> ben trong - chi doi mau chu +
+           an anh nen la khong du, phai ghi de ca background-color voi specificity
+           cao hon (them "#content") thi moi thang duoc rule co san. */
+        .vntq-dark-mode #content blockquote p,
+        .vntq-dark-mode blockquote p {
+            color: #d1d1c4 !important;
+            background-color: #2a2a24 !important;
+            background-image: none !important; /* Ẩn ảnh nền gốc vì thường ảnh này được thiết kế cho nền sáng */
+            text-shadow: none !important;
+        }
+
+    /* Chỉ áp dụng cho màn hình có chiều rộng từ 768px trở lên (máy tính, máy tính bảng) */
+    @media screen and (min-width: 768px) {
+        #vntqTextContent {
+            padding-left: 10mm;
+            padding-right: 10mm;
+        }
+    }
+</style>
+
+
+
+<nav id="main" class="constrain clearfix">
+		<div class="menu-top-container">
+
+      <ul id="menu-top" class="l_tinynav">
+      <li class="home"><a href="/">Trangchính</a></li>
+      <li class="submenu current"><a href="/truyen">Trang Truyện</a></li>
+      <li class="submenu "><a href="/Truyen/Theloai/review-sach-hay">Review Sách</a></li>
+      <li class="submenu"><a href="/tho">Trang Thơ</a></li>
+      <li class="submenu"><a href="/nhac">Nhạc Online</a></li>
+      <li class="submenu"><a href="/phim">Phim Online</a></li>
+      <li class="submenu"><a href="/anh">Tranh Ảnh</a></li>
+      <li class="submenu"><a href="/amthuc">Ẩm Thực</a></li>
+      <li class="submenu"><a href="/chuviet">Tiếng Việt</a></li>
+      <li class="offers"><a href="/DienDan">Diễn Đàn VNTQ</a></li>
+        </ul>
+    </div>
+    <form id="search-box" class="searchform" autocomplete="off">
+    <fieldset>
+        <input type="text" name="chu" id="chu" placeholder="Tìm kiếm sách hoặc tác giả..." maxlength="100" />
+        <button type="submit">🔍</button>
+    </fieldset>
+
+    <div id="searchSuggestions" class="suggestions-box" style="display: none;">
+    </div>
+</form>
+
+<script>
+    const input = document.getElementById('chu');
+    const form = document.getElementById('search-box');
+    const suggestionsBox = document.getElementById('searchSuggestions');
+
+    // Gợi ý khi gõ
+    input.addEventListener('input', function () {
+        const keyword = input.value.trim();
+        if (keyword.length < 2) {
+            suggestionsBox.style.display = 'none';
+            suggestionsBox.innerHTML = '';
+            return;
+        }
+
+                fetch(`/api/search/suggest?chu=${encodeURIComponent(keyword)}`)
+            .then(res => res.text())
+            .then(html => {
+                suggestionsBox.innerHTML = html;
+                suggestionsBox.style.display = html.trim() ? 'block' : 'none';
+            })
+            .catch(err => {
+                console.error('Lỗi Suggest:', err);
+                suggestionsBox.style.display = 'none';
+            });
+    });
+
+    // Submit tìm kiếm
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const keyword = input.value.trim();
+        if (keyword) {
+            const slug = keyword.replace(/ /g, '-');
+            window.location.href = `/Truyen/TimKiem/${slug}/Trang-1`;
+        }
+    });
+
+    // Ẩn gợi ý khi click ra ngoài
+    document.addEventListener('click', function (e) {
+        if (!form.contains(e.target)) {
+            suggestionsBox.style.display = 'none';
+        }
+    });
+</script>
+
+<div class="vntq-mobile-memberbar">
+    <ul>
+        <li><a href="/tro-giup" title="Ủng hộ website"><span class="vntq-navicon">❤️</span><span class="vntq-navtext">Ủng hộ</span></a></li>
+            <li><a href="/DienDan/TaiKhoan/DangNhap?returnUrl=%2FTacPham%2Ftran-van-truong-sinh-31200%2Fchuong-2"><span class="vntq-navicon">🔑</span><span class="vntq-navtext">Đăng nhập</span></a></li>
+    <li><a href="/DienDan/TaiKhoan/DangKy?returnUrl=%2FTacPham%2Ftran-van-truong-sinh-31200%2Fchuong-2"><span class="vntq-navicon">📝</span><span class="vntq-navtext">Đăng ký</span></a></li>
+
+    </ul>
+</div>
+
+</nav>
+
+
+
+
+
+        <div id="content-wrapper" class="clearfix row">
+            
+
+<div class="vntq-reader-wrapper" id="vntqReaderBox">
+
+
+    <div class="vntq-author-top">
+        <a href="/Truyen/TacGia/quan-hu-9157">Quan Hư</a>
+    </div>
+    <h1 class="vntq-reader-title">Trận Vấn Trường Sinh</h1>
+
+    <div class="vntq-stats-container">
+        <div class="vntq-stats-info">
+            Lượt đọc: <span id="lblSoLanDoc">799661</span> |
+            <span id="lblSoNguoi">86</span> Đánh giá: <span id="lblTrungBinhSao">9,2</span>/10 Sao
+        </div>
+
+        <div class="vntq-rating-block" id="vntqRatingBlock" title="Rê chuột để chấm điểm">
+            <div class="vntq-rating-static" id="vntqRatingStatic" style="--percent: 92%">
+                <span class="vntq-stars-outer">
+                    &#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;
+                    <div class="vntq-stars-inner">
+                        &#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;&#9733;
+                    </div>
+                </span>
+            </div>
+
+            <div class="vntq-rating-input" id="vntqRatingInput">
+                <div class="vntq-rating-stars-voter" id="vntqRatingArea">
+                        <input type="radio" id="star-10" name="vntq_score" value="10" />
+                        <label for="star-10" onclick="submitRating(10)" title="10 Sao">&#9733;</label>
+                        <input type="radio" id="star-9" name="vntq_score" value="9" />
+                        <label for="star-9" onclick="submitRating(9)" title="9 Sao">&#9733;</label>
+                        <input type="radio" id="star-8" name="vntq_score" value="8" />
+                        <label for="star-8" onclick="submitRating(8)" title="8 Sao">&#9733;</label>
+                        <input type="radio" id="star-7" name="vntq_score" value="7" />
+                        <label for="star-7" onclick="submitRating(7)" title="7 Sao">&#9733;</label>
+                        <input type="radio" id="star-6" name="vntq_score" value="6" />
+                        <label for="star-6" onclick="submitRating(6)" title="6 Sao">&#9733;</label>
+                        <input type="radio" id="star-5" name="vntq_score" value="5" />
+                        <label for="star-5" onclick="submitRating(5)" title="5 Sao">&#9733;</label>
+                        <input type="radio" id="star-4" name="vntq_score" value="4" />
+                        <label for="star-4" onclick="submitRating(4)" title="4 Sao">&#9733;</label>
+                        <input type="radio" id="star-3" name="vntq_score" value="3" />
+                        <label for="star-3" onclick="submitRating(3)" title="3 Sao">&#9733;</label>
+                        <input type="radio" id="star-2" name="vntq_score" value="2" />
+                        <label for="star-2" onclick="submitRating(2)" title="2 Sao">&#9733;</label>
+                        <input type="radio" id="star-1" name="vntq_score" value="1" />
+                        <label for="star-1" onclick="submitRating(1)" title="1 Sao">&#9733;</label>
+                </div>
+            </div>
+        </div>
+        <div id="ratingMessage" style="font-size:12px; color:#4caf50; display:none; margin-top:4px; font-family: Arial, sans-serif; font-weight: bold;">Cảm ơn bạn đã chấm điểm!</div>
+    </div>
+
+    <!-- THANH ĐIỀU HƯỚNG TRÊN -->
+    <div class="vntq-nav-bar vntq-nav-top">
+            <a class="vntq-btn-nav" href="/TacPham/tran-van-truong-sinh-31200/chuong-1">&laquo; Lùi</a>
+
+            <button onclick="openTocModal()" class="vntq-dropbtn">&#9776; Mục lục</button>
+
+            <a class="vntq-btn-nav" href="/TacPham/tran-van-truong-sinh-31200/chuong-3">Tiến &raquo;</a>
+    </div>
+
+    <div class="chuongso_a">
+        Chương 1
+    </div>
+        <div class="tuahoi_a">Mặc Hoạ</div>
+
+    <!-- CÔNG CỤ TÙY CHỈNH (Cải thiện giao diện) -->
+    <div class="vntq-toolbar">
+        <button class="vntq-tool-btn" onclick="adjustFontSize(2)" title="Tăng cỡ chữ"><i class="fa-solid fa-plus"></i> Chữ to</button>
+        <button class="vntq-tool-btn vntq-tool-btn-theme" id="btnThemeToggle" onclick="toggleReaderTheme()" title="Đổi giao diện sáng/tối"><i class="fa-solid fa-moon"></i> Tối</button>
+        <button class="vntq-tool-btn" onclick="adjustFontSize(-2)" title="Giảm cỡ chữ"><i class="fa-solid fa-minus"></i> Chữ nhỏ</button>
+    </div>
+
+    <h1 class="vntq-reader-title">❊ ❊ ❊</h1>
+
+        <div class="vntq-text-content chuhoavn_a" id="vntqTextContent">
+            <p>Đạo Lịch ngày mùng 10 tháng 9 năm 20022. </p>
+<p>Thông Tiên thành, ngoại sơn Thông Tiên môn. </p>
+<p>Mặc Hoạ mười tuổi, mặc đạo bào mộc mạc của đệ tử ngoại môn, đang buồn chán ngồi xổm ở dưới một tảng đá lớn, cầm cây cỏ trong tay, vùi đầu vẽ những đường vân phức tạp trên mặt đất. </p>
+<p>Đến giờ Mão, các đệ tử của tông môn lần lượt lên núi, tốp năm tốp ba kết bạn, vừa nói vừa cười. </p>
+<p>Một tiểu mập mạp mặc đạo bào ngoại môn, trên người mang trang sức ngọc bội quý báu, đi cùng hai ba tùy tùng, tìm được Mặc Hoạ sau tảng đá, tự đắc đi đến. </p>
+<p>Tiểu mập mạp nhìn trái nhìn phải, phát hiện không có thân ảnh của giáo tập, mới rụt đầu hô: </p>
+<p>"Mặc Họa!" </p>
+<p>Mặc Họa ngẩng đầu, lộ ra khuôn mặt nhỏ tuấn tú như tranh vẽ, ánh mắt trong veo. </p>
+<p>Tên mập đè thấp giọng nói: "Đã làm xong chưa?" </p>
+<p>Mặc Họa mười tuổi bắt chước vỗ ngực như người lớn, "Ta làm việc, ngươi yên tâm", nói xong từ trong túi trữ vật phía sau lấy ra mấy phần trận pháp, giấy trắng mực đỏ, đưa cho tiểu mập mạp. </p>
+<p>"Ngươi xem một chút có chỗ nào không ổn hay không." </p>
+<p>Tên mập nghiêm túc nhận lấy, mở ra xem, nghiêm túc nhìn thoáng qua, sau đó vẻ mặt đau khổ nói: </p>
+<p>"Ta xem không hiểu..." </p>
+<p>Mặc Họa kiên nhẫn giải thích: </p>
+<p>"Bài tập giáo tập giao là trận văn cơ sở của Ngũ Hành trận pháp, ta giúp ngươi vẽ tốt, còn cố ý vẽ sai sáu chỗ, để ngừa giáo tập nhìn ra những trận văn này không phải ngươi vẽ..." </p>
+<p>"Sáu chỗ... Có phải là sai quá nhiều hay không..." </p>
+<p>Mặc Họa yên lặng nhìn hắn. </p>
+<p>Tiểu mập mạp lập tức nhận ra sai lầm của mình, nghĩ lại: </p>
+<p>"Làm người không thể quá tham lam, ta có thể làm bài tập mà giáo tập bố trí ra đã không tệ rồi, nếu làm quá tốt, ngược lại sẽ khiến người hoài nghi, một khi bị giáo tập phát hiện, để cho cha ta biết được, hắn khẳng định sẽ dùng sức đánh ta, không thể đòi hỏi thêm được..." </p>
+<p>Mặc Họa gật đầu nói: "Không hổ là An thiếu gia, nhanh như vậy đã hiểu rõ rồi!" </p>
+<p>Tiểu mập mạp nhét hai viên linh thạch vào trong tay Mặc Hoạ liền nói: "Mặc ca, ngươi thật tinh mắt và suy nghĩ chu đáo! Linh thạch cho ngươi, lần sau giáo tập giao bài tập bố trí trận pháp ta sẽ tìm ngươi!" </p>
+<p>Nói xong đem trận pháp cất vào trong ngực, nhanh như chớp hướng trên núi chạy đi. </p>
+<p>Mặc Họa cẩn thận cất kỹ hai viên linh thạch, lại nhổ một đoạn cây cỏ, tiếp tục vẽ trên mặt đất. </p>
+<p>Một lát sau lại đi tới một công tử gầy gò tay cầm quạt giấy phe phẩy, tướng mạo kiêu ngạo, ngọc bội đầy người. </p>
+<p>Mặc Họa cũng đưa cho hắn một trận đồ, tên công tử gầy gò kia liếc nhìn trận đồ, sau đó nháy mắt ra hiệu cho hạ nhân. Hạ nhân tiến lên tiếp nhận, đưa cho Mặc Họa hai viên linh thạch. </p>
+<p>Công tử gầy gò cầm trận đồ, nhưng còn chưa đi, đột nhiên thu lại quạt giấy, kiêu căng nói: "Bản thiếu gia cũng cực kỳ am hiểu trận pháp, chỉ là không có thời gian làm những trận pháp cơ sở này, lúc này mới để cho ngươi viết thay." </p>
+<p>Mặc Họa mặc kệ hắn, cầm lấy rễ cỏ vẽ tiếp lên mặt đất. </p>
+<p>Công tử gầy gò có chút ảo não, lại cười lạnh nói: "Nghe nói trong số tu sĩ Luyện Khí sơ kỳ của Thông Tiên Môn, ngươi vẽ trận pháp tốt nhất, không biết nếu so với bổn thiếu gia thì như thế nào, rảnh rỗi thì chúng ta tỷ thí một chút?" </p>
+<p>Mặc Họa thầm nghĩ ngươi đã nhờ ta viết bài tập trận pháp rồi, ngươi liền nói trình độ của mình như thế nào? </p>
+<p>Nhưng mà theo nguyên tắc dĩ hòa vi quý, Mặc Họa vẫn ngẩng đầu lên, lấy lời khen ngợi dễ nghe: </p>
+<p>"Tự nhiên là trình độ trận pháp của công tử cao hơn nhiều, Tiền gia là gia tộc đệ nhất Thông Tiên Thành, truyền thừa trận pháp không phải tu sĩ khác có thể so sánh được.” </p>
+<p>Công tử gầy gò giật mình, lại hỏi: "Vậy ngươi nói xem, trong số tu sĩ Luyện Khí sơ kỳ của Thông Tiên môn, có ai có thể so được với ta không?" </p>
+<p>"Đương nhiên là có..." </p>
+<p>Công tử gầy không vui: "Còn có ai?" </p>
+<p>"Ví dụ như ta..." Tất nhiên những lời này Mặc Họa sẽ không ngu ngốc nói ra. </p>
+<p>"Rất nhiều, nhất thời không đếm hết." </p>
+<p>Công tử gầy gò rõ ràng tức giận. </p>
+<p>"Đây là chuyện tốt!" Mặc Họa trợn mắt nói dối. </p>
+<p>Công tử gầy gò cười lạnh nói: "Gia thế không tốt hơn ta, linh thạch không nhiều bằng ta, trận pháp lại cao hơn ta, người như vậy còn rất nhiều, ý của ngươi là muốn nói thiên phú của ta kém cỏi, không sánh bằng người khác sao? Việc này tốt ở chỗ nào?" </p>
+<p>Mặc Họa nói: "Tu sĩ ở Thông Tiên Thành, mặc dù có thiên phú, học tập tốt đi chăng nữa, nhưng cuối cùng cũng phải vào Vạn Bảo Lâu của Tiền gia, luyện khí luyện đan họa trận pháp cho Tiền gia các ngươi sao..." </p>
+<p>"Ngươi nghĩ đi, hiện tại ngươi mới là Luyện Khí, thì đã có tu sĩ Trúc Cơ làm việc cho ngươi, ngươi mới là Nhất phẩm Trận Sư, đã có Nhị phẩm Trận Sư nghe ngươi sai sử, cái này uy phong cỡ nào a! Tu sĩ thủ hạ càng mạnh, bản lĩnh ngươi càng lớn a!" </p>
+<p>Công tử gầy ngây ngẩn cả người, lập tức bừng tỉnh đại ngộ, "Hình như cũng có chút đạo lý!" </p>
+<p>"Hiểu rồi chứ." </p>
+<p>Công tử gầy gật đầu, nhìn về phía các tu sĩ dưới chân núi, cổ ngửa lên trời: </p>
+<p>"Không sai! Không sai! Ta mặc kệ thiên phú của các ngươi cao đến đâu, cho dù cố gắng tu luyện thêm nữa, cuối cùng không phải vẫn là làm trâu làm ngựa cho Tiền gia ta sao?" </p>
+<p>Tiền công tử nói xong thì ngẩng đầu ưỡn ngực rời đi. </p>
+<p>Sau khi lừa gạt công tử nhà họ Tiền rời đi, Mặc Họa tiếp tục dùng cây cỏ trên mặt đất luyện tập trận pháp. </p>
+<p>Chỉ chốc lát sau lại có thêm mấy tu sĩ phú nhị đại tới, một tay giao tiền một tay giao hàng, dùng linh thạch mua mấy bộ trận pháp có trong tay Mặc Họa. Chờ lúc Mặc Họa giao dịch xong, trong tay đã có mười hai viên linh thạch. </p>
+<p>Mười hai viên linh thạch đối với tán tu mà nói đã là không ít, nhưng đối với tu đạo mà nói, vẫn không bao giờ là đủ. </p>
+<p>Mặc Họa thở dài, trên khuôn mặt nhỏ nhắn có một tia bất đắc dĩ. </p>
+<p>Tu sĩ ở tầng dưới chót như hắn, tu đạo thật vô vọng a... </p>
+<p>Năm đầu tiên của Đạo lịch, tức là hơn hai vạn năm trước, triều đình Đạo giáo là thế lực lớn nhất của giới tu đạo, nhất thống Cửu Châu, sắc phong thế gia và tông môn, thành lập một thể thống nhất, quy định các loại cấp bậc của tu đạo nghiệp. </p>
+<p>Đạo Đình lại ban bố đạo luật, hạn chế tu sĩ, khiến tu sĩ không được lạm sát, không được cướp bóc, không được thải bổ. </p>
+<p>Tu chân giới nhờ vào đó mà phát triển hơn hai vạn năm, phồn thịnh đến cực điểm, diện tích lãnh thổ rộng lớn, tu sĩ nhiều vô kể. </p>
+<p>Nhưng Đạo Đình phồn hoa hưng thịnh, thế gia lẫy lừng, tông môn hùng bá một phương. </p>
+<p>Chỉ có những tán tu ở tầng dưới chót, không có gia tộc để phụ thuộc, cuộc sống khốn khổ, tu đạo trong vô vọng. </p>
+<p>Tu chân giới sinh sôi hơn hai vạn năm, phàm nhân không có linh căn dần dần bị loại bỏ, còn lại đều là tu sĩ có linh căn, có thể tu đạo. Nhưng tu sĩ càng nhiều, tiêu hao linh khí càng lớn, linh khí trong thiên địa tiêu hao hầu như không còn. </p>
+<p>Bây giờ tu sĩ muốn tu đạo, vừa muốn truyền thừa, vừa muốn linh thạch. </p>
+<p>Nhưng mà đại gia tộc chiếm cứ linh khoáng, tầng dưới chót thì thiếu thốn linh thạch, đại tông môn lũng đoạn truyền thừa, tán tu bình thường không có cửa. </p>
+<p>Trong Thông Tiên Thành, tuyệt đại đa số tán tu không có truyền thừa, cũng thiếu linh thạch, cả đời chỉ có thể là tu sĩ Luyện Khí cảnh. </p>
+<p>Luyện Khí cảnh, chẳng qua chỉ là con kiến hèn mọn dưới Thiên Đạo mênh mông này mà thôi. </p>
+<p>Mà Mặc Họa chính là một trong hàng trăm triệu con kiến hôi này. </p>
+<p>Hơn nữa rất có thể, cả đời này đều sẽ trôi qua như vậy! </p>
+<p>Trên khuôn mặt non nớt của Mặc Họa hiện vẻ cay đắng. </p>
+<p>Có lẽ Thiên Đạo bình đẳng, nhưng tu đạo, lại tuyệt đối không bình đẳng... </p>
+<p>Mặc Họa là một tán tu Luyện Khí tầng hai, xuất thân từ gia đình tán tu Luyện Khí cảnh, cha mẹ đều là Luyện Khí cảnh. </p>
+<p>Phụ thân Mặc Sơn săn bắt yêu thú mà sống, suốt ngày chém giết yêu thú, trên người vết thương chồng chất. Mẫu thân thì ở thiện lâu làm đầu bếp, bị ảnh hưởng bởi hỏa khí từ bếp, thường xuyên ho khan. </p>
+<p>Mà cha mẹ sống tiết kiệm, tất cả linh thạch tích góp được, cũng chỉ là vì để cho Mặc Họa có thể vào ngoại môn Thông Tiên Môn tu hành. </p>
+<p>Nhưng Mặc Họa vô luận tu hành như thế nào, linh căn hạ hay trung phẩm, mặc dù so với người thường tốt hơn một chút, nhưng ở tu chân giới có rất nhiều thiên tài, đã định trước cũng chỉ là một thành viên tư chất bình thường. </p>
+<p>Bất kể tu luyện thế nào, có lẽ cũng chỉ có thể là một tu sĩ Luyện Khí cảnh. </p>
+<p>Điều kiện gia đình khó khăn, lại không có linh thạch, Mặc Hoạ cũng chỉ có thể giống như đệ tử bình thường, tu đến luyện khí tầng sáu liền rời khỏi tông môn, sau đó nghĩ biện pháp học nghề mưu sinh. </p>
+<p>Nhưng Mặc Họa trời sinh yếu nhược! </p>
+<p>Tu sĩ Luyện Khí kỳ dựa vào đó mà kiếm sống, muốn săn giết yêu thú, bình thường đều cần thể trạng cường tráng của thể tu. Mặc Hoạ thân thể yếu nhược, ngay cả tìm công việc kiếm cơm cũng không được. </p>
+<p>Vạn nhất trong tương lai cưới vợ sinh con, gánh nặng tăng thêm, tất cả linh thạch cũng sẽ dùng để nuôi gia đình. </p>
+<p>Mặc Họa không có linh thạch tu luyện, tu vi sẽ vĩnh viễn bị đình trệ, cả đời cũng chỉ là một tu sĩ Luyện Khí nhỏ nhoi. </p>
+<p>Giống như tất cả tán tu nghèo khổ trong Thông Tiên Thành này. </p>
+<p>Giống như hàng trăm triệu tu sĩ tầng dưới chót của Tu giới này. </p>
+<p>Cả đời chỉ là Luyện Khí! </p>
+<p>Mặc Họa mới chỉ mười tuổi lặng lẽ thở dài, thu thập xong tâm trạng, liền tiến vào tông môn đi học. Sau khi tu hành một ngày, Mặc Họa trở lại nơi ở của đệ tử, lại nhìn điển tịch tu đạo, đợi đến giờ tý liền nằm ở trên giường. </p>
+<p>Khi Mặc Họa nhắm mắt, trong thức hải liền xuất hiện một tấm bia. </p>
+<p>Trên tấm bia không có chữ, nhưng từ khi nhìn thấy tấm bia này, Mặc Họa đã biết tên của nó: </p>
+<p>Đạo Bia! </p>
+        </div>
+
+    <blockquote>
+        <p align="center" class="style5a">
+                Ngu&#7891;n: TVE 4U <br>
+            &#272;&#432;&#7907;c b&#7841;n: Mot Sach  &#273;&#432;a lên<br>
+            vào ngày: 31 tháng 1 n&#259;m 2025
+        </p>
+    </blockquote>
+
+    <!-- THANH ĐIỀU HƯỚNG DƯỚI -->
+    <div class="vntq-nav-bar vntq-nav-bottom">
+            <a class="vntq-btn-nav" href="/TacPham/tran-van-truong-sinh-31200/chuong-1">&laquo; Lùi</a>
+
+            <!-- Dùng chung Modal Mục lục với nút Top -->
+            <button onclick="openTocModal()" class="vntq-dropbtn">&#9776; Mục Lục</button>
+
+            <a class="vntq-btn-nav" href="/TacPham/tran-van-truong-sinh-31200/chuong-3">Tiến &raquo;</a>
+    </div>
+
+        <div class="vntq-author-works">
+                <h3>Có thể bạn sẽ thích (cùng thể loại Ti&#xEA;n Hi&#x1EC7;p, Tu Ch&#xE2;n)</h3>
+
+            <div class="vntq-carousel-container">
+                <button class="vntq-carousel-btn vntq-btn-prev" id="btnPrevWorks">&#10094;</button>
+                <div class="vntq-carousel-track" id="trackWorks">
+                        <a href="/TacPham/trong-tu-ban-dich-mang-31006/" class="vntq-work-item">
+                            <img src="http://vietnamthuquan.eu/userfiles/images/hinhbiasach04/Tr%E1%BB%8Dng%20T%E1%BB%AD.jpg" alt="Tr&#x1ECD;ng T&#x1EED; (b&#x1EA3;n d&#x1ECB;ch m&#x1EA1;ng)" onerror="this.onerror=null; this.src='/images/defaultcover.jpg';" />
+                            <span>Tr&#x1ECD;ng T&#x1EED; (b&#x1EA3;n d&#x1ECB;ch m&#x1EA1;ng)</span>
+                        </a>
+                        <a href="/TacPham/tien-tuyet-23067/" class="vntq-work-item">
+                            <img src="http://vietnamthuquan.eu/userfiles/images/hinhbiasach04/Ti%C3%AAn%20Tuy%E1%BB%87t.jpg" alt="Ti&#xEA;n Tuy&#x1EC7;t" onerror="this.onerror=null; this.src='/images/defaultcover.jpg';" />
+                            <span>Ti&#xEA;n Tuy&#x1EC7;t</span>
+                        </a>
+                        <a href="/TacPham/tu-chan-noi-chuyen-phiem-quan-22875/" class="vntq-work-item">
+                            <img src="http://vietnamthuquan.eu/userfiles/images/hinhbiasach03/Tu%20Ch%C3%A2n%20N%C3%B3i%20Chuy%E1%BB%87n%20Phi%E1%BA%BFm%20Qu%E1%BA%A7n.jpg" alt="Tu Ch&#xE2;n N&#xF3;i Chuy&#x1EC7;n Phi&#x1EBF;m Qu&#x1EA7;n" onerror="this.onerror=null; this.src='/images/defaultcover.jpg';" />
+                            <span>Tu Ch&#xE2;n N&#xF3;i Chuy&#x1EC7;n Phi&#x1EBF;m Qu&#x1EA7;n</span>
+                        </a>
+                        <a href="/TacPham/kiem-vuong-trieu-c-29758/" class="vntq-work-item">
+                            <img src="http://vietnamthuquan.eu/userfiles/images/hinhbiasach06/Ki%E1%BA%BFm%20V%C6%B0%C6%A1ng%20Tri%E1%BB%81u.jpg" alt="Ki&#x1EBF;m V&#x1B0;&#x1A1;ng Tri&#x1EC1;u [C]" onerror="this.onerror=null; this.src='/images/defaultcover.jpg';" />
+                            <span>Ki&#x1EBF;m V&#x1B0;&#x1A1;ng Tri&#x1EC1;u [C]</span>
+                        </a>
+                        <a href="/TacPham/am-anh-than-toa-34439/" class="vntq-work-item">
+                            <img src="https://vietnamthuquan.eu/userfiles/images/hinhbiasach18/am_anh_than_toa_639203671871187865.jpg" alt="&#xC1;m &#x1EA2;nh Th&#x1EA7;n T&#x1ECD;a" onerror="this.onerror=null; this.src='/images/defaultcover.jpg';" />
+                            <span>&#xC1;m &#x1EA2;nh Th&#x1EA7;n T&#x1ECD;a</span>
+                        </a>
+                        <a href="/TacPham/hi-du-hoa-tung-23310/" class="vntq-work-item">
+                            <img src="http://vietnamthuquan.eu/userfiles/images/hinhbiasach18/hi-du-hoa-tung.jpg" alt="Hi Du Hoa T&#xF9;ng" onerror="this.onerror=null; this.src='/images/defaultcover.jpg';" />
+                            <span>Hi Du Hoa T&#xF9;ng</span>
+                        </a>
+                        <a href="/TacPham/cuu-khuyet-mong-hoa-giai-uu-dao-33464/" class="vntq-work-item">
+                            <img src="http://vietnamthuquan.eu/userfiles/images/hinhbiasach09/Cuu_khuyet_mong_hoa__giai_uu_ao.jpg" alt="C&#x1EED;u khuy&#x1EBF;t m&#x1ED9;ng hoa &#xB7; gi&#x1EA3;i &#x1B0;u &#x111;ao" onerror="this.onerror=null; this.src='/images/defaultcover.jpg';" />
+                            <span>C&#x1EED;u khuy&#x1EBF;t m&#x1ED9;ng hoa &#xB7; gi&#x1EA3;i &#x1B0;u &#x111;ao</span>
+                        </a>
+                        <a href="/TacPham/tinh-gioi-22880/" class="vntq-work-item">
+                            <img src="http://vietnamthuquan.eu/userfiles/images/hinhbiasach03/Tinh%20Gi%E1%BB%9Bi.jpg" alt="Tinh Gi&#x1EDB;i" onerror="this.onerror=null; this.src='/images/defaultcover.jpg';" />
+                            <span>Tinh Gi&#x1EDB;i</span>
+                        </a>
+                        <a href="/TacPham/phat-mon-ac-the-23273/" class="vntq-work-item">
+                            <img src="http://vietnamthuquan.eu/userfiles/images/hinhbiasach04/Ph%E1%BA%ADt%20M%C3%B4n%20%C3%81c%20Th%C3%AA.jpg" alt="Ph&#x1EAD;t M&#xF4;n &#xC1;c Th&#xEA;" onerror="this.onerror=null; this.src='/images/defaultcover.jpg';" />
+                            <span>Ph&#x1EAD;t M&#xF4;n &#xC1;c Th&#xEA;</span>
+                        </a>
+                        <a href="/TacPham/chuoc-loc-23213/" class="vntq-work-item">
+                            <img src="http://vietnamthuquan.eu/userfiles/images/hinhbiasach04/Ch%C6%B0%E1%BB%9Bc%20L%E1%BB%99c.jpg" alt="Ch&#x1B0;&#x1EDB;c L&#x1ED9;c" onerror="this.onerror=null; this.src='/images/defaultcover.jpg';" />
+                            <span>Ch&#x1B0;&#x1EDB;c L&#x1ED9;c</span>
+                        </a>
+                </div>
+                <button class="vntq-carousel-btn vntq-btn-next" id="btnNextWorks">&#10095;</button>
+            </div>
+        </div>
+
+
+    
+<div class="vntq-theodoi-box" data-loai="Truyen" data-id="31200" data-tieude="Tr&#x1EAD;n V&#x1EA5;n Tr&#x1B0;&#x1EDD;ng Sinh" data-anhbia="http://vietnamthuquan.eu/userfiles/images/hinhbiasach09/33297_Tr%E1%BA%ADn_V%E1%BA%A5n_Tr%C6%B0%E1%BB%9Dng_Sinh_20260509_231126.jpg" data-duongdan="/TacPham/tran-van-truong-sinh-31200/chuong-2">
+        <a class="vntq-theodoi-btn vntq-theodoi-login" href="/DienDan/TaiKhoan/DangNhap?returnUrl=%2FTacPham%2Ftran-van-truong-sinh-31200%2Fchuong-2">
+            🔕 Theo dõi tác phẩm <span class="vntq-theodoi-songuoi">(1)</span>
+        </a>
+        <a class="vntq-theodoi-btn vntq-theodoi-login" href="/DienDan/TaiKhoan/DangNhap?returnUrl=%2FTacPham%2Ftran-van-truong-sinh-31200%2Fchuong-2">
+            ☆ Yêu thích
+        </a>
+        <a class="vntq-theodoi-btn vntq-theodoi-login" href="/DienDan/TaiKhoan/DangNhap?returnUrl=%2FTacPham%2Ftran-van-truong-sinh-31200%2Fchuong-2">
+            🚩 Báo lỗi nội dung
+        </a>
+</div>
+
+
+
+
+<style>
+    .vntq-theodoi-box {
+        margin-top: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .vntq-theodoi-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 16px;
+        border: 1px solid rgba(0,0,0,.2);
+        border-radius: 20px;
+        background: transparent;
+        font-size: 13px;
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+    }
+
+        .vntq-theodoi-btn.vntq-theodoi-dang {
+            background: #8a5a1e;
+            color: #fff;
+            border-color: #8a5a1e;
+        }
+
+        .vntq-theodoi-btn-yeuthich.vntq-theodoi-dang {
+            background: #b8860b;
+            border-color: #b8860b;
+        }
+
+    .vntq-theodoi-songuoi {
+        font-weight: normal;
+        opacity: .75;
+        font-size: 12px;
+    }
+
+    [data-theme="dark"] .vntq-theodoi-btn {
+        border-color: rgba(255,255,255,.25);
+        color: #d8dce4;
+    }
+
+    [data-theme="dark"] .vntq-theodoi-btn.vntq-theodoi-dang {
+        background: #a97327;
+        border-color: #a97327;
+        color: #fff;
+    }
+
+    [data-theme="dark"] .vntq-theodoi-btn-yeuthich.vntq-theodoi-dang {
+        background: #c9971f;
+        border-color: #c9971f;
+    }
+
+    .vntq-baoloi-form {
+        margin-top: 10px;
+        padding: 12px 14px;
+        background: rgba(0,0,0,.03);
+        border: 1px solid rgba(0,0,0,.1);
+        border-radius: 8px;
+        max-width: 480px;
+    }
+
+    .vntq-baoloi-ketqua {
+        font-size: 13px;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    .vntq-baoloi-chuong,
+    .vntq-baoloi-loai,
+    .vntq-baoloi-mota {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 6px 9px;
+        border: 1px solid rgba(0,0,0,.2);
+        border-radius: 6px;
+        font-family: inherit;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .vntq-baoloi-mota {
+        resize: vertical;
+    }
+
+    .vntq-baoloi-submit {
+        padding: 6px 16px;
+        border: none;
+        border-radius: 6px;
+        background: #b33;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    [data-theme="dark"] .vntq-baoloi-form {
+        background: rgba(255,255,255,.04);
+        border-color: rgba(255,255,255,.12);
+        color: #d8dce4;
+    }
+
+    [data-theme="dark"] .vntq-baoloi-chuong,
+    [data-theme="dark"] .vntq-baoloi-loai,
+    [data-theme="dark"] .vntq-baoloi-mota {
+        background: rgba(0,0,0,.3) !important;
+        border-color: rgba(255,255,255,.15) !important;
+        color: #d8dce4 !important;
+    }
+</style>
+
+    
+<div class="vntq-thaoluan-box" id="thao-luan">
+    <h3 class="vntq-thaoluan-title">💬 Thảo luận
+            <span class="vntq-thaoluan-count">(2)</span>
+    </h3>
+
+
+        <div class="vntq-thaoluan-list">
+                <div class="vntq-thaoluan-item">
+                    <img class="vntq-thaoluan-avatar" src="/DienDan/Avatar/113459" alt="herohappy" onerror="this.onerror=null;this.src='/images/vnthuquan.ico';" />
+                    <div class="vntq-thaoluan-noidung">
+                        <div class="vntq-thaoluan-meta">
+                            <a href="/DienDan/ThanhVien/113459" class="vntq-thaoluan-ten">herohappy</a>
+                            <span class="vntq-thaoluan-ngay">17.08.2026 08:52</span>
+                        </div>
+                        <div class="vntq-thaoluan-body">t&#244;i kh&#244;ng r&#245; họ ph&#226;n chương như thế n&#224;o. nhưng phần sau của bộ truyện n&#224;y đuợc viet nam thư qu&#225;n dịch tiếp theo (phần truớc lấy từ internet) v&#224; duợc&#160;dịch liền mạch, số chương c&#243; thể kh&#244;ng khớp nhưng mạch truyện th&#236; liền lạc.</div>
+                    </div>
+                </div>
+                <div class="vntq-thaoluan-item">
+                    <img class="vntq-thaoluan-avatar" src="/DienDan/Avatar/113584" alt="minhsonnguyen" onerror="this.onerror=null;this.src='/images/vnthuquan.ico';" />
+                    <div class="vntq-thaoluan-noidung">
+                        <div class="vntq-thaoluan-meta">
+                            <a href="/DienDan/ThanhVien/113584" class="vntq-thaoluan-ten">minhsonnguyen</a>
+                            <span class="vntq-thaoluan-ngay">17.08.2026 03:03</span>
+                        </div>
+                        <div class="vntq-thaoluan-body"><a href="https://vietnamthuquan.eu/TacPham/tran-van-truong-sinh-31200/" target="_blank" rel="nofollow noopener">&#128279; Xem t&#225;c phẩm: Trận Vấn Trường Sinh</a><br>
+<br>
+M&#236;nh đọc ở MTC đến chương 2104 - đan phẩm, kh&#244;ng biết b&#234;n n&#224;y l&#224; chuơng bao nhi&#234;u vậy mọi người ?</div>
+                    </div>
+                </div>
+        </div>
+            <a href="/DienDan/ChuDe/921155" class="vntq-thaoluan-xemhet">Xem trên diễn đàn »</a>
+
+        <div class="vntq-thaoluan-loginprompt">
+            <a href="/DienDan/TaiKhoan/DangNhap?returnUrl=%2FTacPham%2Ftran-van-truong-sinh-31200%2Fchuong-2">Đăng nhập</a> để tham gia bình luận.
+        </div>
+</div>
+
+
+<style>
+    .vntq-thaoluan-box {
+        margin-top: 24px;
+        padding: 16px 18px;
+        background: rgba(0,0,0,.03);
+        border: 1px solid rgba(0,0,0,.1);
+        border-radius: 10px;
+    }
+
+    .vntq-thaoluan-title {
+        margin: 0 0 12px;
+        font-size: 17px;
+    }
+
+    .vntq-thaoluan-count {
+        font-weight: normal;
+        opacity: .7;
+        font-size: 14px;
+    }
+
+    .vntq-thaoluan-loi {
+        background: #fdecea;
+        color: #8a2318;
+        padding: 8px 12px;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        font-size: 13px;
+    }
+
+    .vntq-thaoluan-trong {
+        opacity: .75;
+        font-style: italic;
+        margin-bottom: 12px;
+    }
+
+    .vntq-thaoluan-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 10px;
+    }
+
+    .vntq-thaoluan-item {
+        display: flex;
+        gap: 10px;
+    }
+
+    .vntq-thaoluan-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+
+    .vntq-thaoluan-noidung {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .vntq-thaoluan-meta {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 3px;
+    }
+
+    .vntq-thaoluan-ten {
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .vntq-thaoluan-ngay {
+        font-size: 11px;
+        opacity: .6;
+    }
+
+    .vntq-thaoluan-body {
+        font-size: 14px;
+        line-height: 1.5;
+        word-wrap: break-word;
+    }
+
+    .vntq-thaoluan-xemhet {
+        display: inline-block;
+        font-size: 13px;
+        margin-bottom: 12px;
+        text-decoration: none;
+    }
+
+    .vntq-thaoluan-form {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 8px;
+    }
+
+    .vntq-thaoluan-textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 8px 10px;
+        border: 1px solid rgba(0,0,0,.2);
+        border-radius: 6px;
+        font-family: inherit;
+        font-size: 14px;
+        resize: vertical;
+    }
+
+    .vntq-thaoluan-formbottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .vntq-thaoluan-gobtv {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        opacity: .8;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .vntq-thaoluan-submit {
+        padding: 7px 18px;
+        border: none;
+        border-radius: 6px;
+        background: #8a5a1e;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+        .vntq-thaoluan-submit:hover {
+            opacity: .9;
+        }
+
+    .vntq-thaoluan-loginprompt {
+        font-size: 14px;
+        margin-top: 8px;
+    }
+
+    /* Che do Toi - dung chung 1 bang mau trung tinh cho ca 5 khu vuc thay vi rieng tung
+       bien --xx-* cua tung khu (component nay dung chung, khong biet truoc bien cua khu
+       vuc nao se nhung no). */
+    [data-theme="dark"] .vntq-thaoluan-box {
+        background: rgba(255,255,255,.04);
+        border-color: rgba(255,255,255,.12);
+        color: #d8dce4;
+    }
+
+    /* "#content textarea" trong base.css (co ID, khong !important) tu dat
+       background:rgba(245,245,245,.37) - de len rule tren (chi co class, khong ID) du
+       da nam trong pham vi [data-theme="dark"]. Them !important de thang chac chan. */
+    [data-theme="dark"] .vntq-thaoluan-textarea {
+        background: rgba(0,0,0,.3) !important;
+        border-color: rgba(255,255,255,.15) !important;
+        color: #d8dce4 !important;
+    }
+
+    [data-theme="dark"] .vntq-thaoluan-ten {
+        color: #8fbdec;
+    }
+
+    [data-theme="dark"] .vntq-thaoluan-xemhet {
+        color: #8fbdec;
+    }
+</style>
+
+</div>
+
+<!-- ========================================== -->
+<!-- MODAL MỤC LỤC (In 1 lần duy nhất, ẩn mặc định để chống FOUC) -->
+<!-- ========================================== -->
+
+<div id="vntqTocModal" class="vntq-modal" style="display: none;">
+    <div class="vntq-modal-content">
+        <div class="vntq-modal-header" style="flex-direction: column; align-items: stretch; padding: 15px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 style="margin: 0; font-size: 18px;">Mục lục (2637 chương)</h3>
+                <span class="vntq-close" onclick="closeTocModal()">&times;</span>
+            </div>
+
+            <select id="vntqTocSelect" class="vntq-toc-select" onchange="fetchTocPage(this.value)">
+                    <option value="1" selected="selected">
+                        Chương 1 - 100
+                    </option>
+                    <option value="2">
+                        Chương 101 - 200
+                    </option>
+                    <option value="3">
+                        Chương 201 - 300
+                    </option>
+                    <option value="4">
+                        Chương 301 - 400
+                    </option>
+                    <option value="5">
+                        Chương 401 - 500
+                    </option>
+                    <option value="6">
+                        Chương 501 - 600
+                    </option>
+                    <option value="7">
+                        Chương 601 - 700
+                    </option>
+                    <option value="8">
+                        Chương 701 - 800
+                    </option>
+                    <option value="9">
+                        Chương 801 - 900
+                    </option>
+                    <option value="10">
+                        Chương 901 - 1000
+                    </option>
+                    <option value="11">
+                        Chương 1001 - 1100
+                    </option>
+                    <option value="12">
+                        Chương 1101 - 1200
+                    </option>
+                    <option value="13">
+                        Chương 1201 - 1300
+                    </option>
+                    <option value="14">
+                        Chương 1301 - 1400
+                    </option>
+                    <option value="15">
+                        Chương 1401 - 1500
+                    </option>
+                    <option value="16">
+                        Chương 1501 - 1600
+                    </option>
+                    <option value="17">
+                        Chương 1601 - 1700
+                    </option>
+                    <option value="18">
+                        Chương 1701 - 1800
+                    </option>
+                    <option value="19">
+                        Chương 1801 - 1900
+                    </option>
+                    <option value="20">
+                        Chương 1901 - 2000
+                    </option>
+                    <option value="21">
+                        Chương 2001 - 2100
+                    </option>
+                    <option value="22">
+                        Chương 2101 - 2200
+                    </option>
+                    <option value="23">
+                        Chương 2201 - 2300
+                    </option>
+                    <option value="24">
+                        Chương 2301 - 2400
+                    </option>
+                    <option value="25">
+                        Chương 2401 - 2500
+                    </option>
+                    <option value="26">
+                        Chương 2501 - 2600
+                    </option>
+                    <option value="27">
+                        Chương 2601 - 2637
+                    </option>
+            </select>
+        </div>
+
+        <div class="vntq-toc-list" id="vntqTocList">
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-1">
+                        gi&#x1EDB;i Thi&#x1EC7;u
+                    </a>
+                    <a class="vntq-toc-item active-chapter" href="/TacPham/tran-van-truong-sinh-31200/chuong-2">
+                        Ch&#x1B0;&#x1A1;ng 1
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-3">
+                        Ch&#x1B0;&#x1A1;ng 2
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-4">
+                        Ch&#x1B0;&#x1A1;ng 3
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-5">
+                        Ch&#x1B0;&#x1A1;ng 4
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-6">
+                        Ch&#x1B0;&#x1A1;ng 5
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-7">
+                        Ch&#x1B0;&#x1A1;ng 6
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-8">
+                        Ch&#x1B0;&#x1A1;ng 7
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-9">
+                        Ch&#x1B0;&#x1A1;ng 8
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-10">
+                        Ch&#x1B0;&#x1A1;ng 9
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-11">
+                        Ch&#x1B0;&#x1A1;ng 10
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-12">
+                        Ch&#x1B0;&#x1A1;ng 11
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-13">
+                        Ch&#x1B0;&#x1A1;ng 12
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-14">
+                        Ch&#x1B0;&#x1A1;ng 13
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-15">
+                        Ch&#x1B0;&#x1A1;ng 14
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-16">
+                        Ch&#x1B0;&#x1A1;ng 15
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-17">
+                        Ch&#x1B0;&#x1A1;ng 16
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-18">
+                        Ch&#x1B0;&#x1A1;ng 17
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-19">
+                        Ch&#x1B0;&#x1A1;ng 18
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-20">
+                        Ch&#x1B0;&#x1A1;ng 19
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-21">
+                        Ch&#x1B0;&#x1A1;ng 20
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-22">
+                        Ch&#x1B0;&#x1A1;ng 21
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-23">
+                        Ch&#x1B0;&#x1A1;ng 22
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-24">
+                        Ch&#x1B0;&#x1A1;ng 23
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-25">
+                        Ch&#x1B0;&#x1A1;ng 24
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-26">
+                        Ch&#x1B0;&#x1A1;ng 25
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-27">
+                        Ch&#x1B0;&#x1A1;ng 26
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-28">
+                        Ch&#x1B0;&#x1A1;ng 27
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-29">
+                        Ch&#x1B0;&#x1A1;ng 28
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-30">
+                        Ch&#x1B0;&#x1A1;ng 29
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-31">
+                        Ch&#x1B0;&#x1A1;ng 30
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-32">
+                        Ch&#x1B0;&#x1A1;ng 31
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-33">
+                        Ch&#x1B0;&#x1A1;ng 32
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-34">
+                        Ch&#x1B0;&#x1A1;ng 33
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-35">
+                        Ch&#x1B0;&#x1A1;ng 34
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-36">
+                        Ch&#x1B0;&#x1A1;ng 35
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-37">
+                        Ch&#x1B0;&#x1A1;ng 36
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-38">
+                        Ch&#x1B0;&#x1A1;ng 37
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-39">
+                        Ch&#x1B0;&#x1A1;ng 38
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-40">
+                        Ch&#x1B0;&#x1A1;ng 39
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-41">
+                        Ch&#x1B0;&#x1A1;ng 40
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-42">
+                        Ch&#x1B0;&#x1A1;ng 41
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-43">
+                        Ch&#x1B0;&#x1A1;ng 42
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-44">
+                        Ch&#x1B0;&#x1A1;ng 43
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-45">
+                        Ch&#x1B0;&#x1A1;ng 44
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-46">
+                        Ch&#x1B0;&#x1A1;ng 45
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-47">
+                        Ch&#x1B0;&#x1A1;ng 46
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-48">
+                        Ch&#x1B0;&#x1A1;ng 47
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-49">
+                        Ch&#x1B0;&#x1A1;ng 48
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-50">
+                        Ch&#x1B0;&#x1A1;ng 49
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-51">
+                        Ch&#x1B0;&#x1A1;ng 50
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-52">
+                        Ch&#x1B0;&#x1A1;ng 51
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-53">
+                        Ch&#x1B0;&#x1A1;ng 52
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-54">
+                        Ch&#x1B0;&#x1A1;ng 53
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-55">
+                        Ch&#x1B0;&#x1A1;ng 54
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-56">
+                        Ch&#x1B0;&#x1A1;ng 55
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-57">
+                        Ch&#x1B0;&#x1A1;ng 56
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-58">
+                        Ch&#x1B0;&#x1A1;ng 57
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-59">
+                        Ch&#x1B0;&#x1A1;ng 58
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-60">
+                        Ch&#x1B0;&#x1A1;ng 59
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-61">
+                        Ch&#x1B0;&#x1A1;ng 60
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-62">
+                        Ch&#x1B0;&#x1A1;ng 61
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-63">
+                        Ch&#x1B0;&#x1A1;ng 62
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-64">
+                        Ch&#x1B0;&#x1A1;ng 63
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-65">
+                        Ch&#x1B0;&#x1A1;ng 64
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-66">
+                        Ch&#x1B0;&#x1A1;ng 65
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-67">
+                        Ch&#x1B0;&#x1A1;ng 66
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-68">
+                        Ch&#x1B0;&#x1A1;ng 67
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-69">
+                        Ch&#x1B0;&#x1A1;ng 68
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-70">
+                        Ch&#x1B0;&#x1A1;ng 69
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-71">
+                        Ch&#x1B0;&#x1A1;ng 70
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-72">
+                        Ch&#x1B0;&#x1A1;ng 71
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-73">
+                        Ch&#x1B0;&#x1A1;ng 72
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-74">
+                        Ch&#x1B0;&#x1A1;ng 73
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-75">
+                        Ch&#x1B0;&#x1A1;ng 74
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-76">
+                        Ch&#x1B0;&#x1A1;ng 75
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-77">
+                        Ch&#x1B0;&#x1A1;ng 76
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-78">
+                        Ch&#x1B0;&#x1A1;ng 77
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-79">
+                        Ch&#x1B0;&#x1A1;ng 78
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-80">
+                        Ch&#x1B0;&#x1A1;ng 79
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-81">
+                        Ch&#x1B0;&#x1A1;ng 80
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-82">
+                        Ch&#x1B0;&#x1A1;ng 81
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-83">
+                        Ch&#x1B0;&#x1A1;ng 82
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-84">
+                        Ch&#x1B0;&#x1A1;ng 83
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-85">
+                        Ch&#x1B0;&#x1A1;ng 84
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-86">
+                        Ch&#x1B0;&#x1A1;ng 85
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-87">
+                        Ch&#x1B0;&#x1A1;ng 86
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-88">
+                        Ch&#x1B0;&#x1A1;ng 87
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-89">
+                        Ch&#x1B0;&#x1A1;ng 88
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-90">
+                        Ch&#x1B0;&#x1A1;ng 89
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-91">
+                        Ch&#x1B0;&#x1A1;ng 90
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-92">
+                        Ch&#x1B0;&#x1A1;ng 91
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-93">
+                        Ch&#x1B0;&#x1A1;ng 92
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-94">
+                        Ch&#x1B0;&#x1A1;ng 93
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-95">
+                        Ch&#x1B0;&#x1A1;ng 94
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-96">
+                        Ch&#x1B0;&#x1A1;ng 95
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-97">
+                        Ch&#x1B0;&#x1A1;ng 96
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-98">
+                        Ch&#x1B0;&#x1A1;ng 97
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-99">
+                        Ch&#x1B0;&#x1A1;ng 98
+                    </a>
+                    <a class="vntq-toc-item " href="/TacPham/tran-van-truong-sinh-31200/chuong-100">
+                        Ch&#x1B0;&#x1A1;ng 99
+                    </a>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    /* CSS Modal Mục Lục (Tối ưu Mobile) */
+    .vntq-modal {
+        position: fixed;
+        z-index: 99999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.6);
+        backdrop-filter: blur(2px);
+    }
+
+    .vntq-modal-content {
+        background-color: #ffffff;
+        margin: 10vh auto;
+        padding: 0;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 500px;
+        height: 80vh;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+        from
+
+    {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    }
+
+    .vntq-modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        border-bottom: 1px solid #eee;
+        background-color: #f8f9fa;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .vntq-toc-select {
+        width: 100%;
+        padding: 8px 12px;
+        font-size: 15px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        background-color: #fff;
+        color: #333;
+        outline: none;
+        cursor: pointer;
+    }
+
+    .vntq-dark-mode .vntq-toc-select {
+        background-color: #333;
+        color: #eee;
+        border-color: #555;
+    }
+    .vntq-close {
+        font-size: 28px;
+        font-weight: bold;
+        color: #888;
+        cursor: pointer;
+        line-height: 1;
+    }
+
+        .vntq-close:hover {
+            color: #d9534f;
+        }
+
+    .vntq-toc-list {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 10px 0;
+        scroll-behavior: smooth;
+    }
+
+    .vntq-toc-item {
+        display: block;
+        padding: 12px 20px;
+        color: #333;
+        text-decoration: none;
+        border-bottom: 1px solid #f1f1f1;
+        font-size: 15px;
+        transition: background 0.2s;
+    }
+
+        .vntq-toc-item:hover {
+            background-color: #f9f9f9;
+            color: #000;
+        }
+
+        .vntq-toc-item.active-chapter {
+            font-weight: bold;
+            color: #d9534f;
+            background-color: #fff3f3;
+            border-left: 4px solid #d9534f;
+        }
+
+    /* CSS Dark Mode cho Modal */
+    .vntq-dark-mode .vntq-modal-content {
+        background-color: #222;
+        border: 1px solid #444;
+    }
+
+    .vntq-dark-mode .vntq-modal-header {
+        background-color: #1a1a1a;
+        border-bottom-color: #333;
+        color: #eee;
+    }
+
+    .vntq-dark-mode .vntq-toc-item {
+        color: #ccc;
+        border-bottom-color: #333;
+    }
+
+        .vntq-dark-mode .vntq-toc-item:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .vntq-dark-mode .vntq-toc-item.active-chapter {
+            background-color: #3a2525;
+            color: #ff6b6b;
+            border-left-color: #ff6b6b;
+        }
+
+    /* Nút Dropbtn cũ chuyển sang mở Modal */
+    .vntq-dropbtn {
+        background-color: #ffffff;
+        color: #333;
+        padding: 8px 20px;
+        font-size: 15px;
+        font-weight: bold;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        transition: all 0.2s;
+    }
+
+        .vntq-dropbtn:hover {
+            background-color: #f1f1f1;
+            transform: translateY(-1px);
+        }
+
+    .vntq-dark-mode .vntq-dropbtn {
+        background-color: #2c2c2c;
+        color: #e0e0e0;
+        border-color: #444;
+    }
+
+        .vntq-dark-mode .vntq-dropbtn:hover {
+            background-color: #3a3a3a;
+        }
+
+    /* CSS Toolbar Giao Diện Mới */
+    .vntq-toolbar {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .vntq-tool-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background-color: #ffffff;
+        color: #333333;
+        border: 1px solid #dddddd;
+        padding: 9px 18px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 22px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    }
+
+        .vntq-tool-btn i {
+            font-size: 13px;
+            color: #999999;
+        }
+
+        .vntq-tool-btn:hover {
+            background-color: #f5f5f5;
+            border-color: #bbbbbb;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+            transform: translateY(-1px);
+        }
+
+        .vntq-tool-btn:active {
+            transform: translateY(1px);
+        }
+
+    .vntq-tool-btn-theme {
+        background-color: #fff8e6;
+        border-color: #f0dca0;
+    }
+
+        .vntq-tool-btn-theme i {
+            color: #d4a017;
+        }
+
+        .vntq-tool-btn-theme:hover {
+            background-color: #fdf1cf;
+        }
+
+    .vntq-dark-mode .vntq-tool-btn {
+        background-color: #2c2c2c;
+        color: #dddddd;
+        border-color: #444444;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+        .vntq-dark-mode .vntq-tool-btn i {
+            color: #999999;
+        }
+
+        .vntq-dark-mode .vntq-tool-btn:hover {
+            background-color: #3a3a3a;
+            border-color: #555555;
+        }
+
+    .vntq-dark-mode .vntq-tool-btn-theme {
+        background-color: #3a3320;
+        border-color: #6b5b2a;
+    }
+
+        .vntq-dark-mode .vntq-tool-btn-theme i {
+            color: #e8c675;
+        }
+
+        .vntq-dark-mode .vntq-tool-btn-theme:hover {
+            background-color: #453c26;
+        }
+</style>
+
+<script>
+    // Xử lý Giao diện cơ bản
+    const readerBox = document.getElementById('vntqReaderBox');
+    const textBox = document.getElementById('vntqTextContent');
+    const themeBtn = document.getElementById('btnThemeToggle');
+
+    let currentFontSize = parseInt(localStorage.getItem('vntq_font_size')) || 22;
+    textBox.style.fontSize = currentFontSize + 'px';
+
+    function adjustFontSize(step) {
+        currentFontSize += step;
+        if (currentFontSize < 16) currentFontSize = 16;
+        if (currentFontSize > 36) currentFontSize = 36;
+        textBox.style.fontSize = currentFontSize + 'px';
+        localStorage.setItem('vntq_font_size', currentFontSize);
+    }
+
+    let isDarkMode = localStorage.getItem('vntq_dark_mode') === 'true';
+    applyTheme(isDarkMode);
+
+    function toggleReaderTheme() {
+        isDarkMode = !isDarkMode;
+        applyTheme(isDarkMode);
+        localStorage.setItem('vntq_dark_mode', isDarkMode);
+    }
+
+    function applyTheme(dark) {
+        if (dark) {
+            readerBox.classList.add('vntq-dark-mode');
+            document.body.classList.add('vntq-dark-mode'); // Hỗ trợ đen cả nền body nếu cần
+            themeBtn.innerHTML = '<i class="fa-solid fa-sun"></i> Sáng';
+        } else {
+            readerBox.classList.remove('vntq-dark-mode');
+            document.body.classList.remove('vntq-dark-mode');
+            themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i> Tối';
+        }
+    }
+
+    // Xử lý Chấm điểm
+    let totalDiem = 788;
+    let totalNguoi = 86;
+
+    function submitRating(score) {
+        const tuaId = 31200;
+        const targetInput = document.getElementById('star-' + score);
+        if(targetInput) targetInput.checked = true;
+
+        const block = document.getElementById('vntqRatingBlock');
+        const area = document.getElementById('vntqRatingArea');
+
+        area.style.pointerEvents = 'none';
+        area.style.opacity = '0.7';
+        block.removeAttribute('title');
+
+        fetch('/api/tacpham/chodiem', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `tuaId=${tuaId}&diem=${score}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('ratingMessage').style.display = 'block';
+
+                totalDiem += score;
+                totalNguoi += 1;
+                let newAverage = Math.round((totalDiem / totalNguoi) * 10) / 10;
+
+                let lblSoNguoi = document.getElementById('lblSoNguoi');
+                let lblTrungBinhSao = document.getElementById('lblTrungBinhSao');
+                if(lblSoNguoi) lblSoNguoi.innerText = totalNguoi;
+                if(lblTrungBinhSao) lblTrungBinhSao.innerText = newAverage.toFixed(1);
+
+                let staticStars = document.getElementById('vntqRatingStatic');
+                if(staticStars) staticStars.style.setProperty('--percent', (newAverage * 10) + '%');
+
+                setTimeout(() => {
+                     document.getElementById('vntqRatingInput').style.display = 'none';
+                     document.getElementById('vntqRatingStatic').style.opacity = '1';
+                }, 3000);
+            } else {
+                alert('Có lỗi xảy ra khi chấm điểm.');
+                area.style.pointerEvents = 'auto';
+                area.style.opacity = '1';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            area.style.pointerEvents = 'auto';
+            area.style.opacity = '1';
+        });
+    }
+
+    // ==========================================
+    // XỬ LÝ MODAL MỤC LỤC & GỌI API THEO KHOẢNG
+    // ==========================================
+    const tocModal = document.getElementById("vntqTocModal");
+    const tocList = document.getElementById("vntqTocList");
+    let isTocOpenedOnce = false;
+
+    function openTocModal() {
+        tocModal.style.display = "block";
+        document.body.style.overflow = "hidden";
+
+        if (!isTocOpenedOnce) {
+            const activeItem = tocList.querySelector('.active-chapter');
+            if (activeItem) {
+                activeItem.scrollIntoView({ behavior: "auto", block: "center" });
+            }
+            isTocOpenedOnce = true;
+        }
+    }
+
+    function closeTocModal() {
+        tocModal.style.display = "none";
+        document.body.style.overflow = "auto";
+    }
+
+    window.addEventListener('click', function(event) {
+        if (event.target === tocModal) closeTocModal();
+    });
+
+    // Hàm lấy danh sách chương khi người dùng đổi lựa chọn trong Dropdown
+    async function fetchTocPage(page) {
+        const tuaId = 31200;
+        const slugTua = "tran-van-truong-sinh-31200";
+        const currentChuongId = 2;
+
+        // Hiển thị trạng thái đang tải
+        tocList.innerHTML = '<div style="padding: 30px; text-align: center; color: #888;"><i class="fa-solid fa-spinner fa-spin fa-2x"></i><br><br>Đang tải dữ liệu...</div>';
+
+        try {
+            let response = await fetch(`/api/tacpham/get-mucluc?tuaId=${tuaId}&page=${page}&pageSize=100`);
+            let res = await response.json();
+
+            if (res.success && res.chapters) {
+                tocList.innerHTML = ""; // Xóa thông báo loading
+
+                res.chapters.forEach(ch => {
+                    let isCurrent = ch.chuongId === currentChuongId;
+                    let aNode = document.createElement('a');
+                    aNode.className = `vntq-toc-item ${isCurrent ? 'active-chapter' : ''}`;
+                    aNode.href = `/TacPham/${slugTua}/chuong-${ch.chuongId}`;
+                    aNode.textContent = ch.title;
+                    tocList.appendChild(aNode);
+                });
+
+                // Cuộn lên đầu danh sách mới tải về
+                tocList.scrollTop = 0;
+            } else {
+                tocList.innerHTML = '<div style="padding: 20px; text-align: center; color: #d9534f;">Không tìm thấy dữ liệu mục lục.</div>';
+            }
+        } catch (err) {
+            console.error(err);
+            tocList.innerHTML = '<div style="padding: 20px; text-align: center; color: #d9534f;">Lỗi kết nối máy chủ. Vui lòng thử lại.</div>';
+        }
+    }
+</script>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var btnSang = document.getElementById('truyen-theme-sang');
+            var btnToi = document.getElementById('truyen-theme-toi');
+            if (!btnSang || !btnToi) return;
+
+            function capNhatTrangThai() {
+                var dangToi = document.documentElement.getAttribute('data-theme') === 'dark';
+                btnSang.classList.toggle('truyen-theme-active', !dangToi);
+                btnToi.classList.toggle('truyen-theme-active', dangToi);
+            }
+            capNhatTrangThai();
+
+            (function () {
+                var readerBox = document.getElementById('vntqReaderBox');
+                if (readerBox && localStorage.getItem('vntq_dark_mode') === 'true') {
+                    readerBox.classList.add('vntq-dark-mode');
+                }
+            })();
+
+            btnSang.addEventListener('click', function () {
+                document.documentElement.removeAttribute('data-theme');
+                var readerBox = document.getElementById('vntqReaderBox');
+                if (readerBox) readerBox.classList.remove('vntq-dark-mode');
+                try { localStorage.setItem('vntq_dark_mode', 'false'); } catch (e) { }
+                capNhatTrangThai();
+            });
+            btnToi.addEventListener('click', function () {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                var readerBox = document.getElementById('vntqReaderBox');
+                if (readerBox) readerBox.classList.add('vntq-dark-mode');
+                try { localStorage.setItem('vntq_dark_mode', 'true'); } catch (e) { }
+                capNhatTrangThai();
+            });
+        })();
+    </script>
+
+    <footer class="site-footer bg-light text-center text-muted py-4">
+    <div class="container">
+        
+        <p>
+            <a href="/gioi-thieu">Giới thiệu</a> |
+            <a href="/tro-giup">Trợ giúp</a> |
+            <a href="/dieu-khoan">Điều khoản sử dụng</a>
+        </p>
+        <h5>&copy; 2002 - 2026 Việt Nam Thư Quán - Thư Viện Online</h5>
+       
+        <img src="/images/LOGO1c.png" width="100" height="57" />
+    </div>
+</footer>
+
+
+
+    
+</body>
+</html>

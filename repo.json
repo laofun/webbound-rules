@@ -101,6 +101,18 @@
       "featured": true
     },
     {
+      "id": "vietnamthuquan.eu",
+      "name": "Việt Nam Thư Quán",
+      "domain": "vietnamthuquan.eu",
+      "rule_url": "./rules/vietnamthuquan.eu.json",
+      "version": "1.0.0",
+      "author": "WebBound",
+      "description": "vietnamthuquan.eu — Việt Nam Thư Quán, Thư viện truyện, thơ, văn học online.",
+      "icon": "📚",
+      "language": "vi",
+      "featured": false
+    },
+    {
       "id": "wfxs.tw",
       "name": "微風小說網",
       "domain": "wfxs.tw",
