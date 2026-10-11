@@ -69,7 +69,7 @@
       "name": "Novel543",
       "domain": "novel543.com",
       "rule_url": "./rules/novel543.com.json",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "author": "WebBound",
       "description": "Novel543 (novel543.com) — Chinese web novels. Requires Force Hybrid Mode (Cloudflare).",
       "icon": "📕",

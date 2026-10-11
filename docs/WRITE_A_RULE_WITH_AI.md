@@ -182,10 +182,13 @@ the challenge). Notice the pattern the script uses everywhere:
   `ctx.fetch`, then maps `<li a>` into `{title, url}` with **absolute** urls;
 - `extractMetadata` re-fetches the real page through `ctx.fetch` when `ctx.html` is
   the Cloudflare "Just a moment…" shell;
-- `extractChapter` removes `.gadBlock, .adBlock, script, style, ins` and returns
-  `utils.sanitize(el.innerHTML)` — a string.
+- `extractChapter` reads the part count from the `(1/N)` title, fetches
+  `<cid>_2.html` … `<cid>_N.html`, removes `.gadBlock, .adBlock, script, style, ins`
+  and the site notice from each part, and returns one `utils.sanitize(...)` string;
+- every failed page throws instead of returning a short ToC or half a chapter.
 
-Open the file to see the full `script` string. When the AI produces a scriptable
+Open [`src/novel543.com/parser.js`](../src/novel543.com/parser.js) for the readable
+source (the `script` string in `rules/` is generated from it). When the AI produces a scriptable
 rule, its `script` should follow this same shape.
 
 ---

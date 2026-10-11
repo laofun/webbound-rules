@@ -28,10 +28,10 @@
     "pagination_mode": "multi_page",
     "rate_limit_ms": 1000
   },
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": "WebBound",
   "language": "zh",
-  "description": "novel543.com (Cloudflare-protected). Requires Force Hybrid Mode: book page -> /dir TOC -> chapters. extractMetadata re-fetches the real page via ctx.fetch (hybrid) because fetchMetadata uses plain fetch.",
+  "description": "novel543.com (Cloudflare-protected). Requires Force Hybrid Mode: book page -> /dir TOC -> chapters; multi-part chapters (<cid>_N.html) are joined. extractMetadata re-fetches the real page via ctx.fetch (hybrid) because fetchMetadata uses plain fetch.",
   "marketplace": {
     "name": "Novel543",
     "icon": "📕",
