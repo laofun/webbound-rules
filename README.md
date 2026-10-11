@@ -12,6 +12,7 @@ webbound-rules/
 ├── package.json              # dev toolchain: build / check / new / test / test:live / fixture
 ├── AGENTS.md                 # working rules for AI agents (CLAUDE.md imports it)
 ├── scripts/                  # build, new, test, test-live, fetch-fixture
+├── .githooks/pre-push        # runs `npm test` before every push (no hosted CI)
 ├── .agents/skills/           # webbound-rule-authoring skill (also linked under .claude/skills)
 ├── src/
 │   ├── repo.meta.json        # repo index name + version
@@ -31,7 +32,9 @@ webbound-rules/
 ```
 
 > **`rules/` and `repo.json` are build output.** Edit files under `src/`, then run
-> `npm run build`. CI (`npm test`) rejects a PR whose generated files are stale.
+> `npm run build`. There is no hosted CI: `npm install` installs a **pre-push hook**
+> (`.githooks/pre-push`) that runs `npm test`, so a push with stale generated files or
+> a red test is refused locally.
 
 ## Use it in the extension
 
@@ -46,7 +49,7 @@ https://raw.githubusercontent.com/laofun/webbound-rules/main/repo.json
 ## Add or update a rule
 
 Rules are authored under `src/<domain>/` and compiled to `rules/` + `repo.json`.
-Requires **Node ≥ 22**. Once: `npm install`.
+Requires **Node ≥ 22**. Once: `npm install` (also enables the pre-push hook).
 
 1. **Scaffold** the folder:
 
@@ -79,6 +82,7 @@ Requires **Node ≥ 22**. Once: `npm install`.
    npm test                          # ctx drift + generated-files check + every *.test.mjs
    npm run build                     # regenerate rules/example.com.json + repo.json
    npm run test:live example.com     # optional: hit the real site once
+   npm run test:live -- --all        # health-check every rule (OK / FAIL / BLOCKED)
    ```
 
    Unlike the old JSON-only check, `npm run build` **evaluates** `parser.js`, so

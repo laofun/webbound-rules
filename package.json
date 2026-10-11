@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prepare": "git config core.hooksPath .githooks",
     "build": "node scripts/build.mjs",
     "check": "node scripts/build.mjs --check",
     "watch": "node --watch-path=./src scripts/build.mjs",
@@ -13,5 +14,8 @@
   },
   "devDependencies": {
     "linkedom": "^0.18.0"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

@@ -40,7 +40,10 @@ The contract lives in the docs; this skill is the workflow. Read before writing:
    ```bash
    npm test && npm run build && npm run test:live <domain>
    ```
-   `test:live` is scriptable-only and prints ToC time — keep it well under 30s.
+   `test:live` covers generic and scriptable rules and prints scriptable ToC time —
+   keep it well under 30s. `BLOCKED` means a bot wall or network block (check in a
+   browser), `FAIL` means the rule is broken. `npm run test:live -- --all` checks
+   every rule; run it periodically since there is no hosted CI.
 
 6. **Version + commit.** Bump the rule's `version` on changes; bump
    `src/repo.meta.json` when adding/removing a rule. Commit `src/`, `rules/`, and

@@ -11,7 +11,10 @@ for the rule contract before changing a rule. To add or fix a site, follow the
 - Every rule ships offline fixtures + a `*.test.mjs`. Save fixtures with
   `npm run fixture -- <url> <file>` (charset-correct), never raw `curl`.
 - `npm test` must be green before committing. It runs the ctx drift check, the
-  generated-file check, and every test.
+  generated-file check, and every test. No hosted CI: the pre-push hook
+  (`.githooks/pre-push`, enabled by `npm install`) runs it; don't `--no-verify`.
+- Scriptable parsers throw on a failed page or empty result — never swallow fetch
+  errors with `catch {}` and return a short ToC / empty chapter.
 - Don't hand-edit `src/_ctx/scriptable-context.mjs` except to port a change from the
   extension's `src/apps/sandbox/sandbox.ts` (the drift check enforces this).
 - Bump the rule's `version` on every rule change, and `src/repo.meta.json`
@@ -23,7 +26,8 @@ npm test                         # drift + build --check + all tests
 npm run build                    # regenerate rules/ + repo.json
 npm run new <domain> [-- --generic]
 npm run fixture -- <url> src/<domain>/fixtures/<name>.html
-npm run test:live <domain>       # scriptable only, hits the network
+npm run test:live <domain>       # hits the network; generic + scriptable
+npm run test:live -- --all       # every rule; BLOCKED = bot wall / network, not a rule bug
 ```
 
 ## Related checkouts

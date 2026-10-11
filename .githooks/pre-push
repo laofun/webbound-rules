@@ -1,0 +1,4 @@
+#!/bin/sh
+# Gate every push on the full offline suite (no CI on this repo).
+# Installed by `npm install` (prepare → core.hooksPath=.githooks). Bypass: git push --no-verify
+exec npm test --silent

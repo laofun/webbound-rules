@@ -193,7 +193,7 @@ rule, its `script` should follow this same shape.
 ## After you get the JSON
 
 You compile rules from `src/<domain>/`; `rules/` and `repo.json` are generated.
-Requires **Node ≥ 22** and a one-time `npm install`.
+Requires **Node ≥ 22** and a one-time `npm install` (also enables the pre-push test hook).
 
 1. **Scaffold** the folder: `npm run new <domain>` (add `-- --generic` for a
    CSS-selector rule).
