@@ -1,0 +1,33 @@
+{
+  "domain": "ikanshu5.net",
+  "url_pattern": "ikanshu5\\.net/(?:book|indexlist)/\\d+(?:/\\d+)?/?$",
+  "parser_type": "scriptable",
+  "selectors": {
+    "title": "meta[property='og:novel:book_name']@content",
+    "author": "meta[property='og:novel:author']@content",
+    "cover": "meta[property='og:image']@content",
+    "desc": "meta[property='og:description']@content",
+    "status": "meta[property='og:novel:status']@content",
+    "genres": "meta[property='og:novel:category']@content",
+    "toc": {
+      "item": "#content_1 a[rel='chapter']"
+    },
+    "chapter": {
+      "content": "#booktxt",
+      "remove": ["script", "style"]
+    }
+  },
+  "config": {
+    "rate_limit_ms": 1000
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "zh",
+  "description": "ikanshu5.net — 五块五毛小说网 (爱看书5), Chinese web novels. Follows paginated ToC and multi-part chapters.",
+  "marketplace": {
+    "name": "五块五毛小说网 (ikanshu5)",
+    "icon": "📙",
+    "featured": false,
+    "description": "ikanshu5.net — 五块五毛小说网: 玄幻, 修真, 都市, 穿越 novels. Full ToC + complete multi-page chapters."
+  }
+}

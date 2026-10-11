@@ -1,0 +1,31 @@
+{
+  "domain": "ikanshu5.net",
+  "url_pattern": "ikanshu5\\.net/(?:book|indexlist)/\\d+(?:/\\d+)?/?$",
+  "parser_type": "scriptable",
+  "selectors": {
+    "title": "meta[property='og:novel:book_name']@content",
+    "author": "meta[property='og:novel:author']@content",
+    "cover": "meta[property='og:image']@content",
+    "desc": "meta[property='og:description']@content",
+    "status": "meta[property='og:novel:status']@content",
+    "genres": "meta[property='og:novel:category']@content",
+    "toc": {
+      "item": "#content_1 a[rel='chapter']"
+    },
+    "chapter": {
+      "content": "#booktxt",
+      "remove": [
+        "script",
+        "style"
+      ]
+    }
+  },
+  "script": "({\n  // ToC is paginated 50 chapters/page at /indexlist/<id>/, /indexlist/<id>/2/, ...\n  // Page 1's <select id=\"indexselect\"> lists every page, so fetch them in\n  // parallel instead of walking 下一页 one by one.\n  async extractToC(ctx) {\n    const { utils } = ctx;\n    const P = (h) => new DOMParser().parseFromString(h || '', 'text/html');\n    const id = (ctx.url.match(/\\/(?:book|indexlist)\\/(\\d+)/) || [])[1];\n    if (!id) throw new Error('ikanshu5: no book id in ' + ctx.url);\n    const first = utils.resolveUrl(`/indexlist/${id}/`, ctx.url);\n\n    const firstDoc = P(await ctx.fetch(first));\n    const pageUrls = [];\n    for (const opt of utils.qsa('#indexselect option', firstDoc)) {\n      const u = utils.resolveUrl(opt.getAttribute('value'), first);\n      if (u !== first && !pageUrls.includes(u)) pageUrls.push(u);\n    }\n\n    // ponytail: concurrency 10 keeps a ~150-page ToC (≈7500 chapters) inside the\n    // sandbox's 30s per-call timeout; bigger books need a resumable ToC in the extension.\n    const rest = await utils.batchFetch(pageUrls, 10);\n    const docs = [firstDoc];\n    rest.forEach((html, i) => {\n      const doc = P(html);\n      if (!doc.querySelector('#content_1 a[rel=\"chapter\"]')) throw new Error('ikanshu5: ToC page failed to load: ' + pageUrls[i]);\n      docs.push(doc);\n    });\n\n    const chapters = [];\n    const seen = new Set();\n    for (const doc of docs) {\n      for (const a of utils.qsa('#content_1 a[rel=\"chapter\"]', doc)) {\n        const url = utils.resolveUrl(a.getAttribute('href'), first);\n        const title = utils.cleanText(a.textContent);\n        if (!title || seen.has(url)) continue;\n        seen.add(url);\n        chapters.push({ title, url });\n      }\n    }\n    return chapters;\n  },\n\n  // Every chapter is split into sub-pages <cid>.html, <cid>_2.html, ...; the\n  // rel=\"next\" link stays on <cid>_N.html until the last part, then points at\n  // the next chapter.\n  async extractChapter(ctx) {\n    const { utils } = ctx;\n    const P = (h) => new DOMParser().parseFromString(h || '', 'text/html');\n    const cid = (ctx.url.match(/\\/(\\d+)(?:_\\d+)?\\.html/) || [])[1];\n    const sameChapter = new RegExp(`/${cid}_\\\\d+\\\\.html$`);\n    const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n\n    let url = ctx.url;\n    let doc = P(ctx.html);\n    if (!doc.querySelector('#booktxt')) doc = P(await ctx.fetch(url));\n\n    const paras = [];\n    for (let part = 1; part <= 20; part++) {\n      if (!doc.querySelector('#booktxt')) throw new Error('ikanshu5: chapter part failed to load: ' + url);\n      for (const p of utils.qsa('#booktxt p', doc)) {\n        const text = utils.cleanText(p.textContent);\n        if (!text || /^本章未完/.test(text) || /^[\\p{P}\\s]+$/u.test(text)) continue;\n        paras.push(`<p>${esc(text)}</p>`);\n      }\n      const next = utils.attr('a[rel=\"next\"]', 'href', doc) || '';\n      if (!cid || !sameChapter.test(next)) break;\n      url = utils.resolveUrl(next, url);\n      doc = P(await ctx.fetch(url));\n    }\n    return paras.join('\\n');\n  },\n\n  async extractMetadata(ctx) {\n    const { utils } = ctx;\n    const P = (h) => new DOMParser().parseFromString(h || '', 'text/html');\n    let doc = P(ctx.html);\n    if (!doc.querySelector('meta[property=\"og:novel:book_name\"]')) {\n      const id = (ctx.url.match(/\\/(?:book|indexlist)\\/(\\d+)/) || [])[1];\n      if (!id) return null;\n      doc = P(await ctx.fetch(utils.resolveUrl(`/book/${id}/`, ctx.url)));\n    }\n    const og = (p) => utils.cleanText(utils.attr(`meta[property=\"og:${p}\"]`, 'content', doc) || '');\n    const title = og('novel:book_name') || utils.text('h1', doc);\n    if (!title) return null;\n    return {\n      title,\n      author: og('novel:author'),\n      cover: og('image'),\n      description: og('description'),\n      status: og('novel:status'),\n      genres: og('novel:category'),\n    };\n  },\n})",
+  "config": {
+    "rate_limit_ms": 1000
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "zh",
+  "description": "ikanshu5.net — 五块五毛小说网 (爱看书5), Chinese web novels. Follows paginated ToC and multi-part chapters."
+}
