@@ -323,6 +323,29 @@ Net/URL: `resolveUrl(url, base)`, `fetchJson(url)`, `batchFetch(urls, concurrenc
 - One script runs at a time (mutex); each call times out at **30s**.
 - Fetch many pages concurrently with `Promise.all(urls.map(fetch))` or
   `utils.batchFetch` — this is the main reason to go scriptable.
+- The 30s budget covers **every** `ctx.fetch` a call makes. A sequential loop over
+  a 150-page ToC will time out; read the page list (e.g. a `<select>` of pages)
+  and `batchFetch` it instead. `npm run test:live` prints the ToC time and warns
+  above 25s.
+- `utils.batchFetch` resolves a failed URL to `null`, and `ctx.fetch` does **not**
+  reject on HTTP 404/500 (you get the error page's HTML). Check that each page has
+  the element you expect and **throw** if not — returning a short ToC or half a
+  chapter silently ships a broken EPUB.
+
+### Charset (GBK / Big5)
+`ctx.html`, `ctx.fetch` and the generic engine all decode like a browser:
+`Content-Type` charset → `<meta charset>` / `http-equiv` → UTF-8, with `gb2312`
+upgraded to `gbk`. You never decode bytes yourself. One exception: with **Force
+Hybrid Mode** on, `ctx.fetch` runs in the tab and uses `Response.text()` (UTF-8
+only), so GBK pages fetched that way come back garbled. Save fixtures with
+`npm run fixture -- <url> <file>`, which uses the same algorithm.
+
+### Pattern: chapters split across sub-pages
+Many Chinese sites cut one chapter into `<id>.html`, `<id>_2.html`, … and only the
+last part links to the next chapter. Generic rules cannot follow this; in
+`extractChapter`, collect the body, then follow `a[rel="next"]` **only while** its
+href matches the same chapter id (`/<id>_\d+\.html$`), with a hard cap on parts.
+See [`src/ikanshu5.net/parser.js`](../src/ikanshu5.net/parser.js).
 
 > **Template:** [`rules/novel543.com.json`](../rules/novel543.com.json) is a
 > published scriptable rule that follows this contract exactly — it parses HTML with
@@ -514,3 +537,5 @@ requires **Force Hybrid Mode**.
   page's HTML with an AI (fill-in-the-blanks prompt + worked examples).
 - [`../README.md`](../README.md) — repo layout, `repo.json` fields, how to add,
   version, validate, and publish a rule.
+- [`PORT_FROM_VBOOK.md`](PORT_FROM_VBOOK.md) — turn a vbook extension
+  (`toc.js` / `chap.js` / `detail.js`) into a scriptable rule.

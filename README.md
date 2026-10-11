@@ -9,10 +9,13 @@ read one site (where the title, chapter list, and chapter body live). This is th
 
 ```
 webbound-rules/
-├── package.json              # dev toolchain: build / check / new / test / test:live
+├── package.json              # dev toolchain: build / check / new / test / test:live / fixture
+├── AGENTS.md                 # working rules for AI agents (CLAUDE.md imports it)
+├── scripts/                  # build, new, test, test-live, fetch-fixture
+├── .agents/skills/           # webbound-rule-authoring skill (also linked under .claude/skills)
 ├── src/
 │   ├── repo.meta.json        # repo index name + version
-│   ├── _ctx/                 # vendored runtime ctx + DOM shim + drift check (do not hand-edit)
+│   ├── _ctx/                 # node port of the sandbox ctx + DOM shim + drift check + toolchain tests
 │   └── <domain>/             # ONE folder per site — the source of truth
 │       ├── rule.json         #   rule fields + a `marketplace` block
 │       ├── parser.js         #   scriptable only: the ({ extractToC, extractChapter, ... }) object
@@ -22,7 +25,9 @@ webbound-rules/
 ├── rules/<domain>.json       # GENERATED — do not edit by hand
 ├── repo.json                 # GENERATED index — do not edit by hand
 └── docs/
-    └── RULE_SYSTEM.md        # full rule-authoring reference (generic + scriptable)
+    ├── RULE_SYSTEM.md        # full rule-authoring reference (generic + scriptable)
+    ├── WRITE_A_RULE_WITH_AI.md # prompt pack for generating a rule with an AI
+    └── PORT_FROM_VBOOK.md    # porting a vbook extension (toc.js/chap.js/...) to a rule
 ```
 
 > **`rules/` and `repo.json` are build output.** Edit files under `src/`, then run
@@ -59,9 +64,12 @@ Requires **Node ≥ 22**. Once: `npm install`.
      object in `src/example.com/parser.js` — real JavaScript, no JSON escaping.
    - `samples.json` — a real `book_url` and `chapter_url`.
 
-3. **Add an offline test.** Save the TOC + chapter responses under `fixtures/` and
-   assert against them in `src/example.com/toc.test.mjs` / `chapter.test.mjs`. Copy
-   `src/sangtacviet.vip/*.test.mjs` as the template — they build the runtime ctx via
+3. **Add an offline test.** Save the TOC + chapter responses under `fixtures/` with
+   `npm run fixture -- <url> src/example.com/fixtures/book.html` (decodes GBK/Big5
+   exactly like the extension) and
+   assert against them in `src/example.com/rule.test.mjs`. Copy
+   `src/ikanshu5.net/rule.test.mjs` (scriptable) or `src/piaotia.com/rule.test.mjs`
+   (generic) as the template — they build the runtime ctx via
    the vendored `createScriptableContext`, so a green test means the extension parses
    the same bytes the same way.
 
@@ -114,5 +122,6 @@ sandbox `ctx`/`utils` API are documented in [`docs/RULE_SYSTEM.md`](docs/RULE_SY
 
 ## Versioning
 
-Semver per rule. Bump `repo_meta.version` in `repo.json` whenever the set of rules
+Semver per rule. Bump `version` in `src/repo.meta.json` (copied into `repo.json`'s
+`repo_meta`) whenever the set of rules
 changes so downstream mirrors can detect a refresh.

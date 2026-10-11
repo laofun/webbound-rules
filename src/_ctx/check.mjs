@@ -1,28 +1,49 @@
-// Ctx-parity drift check. Zero-dep (fs + string compare). Exit 1 if the
-// vendored scriptable-context.mjs diverges from the sibling extension's source
-// of truth; best-effort skip (exit 0) if the extension isn't present.
+// Ctx-parity drift check. Zero-dep (fs + string compare). The extension inlines
+// its ctx in the sandbox (src/apps/sandbox/sandbox.ts, TypeScript); we compare
+// the `const utils = { ... }` block of both files after stripping comments,
+// TS type annotations, and whitespace. Exit 1 on divergence; best-effort skip
+// (exit 0) only when the extension checkout itself is absent.
 import { readFileSync, existsSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const vendored = path.join(here, 'scriptable-context.mjs');
-const vendoredText = readFileSync(vendored, 'utf8');
-const versionOf = (t) => (t.match(/SCRIPTABLE_CTX_VERSION\s*=\s*["']([^"']+)["']/) || [])[1] || '?';
-const version = versionOf(vendoredText);
 
-const ext = process.env.WB_EXTENSION_PATH
-  || path.join(here, '../../../NovelPacker-Extension/src/core/scriptable/scriptable-context.mjs');
-
-if (!existsSync(ext)) {
-  console.log(`ctx parity: extension not found at ${ext} — skipping (vendored ${version})`);
-  process.exit(0);
+export function utilsFingerprint(text) {
+  const start = text.indexOf('const utils = {');
+  if (start < 0) throw new Error('no `const utils = {` block found');
+  const end = text.indexOf('\n    };', start);
+  return text.slice(start, end)
+    .replace(/\/\/.*$/gm, '')
+    .replace(/\bproxyFetch\b/g, 'fetch')
+    .replace(/\s+as\s+HTMLElement(\[\]|\s*\|\s*null)?/g, '')
+    .replace(/(\w)\s*:\s*(string\[\]|string|number|Element\s*\|\s*Document)(?=\s*[,)=])/g, '$1')
+    .replace(/\)\s*:\s*string\[\]\s*=>/g, ') =>')
+    .replace(/const (\w+): string\[\]/g, 'const $1')
+    .replace(/\s+/g, '');
 }
 
-const extText = readFileSync(ext, 'utf8');
-if (extText !== vendoredText) {
-  console.error(`ctx parity FAIL: vendored (${version}) != extension (${versionOf(extText)}).`);
-  console.error(`Re-vendor: cp "${ext}" "${vendored}"  (and bump SCRIPTABLE_CTX_VERSION if behavior changed).`);
-  process.exit(1);
+function main() {
+  const vendored = path.join(here, 'scriptable-context.mjs');
+  const extRoot = process.env.WB_EXTENSION_PATH || path.join(here, '../../../NovelPacker-Extension');
+  const ext = path.join(extRoot, 'src/apps/sandbox/sandbox.ts');
+
+  if (!existsSync(extRoot)) {
+    console.log(`ctx parity: extension not found at ${extRoot} — skipping (set WB_EXTENSION_PATH)`);
+    process.exit(0);
+  }
+  // The checkout exists but the file moved: fail loudly instead of silently skipping.
+  if (!existsSync(ext)) {
+    console.error(`ctx parity FAIL: ${ext} not found — the extension moved its sandbox; update src/_ctx/check.mjs.`);
+    process.exit(1);
+  }
+
+  if (utilsFingerprint(readFileSync(vendored, 'utf8')) !== utilsFingerprint(readFileSync(ext, 'utf8'))) {
+    console.error(`ctx parity FAIL: utils in src/_ctx/scriptable-context.mjs != ${ext}.`);
+    console.error('Port the change into scriptable-context.mjs and bump SCRIPTABLE_CTX_VERSION.');
+    process.exit(1);
+  }
+  console.log('ctx parity OK: utils in sync with extension sandbox.ts');
 }
-console.log(`ctx parity OK: in sync (${version})`);
+
+if (import.meta.url === pathToFileURL(process.argv[1]).href) main();

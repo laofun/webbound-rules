@@ -4,6 +4,7 @@
 // via env WB_COOKIE_<DOMAIN> ([.-] → _, uppercased), e.g. WB_COOKIE_SANGTACVIET_VIP.
 import '../src/_ctx/dom-env.mjs';
 import { createScriptableContext } from '../src/_ctx/scriptable-context.mjs';
+import { pickCharset, decode } from './fetch-fixture.mjs';
 import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
@@ -61,16 +62,21 @@ const makeFetch = (referer) => async (url, init = {}) => {
     }
   }
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
-  return res.text();
+  // Decode like the extension's fetchHtml (GBK/Big5-aware), not res.text().
+  const buf = await res.arrayBuffer();
+  return decode(buf, pickCharset(res.headers.get('content-type'), buf));
 };
 
 console.log(`live ${domain}${cookie ? ' (with cookie)' : ` (no cookie; set ${cookieEnv} if gated)`}`);
 
 const tocCtx = createScriptableContext({ html: '', url: samples.book_url, config: rule.config, fetch: makeFetch(samples.book_url) });
+const t0 = Date.now();
 const chapters = await parser.extractToC(tocCtx);
+const tocMs = Date.now() - t0;
 A(Array.isArray(chapters) && chapters.length > 0, 'extractToC returned no chapters');
 A(chapters.every(c => /^https?:\/\//.test(c.url) && c.title), 'a chapter is missing an absolute url or a title');
-console.log(`  toc: ${chapters.length} chapters — first: ${chapters[0].title}`);
+console.log(`  toc: ${chapters.length} chapters in ${(tocMs / 1000).toFixed(1)}s — first: ${chapters[0].title}`);
+if (tocMs > 25000) console.warn('  WARN: extractToC took >25s; the extension sandbox kills a call at 30s');
 
 const chCtx = createScriptableContext({ html: '', url: samples.chapter_url, config: rule.config, fetch: makeFetch(samples.chapter_url) });
 const body = await parser.extractChapter(chCtx);

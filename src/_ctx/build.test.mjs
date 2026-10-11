@@ -27,8 +27,9 @@ A(JSON.stringify(Object.keys(n543)) === JSON.stringify(
   'novel543: wrong key order — ' + Object.keys(n543));
 
 const repo = JSON.parse(repoJson);
-A(repo.sources.map(s => s.domain).join(',') === '52shuku.net,8novel.com,metruyenchuvn.org,mongtruyen.com,novel543.com,piaotia.com,sangtacviet.vip,storiluna.com,vietnamthuquan.eu,wfxs.tw',
-  'repo.json: sources not sorted by domain');
+const domains = repo.sources.map(s => s.domain);
+A(domains.length === ruleFiles.size && domains.join(',') === [...ruleFiles.keys()].sort().join(','),
+  'repo.json: sources not sorted by domain (or not one per rule)');
 A(JSON.stringify(Object.keys(repo.sources[0])) === JSON.stringify(
   ['id','name','domain','rule_url','version','author','description','icon','language','featured']),
   'repo.json: wrong source key order — ' + Object.keys(repo.sources[0]));

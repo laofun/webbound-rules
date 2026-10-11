@@ -8,7 +8,8 @@
     "watch": "node --watch-path=./src scripts/build.mjs",
     "new": "node scripts/new.mjs",
     "test": "node scripts/test.mjs",
-    "test:live": "node scripts/test-live.mjs"
+    "test:live": "node scripts/test-live.mjs",
+    "fixture": "node scripts/fetch-fixture.mjs"
   },
   "devDependencies": {
     "linkedom": "^0.18.0"

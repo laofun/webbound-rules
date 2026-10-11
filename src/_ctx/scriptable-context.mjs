@@ -1,9 +1,9 @@
-// Shared scriptable-parser context factory — SOURCE OF TRUTH.
-// Self-contained ESM: no imports. Depends only on globals `document`,
-// `DOMParser`, `setTimeout`, `URL`, and an injected `fetch`, so the identical
-// file runs in the sandbox iframe AND in node (rules-repo tests vendor a
-// byte-identical copy). Bump SCRIPTABLE_CTX_VERSION on any behavior change and
-// re-vendor into ../webbound-rules/src/_ctx/scriptable-context.mjs.
+// Node port of the extension's scriptable ctx (the extension inlines it in
+// NovelPacker-Extension/src/apps/sandbox/sandbox.ts). Self-contained ESM: no
+// imports. Depends only on globals `document`, `DOMParser`, `setTimeout`,
+// `URL`, and an injected `fetch`. src/_ctx/check.mjs fails `npm test` when the
+// `utils` block drifts from sandbox.ts — port the change here and bump
+// SCRIPTABLE_CTX_VERSION.
 export const SCRIPTABLE_CTX_VERSION = "1.0.0";
 
 export function createScriptableContext({ html, url, config, fetch }) {

@@ -209,7 +209,9 @@ Requires **Node ≥ 22** and a one-time `npm install`.
 
    You never hand-edit `rules/` or `repo.json`.
 
-3. **Add an offline test.** Save the TOC + chapter responses under `fixtures/` and
+3. **Add an offline test.** Save the TOC + chapter responses under `fixtures/`
+   (`npm run fixture -- <url> src/<domain>/fixtures/book.html` decodes GBK/Big5 like
+   the extension) and
    assert against them in `src/<domain>/*.test.mjs`. Copy
    `src/sangtacviet.vip/toc.test.mjs` + `chapter.test.mjs` — they build the real
    runtime ctx via the vendored `createScriptableContext`, so a green test means the
