@@ -69,4 +69,15 @@ A(body.includes('Một tiếng “Ầm” vang vọng'), 'expected chapter conte
 A(!body.includes('<script'), 'script tag not stripped from chapter');
 A(!body.includes('copy-protection-overlay'), 'overlay not stripped');
 
+const rejects = async (p) => { try { await p; return false; } catch { return true; } };
+
+// 5. Failures must throw, not ship a short ToC / empty chapter.
+const mk = (html, url, fetch) => createScriptableContext({ html, url, config: rule.config, fetch });
+A(await rejects(parser.extractToC(mk(bookHtml, bookUrl, async (u) => {
+  if (u.includes('load-chapters.php')) throw new Error('HTTP 500');
+  return bookHtml;
+}))), 'extractToC must throw when a chapter-list page fails');
+A(await rejects(parser.extractToC(mk('', bookUrl, async () => '<html></html>'))), 'extractToC must throw on an empty page');
+A(await rejects(parser.extractChapter(mk('', chapterUrl, async () => '<html></html>'))), 'extractChapter must throw without a content container');
+
 console.log('OK: mongtruyen.com rule test passed');

@@ -59,24 +59,24 @@
             json = typeof raw === 'string' ? JSON.parse(raw) : raw;
           } catch (e) {}
 
-          if (json && json.success && Array.isArray(json.chapters)) {
-            for (const ch of json.chapters) {
-              const chapterUrl = ctx.utils.resolveUrl(`/TacPham/${slugTua}/chuong-${ch.chuongId}`, ctx.url);
-              if (!seen.has(chapterUrl)) {
-                seen.add(chapterUrl);
-                chapters.push({
-                  title: ctx.utils.cleanText(ch.title || ''),
-                  url: chapterUrl,
-                });
-              }
+          if (!json || !json.success || !Array.isArray(json.chapters)) throw new Error('bad JSON response');
+          for (const ch of json.chapters) {
+            const chapterUrl = ctx.utils.resolveUrl(`/TacPham/${slugTua}/chuong-${ch.chuongId}`, ctx.url);
+            if (!seen.has(chapterUrl)) {
+              seen.add(chapterUrl);
+              chapters.push({
+                title: ctx.utils.cleanText(ch.title || ''),
+                url: chapterUrl,
+              });
             }
           }
         } catch (err) {
-          // ignore fetch error on page
+          throw new Error(`vietnamthuquan: chapter list page ${p} failed: ${err.message}`);
         }
       }
     }
 
+    if (!chapters.length) throw new Error('vietnamthuquan: no chapters found at ' + ctx.url);
     return chapters;
   },
 
@@ -91,7 +91,7 @@
       } catch (e) {}
     }
     const el = doc.querySelector('#vntqTextContent') || doc.querySelector('.vntq-text-content');
-    if (!el) return '';
+    if (!el) throw new Error('vietnamthuquan: chapter body not found at ' + ctx.url);
     const clone = el.cloneNode(true);
     clone.querySelectorAll('script, style, ins, iframe, .ads, .advertisement, blockquote, .vntq-toolbar, .vntq-nav-bar').forEach((n) => n.remove());
     return ctx.utils.sanitize(clone.innerHTML);

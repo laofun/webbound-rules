@@ -35,4 +35,15 @@ A(metadata.title === 'Ta Vẽ Ra Phù Lục Tất Bị Cấm Dùng', `wrong titl
 A(metadata.author === 'An Tĩnh Phủng Tràng', `wrong author: ${metadata.author}`);
 A(metadata.cover.startsWith('https://metruyenchuvn.org/'), `wrong cover URL: ${metadata.cover}`);
 
+const rejects = async (p) => { try { await p; return false; } catch { return true; } };
+
+// Failures must throw, not ship a short ToC.
+const mk = (fetch) => createScriptableContext({ html: bookHtml, url: ctx.url, config: rule.config, fetch });
+A(await rejects(parser.extractToC(mk(async (u) => {
+  if (u.includes('listchap')) throw new Error('HTTP 500');
+  return bookHtml;
+}))), 'extractToC must throw when a listchap page fails');
+A(await rejects(parser.extractToC(createScriptableContext({ html: '', url: ctx.url, config: rule.config, fetch: async () => '<html></html>' }))),
+  'extractToC must throw on an empty page');
+
 console.log('OK: metruyenchuvn.org toc + metadata test passed');

@@ -26,4 +26,9 @@ A(body.includes('Sáng sớm, Giang Thành'), 'expected text missing from chapte
 A(!body.includes('<script'), 'script tag not stripped');
 A(!body.includes('download-book'), 'download-book button not stripped');
 
+const rejects = async (p) => { try { await p; return false; } catch { return true; } };
+
+A(await rejects(parser.extractChapter(createScriptableContext({ html: '', url: ctx.url, config: rule.config, fetch: async () => '<html></html>' }))),
+  'extractChapter must throw without a chapter body');
+
 console.log('OK: metruyenchuvn.org chapter test passed');

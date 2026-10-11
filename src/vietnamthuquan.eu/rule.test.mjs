@@ -67,4 +67,13 @@ A(!body.includes('vntq-toolbar'), 'vntq-toolbar not stripped');
 A(!body.includes('vntq-nav-bar'), 'vntq-nav-bar not stripped');
 A(!body.includes('Nguồn: TVE 4U'), 'blockquote uploader info not stripped');
 
+const rejects = async (p) => { try { await p; return false; } catch { return true; } };
+
+// 5. Failures must throw, not ship a short ToC / empty chapter.
+const mk = (html, url, fetch) => createScriptableContext({ html, url, config: rule.config, fetch });
+A(await rejects(parser.extractToC(mk(bookHtml, bookUrl, async (u) => (u.includes('get-mucluc') ? '{"success":false}' : bookHtml)))),
+  'extractToC must throw when a mucluc page fails');
+A(await rejects(parser.extractToC(mk('', bookUrl, async () => '<html></html>'))), 'extractToC must throw on an empty page');
+A(await rejects(parser.extractChapter(mk('', chapterUrl, async () => '<html></html>'))), 'extractChapter must throw without a chapter body');
+
 console.log('OK: vietnamthuquan.eu rule test passed');

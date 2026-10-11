@@ -84,11 +84,12 @@
             }
           }
         } catch (err) {
-          // ignore page fetch errors
+          throw new Error(`metruyenchuvn: chapter list page ${p} failed: ${err.message}`);
         }
       }
     }
 
+    if (!chapters.length) throw new Error('metruyenchuvn: no chapters found at ' + ctx.url);
     return chapters;
   },
 
@@ -103,7 +104,7 @@
       } catch (e) {}
     }
     const el = doc.querySelector('.truyen') || doc.querySelector('#vungdoc') || doc.querySelector('.chapter_wrap');
-    if (!el) return '';
+    if (!el) throw new Error('metruyenchuvn: chapter body not found at ' + ctx.url);
     el.querySelectorAll('script, style, ins, iframe, .ads, .advertisement, #download-book').forEach((n) => n.remove());
     return ctx.utils.sanitize(el.innerHTML);
   },

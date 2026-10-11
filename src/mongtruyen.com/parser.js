@@ -56,10 +56,11 @@
           const pageDoc = P(res);
           addChaptersFromDoc(pageDoc);
         } catch (err) {
-          // Continue on error
+          throw new Error(`mongtruyen: chapter list page ${p} failed: ${err.message}`);
         }
       }
     }
+    if (!chapters.length) throw new Error('mongtruyen: no chapters found at ' + ctx.url);
     return chapters;
   },
 
@@ -74,7 +75,7 @@
       } catch (e) {}
     }
     const contentEl = doc.querySelector('#noi_dung_truyen');
-    if (!contentEl) return '';
+    if (!contentEl) throw new Error('mongtruyen: #noi_dung_truyen not found at ' + ctx.url);
 
     const nonce = contentEl.getAttribute('data-mt-nonce');
     const idTruyen = contentEl.getAttribute('data-mt-id-truyen');
@@ -111,6 +112,8 @@
     }
 
     contentEl.querySelectorAll('script, style, ins, iframe, .ads, .copy-protection-overlay, .mt-hidden-watermark, .anti-copy-tooltip, .mt-chapter-loading').forEach((n) => n.remove());
+    // AJAX failed and the static container holds no text: fail instead of an empty chapter.
+    if (!ctx.utils.cleanText(contentEl.textContent)) throw new Error('mongtruyen: chapter content empty at ' + ctx.url);
     return ctx.utils.sanitize(contentEl.innerHTML);
   },
 
