@@ -26,7 +26,7 @@ const fetch = async (u) => {
   if (/\/chapters\/\d+(\?edition_type=\w+)?$/.test(u)) return fx(chapterFixture);
   throw new Error('unexpected fetch ' + u);
 };
-const ctx = (url, f = fetch) => createScriptableContext({ html: fx('book.html'), url, config: rule.config, fetch: f });
+const ctx = (url, f = fetch) => createScriptableContext({ html: fx('book.html'), url, config: { ...rule.config, chapter_delay_ms: 0 }, fetch: f });
 
 // 1. url_pattern: book page in every edition, never a chapter.
 const re = new RegExp(rule.url_pattern);
@@ -79,6 +79,9 @@ const warn = JSON.parse(fx('chapter_1_ai.json'));
 warn.content = 'Dòng một.<br><br>Xin vui lòng tắt chế độ đọc để xem nội dung chương.<br><br>Dòng hai.';
 const warnBody = await parser.extractChapter(ctx(chUrl, async () => JSON.stringify(warn)));
 A(warnBody === '<p>Dòng một.</p>\n<p>Dòng hai.</p>', `warning line leaked: ${warnBody}`);
+
+// The anti-burst pause comes from config and defaults to 4s when unset.
+A(rule.config.chapter_delay_ms >= 3000, 'rule must pause >=3s per chapter');
 
 // 6. Verification challenge / empty body must throw with a hint, not return ''.
 for (const f of ['chapter_verify_now.json', 'chapter_verify_human.json']) {

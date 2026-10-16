@@ -46,4 +46,5 @@ port-specific steps. The full mapping tables are in `docs/PORT_FROM_VBOOK.md`.
 | ToC pointing at API URLs | Web URLs; Force Hybrid navigates the tab there. |
 | Ignoring `?edition=` / variants the site offers | Map URL prefix → API param the frontend sends. |
 | Hammering the API while saving fixtures | Pace requests; a flagged IP returns empty/`VERIFY_HUMAN`. If flagged, ask the user to save the fixture from their browser. |
+| Relying on `rate_limit_ms` to slow chapters | It barely spaces scriptable chapters; `await utils.sleep()` in `extractChapter`. |
 | Porting home/search/genre scripts | WebBound has no browsing — drop them. |

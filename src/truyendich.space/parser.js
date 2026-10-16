@@ -53,6 +53,10 @@
     if (!m) throw new Error('truyendich: not a chapter url: ' + ctx.url);
     const [, ed, slug, n] = m;
     const u = utils.resolveUrl(`/api/novels/${slug}/chapters/${n}${ed ? '?edition_type=' + ed : ''}`, ctx.url);
+    // The extension runs scriptable chapters one at a time but back to back, so
+    // rate_limit_ms alone leaves almost no gap; pause here to stay under the
+    // site's burst detector. ponytail: fixed delay, tune config.chapter_delay_ms.
+    await utils.sleep(ctx.config?.chapter_delay_ms ?? 4000);
     let d;
     try { d = JSON.parse(await ctx.fetch(u)); } catch { d = null; }
     if (!d) throw new Error('truyendich: chapter failed to load: ' + u);

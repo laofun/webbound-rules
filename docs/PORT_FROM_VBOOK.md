@@ -77,7 +77,8 @@ keep the prefix in every chapter URL, and make `url_pattern` accept every prefix
 **Anti-bot trust.** Sites like this score each client; a burst of requests (your
 own fixture runs included) flips the API to a challenge with empty content. Pace
 fixture downloads (`sleep 2` between them), save the challenge response itself as
-a fixture for the "must throw" test, and use `rate_limit_ms` ≥ 2000.
+a fixture for the "must throw" test, and pause inside `extractChapter`
+(`utils.sleep`, ~4s) — `rate_limit_ms` alone does not space scriptable chapters.
 
 ## 5. Checklist
 

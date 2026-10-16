@@ -321,6 +321,10 @@ Net/URL: `resolveUrl(url, base)`, `fetchJson(url)`, `batchFetch(urls, concurrenc
 
 ### Runtime limits
 - One script runs at a time (mutex); each call times out at **30s**.
+- Scriptable chapters run one at a time but **back to back**: the queue's
+  `rate_limit_ms` gap overlaps across workers, so it barely slows them. For sites
+  that block bursts, `await utils.sleep(ms)` inside `extractChapter` (see
+  `src/truyendich.space/parser.js`, `config.chapter_delay_ms`).
 - Fetch many pages concurrently with `Promise.all(urls.map(fetch))` or
   `utils.batchFetch` — this is the main reason to go scriptable.
 - The 30s budget covers **every** `ctx.fetch` a call makes. A sequential loop over

@@ -21,9 +21,10 @@
     }
   },
   "config": {
-    "rate_limit_ms": 2000
+    "rate_limit_ms": 2000,
+    "chapter_delay_ms": 4000
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "WebBound",
   "language": "vi",
   "description": "truyendich.space — TruyenDich.AI, Vietnamese translated/convert/AI novels. Pick the edition by the URL you start from, as on the site: /doc-truyen/<slug> (site default, usually bản dịch), /doc-truyen/ai/<slug> (AI) or /doc-truyen/cv/<slug> (convert). ToC and chapters come from the JSON API (/api/novels/<slug>?edition_type=). The API answers bursts with a human-verification challenge; if chapters fail with 'human verification', pass the check on truyendich.space in the browser and enable Force Hybrid Mode.",
