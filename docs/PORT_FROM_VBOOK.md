@@ -4,7 +4,9 @@ A vbook extension (`plugin.json` + `src/*.js`) is a reader app plugin: it browse
 searches, and reads. A WebBound rule only **crawls one book into an EPUB**, so most
 of a vbook plugin is dropped and three scripts map onto the rule.
 
-Worked example: `vldyt/extensions/ikanshu5` → [`src/ikanshu5.net/`](../src/ikanshu5.net).
+Worked examples: `vldyt/extensions/ikanshu5` → [`src/ikanshu5.net/`](../src/ikanshu5.net)
+(HTML scraping), `vldyt/extensions/truyendich-ai` →
+[`src/truyendich.space/`](../src/truyendich.space) (JSON API, editions, verify challenge).
 
 ## 1. What maps to what
 
@@ -52,7 +54,32 @@ fetch the live pages and check (`npm run fixture -- <url> <file>`):
   returned half of every chapter.
 - **Filler lines** — e.g. `本章未完，点击下一页继续阅读。`.
 
-## 4. Checklist
+
+## 4. API-backed plugins (`requestJson`)
+
+Some plugins never parse HTML: `config.js` has an `API_URL` and a `requestJson()`
+helper. Port the API calls, not the web pages.
+
+| vbook | WebBound |
+|---|---|
+| `requestJson(path)` | `JSON.parse(await ctx.fetch(url))` in a `try`, throw if it isn't the shape you expect. `utils.fetchJson` is fine for optional data (metadata). |
+| `toc.js` `while (page <= MAX)` over `?page=N&size=S` | Read `total` from page 1, build every page URL, `utils.batchFetch(urls, 5)`. Find the server's max `size` (try a big value — FastAPI answers 422 with the limit). Throw if a page has no `items` or the count ≠ `total`. |
+| ToC `url` = the API chapter URL | Use the **web** chapter URL and fetch the API inside `extractChapter`. With Force Hybrid the extension navigates the tab to the chapter URL, which also runs the site's own JS checks; an API URL would render as raw JSON. |
+| `Response.error("…VERIFY_HUMAN…")` | `throw` with a hint (open the site, pass the check, enable Force Hybrid Mode). Never return `''`. |
+| Plain-text `content` with `\n` | Split on newlines, escape, wrap in `<p>`. If it already has `<p>`/`<br>`, `utils.sanitize` it. |
+
+**Editions / variants.** WebBound rules have no user options, so a variant (bản
+dịch / AI / convert, translation vs raw) is chosen by the **URL the user starts
+from**. Mirror the site's own URL scheme (e.g. `/doc-truyen/ai/<slug>`), map it to
+the API parameter the site's frontend sends (grep its JS bundle for the API path),
+keep the prefix in every chapter URL, and make `url_pattern` accept every prefix.
+
+**Anti-bot trust.** Sites like this score each client; a burst of requests (your
+own fixture runs included) flips the API to a challenge with empty content. Pace
+fixture downloads (`sleep 2` between them), save the challenge response itself as
+a fixture for the "must throw" test, and use `rate_limit_ms` ≥ 2000.
+
+## 5. Checklist
 
 1. `npm run new <domain>` and fill `rule.json` (keep metadata selectors so the
    generic fallback works if `extractMetadata` returns `null`).

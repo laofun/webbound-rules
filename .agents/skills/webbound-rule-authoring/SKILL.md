@@ -10,7 +10,8 @@ The contract lives in the docs; this skill is the workflow. Read before writing:
 - [`docs/RULE_SYSTEM.md`](../../../docs/RULE_SYSTEM.md) — schema, selector
   features, generic crawler, scriptable `ctx`/`utils` (§6), troubleshooting.
 - [`docs/PORT_FROM_VBOOK.md`](../../../docs/PORT_FROM_VBOOK.md) — when the source
-  is a vbook plugin (`plugin.json` + `toc.js`/`chap.js`).
+  is a vbook plugin (`plugin.json` + `toc.js`/`chap.js`); also load the
+  `porting-vbook-plugins` skill.
 
 ## Workflow
 

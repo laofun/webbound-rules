@@ -1,7 +1,7 @@
 {
   "repo_meta": {
     "name": "WebBound Official Rules",
-    "version": "1.3.0"
+    "version": "1.4.0"
   },
   "sources": [
     {
@@ -111,6 +111,18 @@
       "icon": "🌙",
       "language": "en",
       "featured": true
+    },
+    {
+      "id": "truyendich.space",
+      "name": "TruyenDich.AI",
+      "domain": "truyendich.space",
+      "rule_url": "./rules/truyendich.space.json",
+      "version": "1.0.0",
+      "author": "WebBound",
+      "description": "TruyenDich.AI (truyendich.space) — bản dịch, AI và convert; chọn phiên bản bằng URL (/doc-truyen/ai/…, /doc-truyen/cv/…). Use Force Hybrid Mode if the site asks for verification.",
+      "icon": "📗",
+      "language": "vi",
+      "featured": false
     },
     {
       "id": "vietnamthuquan.eu",

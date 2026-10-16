@@ -1,0 +1,36 @@
+{
+  "domain": "truyendich.space",
+  "url_pattern": "^https?://(?:www\\.)?truyendich\\.space/doc-truyen/(?:ai/|cv/)?[0-9A-Za-z-]+/?(?:[?#].*)?$",
+  "parser_type": "scriptable",
+  "selectors": {
+    "title": "h1",
+    "author": "",
+    "cover": "meta[property='og:image']@content",
+    "desc": "",
+    "status": "",
+    "genres": "",
+    "toc": {
+      "item": ""
+    },
+    "chapter": {
+      "content": "",
+      "remove": [
+        "script",
+        "style"
+      ]
+    }
+  },
+  "config": {
+    "rate_limit_ms": 2000
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "vi",
+  "description": "truyendich.space — TruyenDich.AI, Vietnamese translated/convert/AI novels. Pick the edition by the URL you start from, as on the site: /doc-truyen/<slug> (site default, usually bản dịch), /doc-truyen/ai/<slug> (AI) or /doc-truyen/cv/<slug> (convert). ToC and chapters come from the JSON API (/api/novels/<slug>?edition_type=). The API answers bursts with a human-verification challenge; if chapters fail with 'human verification', pass the check on truyendich.space in the browser and enable Force Hybrid Mode.",
+  "marketplace": {
+    "name": "TruyenDich.AI",
+    "icon": "📗",
+    "featured": false,
+    "description": "TruyenDich.AI (truyendich.space) — bản dịch, AI và convert; chọn phiên bản bằng URL (/doc-truyen/ai/…, /doc-truyen/cv/…). Use Force Hybrid Mode if the site asks for verification."
+  }
+}

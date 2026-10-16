@@ -1,0 +1,31 @@
+{
+  "domain": "truyendich.space",
+  "url_pattern": "^https?://(?:www\\.)?truyendich\\.space/doc-truyen/(?:ai/|cv/)?[0-9A-Za-z-]+/?(?:[?#].*)?$",
+  "parser_type": "scriptable",
+  "selectors": {
+    "title": "h1",
+    "author": "",
+    "cover": "meta[property='og:image']@content",
+    "desc": "",
+    "status": "",
+    "genres": "",
+    "toc": {
+      "item": ""
+    },
+    "chapter": {
+      "content": "",
+      "remove": [
+        "script",
+        "style"
+      ]
+    }
+  },
+  "script": "({\n  // Everything comes from the JSON API at /api/novels/<slug>. A book has up to\n  // three editions and the user picks one by the URL they start from, exactly as\n  // on the site: /doc-truyen/<slug> (site default, usually \"dịch\"),\n  // /doc-truyen/ai/<slug> (AI) or /doc-truyen/cv/<slug> (convert). The prefix is\n  // sent as ?edition_type= and kept in every chapter URL.\n  // ToC: /chapters?page=N&size=200 (200 is the server cap), fetched in parallel.\n  async extractToC(ctx) {\n    const { utils } = ctx;\n    const m = ctx.url.match(/\\/doc-truyen\\/(?:(ai|cv)\\/)?([^/?#]+)/);\n    if (!m) throw new Error('truyendich: no novel slug in ' + ctx.url);\n    const [, ed, slug] = m;\n    const api = utils.resolveUrl(`/api/novels/${slug}/chapters?size=200${ed ? '&edition_type=' + ed : ''}&page=`, ctx.url);\n    const parse = (raw, u) => {\n      let j;\n      try { j = JSON.parse(raw); } catch { j = null; }\n      if (!j || !Array.isArray(j.items)) throw new Error('truyendich: ToC page failed to load: ' + u);\n      return j;\n    };\n\n    const first = parse(await ctx.fetch(api + 1), api + 1);\n    const total = Number(first.total) || 0;\n    const urls = [];\n    for (let p = 2; p <= Math.ceil(total / 200); p++) urls.push(api + p);\n    const rest = await utils.batchFetch(urls, 5);\n    const pages = [first, ...rest.map((raw, i) => parse(raw, urls[i]))];\n\n    const chapters = [];\n    const seen = new Set();\n    for (const page of pages) {\n      for (const c of page.items) {\n        const n = c?.chapter_number;\n        if (n == null || seen.has(n)) continue;\n        seen.add(n);\n        const title = utils.cleanText(c.title || '');\n        chapters.push({\n          title: `Chương ${n}${title ? ': ' + title : ''}`,\n          url: utils.resolveUrl(`/doc-truyen/${ed ? ed + '/' : ''}${slug}/chuong-${n}`, ctx.url),\n        });\n      }\n    }\n    if (chapters.length !== total) throw new Error(`truyendich: ToC has ${chapters.length} of ${total} chapters`);\n    return chapters;\n  },\n\n  // The web chapter page is a JS shell; the text comes from\n  // /api/novels/<slug>/chapters/<n>. The server degrades per-client trust on\n  // bursts and then answers VERIFY_HUMAN / trust_challenge=verify_now with empty\n  // content until a Turnstile check passes in the browser.\n  async extractChapter(ctx) {\n    const { utils } = ctx;\n    const m = ctx.url.match(/\\/doc-truyen\\/(?:(ai|cv)\\/)?([^/?#]+)\\/chuong-(\\d+)/);\n    if (!m) throw new Error('truyendich: not a chapter url: ' + ctx.url);\n    const [, ed, slug, n] = m;\n    const u = utils.resolveUrl(`/api/novels/${slug}/chapters/${n}${ed ? '?edition_type=' + ed : ''}`, ctx.url);\n    let d;\n    try { d = JSON.parse(await ctx.fetch(u)); } catch { d = null; }\n    if (!d) throw new Error('truyendich: chapter failed to load: ' + u);\n    if (d.detail === 'VERIFY_HUMAN' || d.trust_challenge === 'verify_now')\n      throw new Error('truyendich: site asks for human verification — open truyendich.space in the browser, pass the check, enable Force Hybrid Mode and retry');\n    if (String(d.status).toUpperCase() === 'FAILED') throw new Error('truyendich: chapter is marked FAILED on the site: ' + u);\n\n    // The site injects an anti-reader-mode line into the body; drop it everywhere.\n    const text = String(d.content || '')\n      .replace(/[\\s　]*Xin vui lòng tắt chế độ[^<\\n]*?nội dung chương\\.?(?:\\s*<br\\s*\\/?>)?/gi, '')\n      .trim();\n    if (!text) throw new Error('truyendich: empty chapter: ' + u);\n    if (/<p[\\s>]|<div[\\s>]/i.test(text)) return utils.sanitize(text);\n    // Plain text (convert/dịch) or <br>-separated text (AI) → one <p> per line.\n    const plain = /<br\\s*\\/?>/i.test(text) ? utils.decodeEntities(text.replace(/<br\\s*\\/?>/gi, '\\n')) : text;\n    const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n    return plain.split(/\\n+/).map(l => utils.cleanText(l)).filter(Boolean).map(l => `<p>${esc(l)}</p>`).join('\\n');\n  },\n\n  async extractMetadata(ctx) {\n    const { utils } = ctx;\n    const slug = (ctx.url.match(/\\/doc-truyen\\/(?:ai\\/|cv\\/)?([^/?#]+)/) || [])[1];\n    if (!slug) return null;\n    const d = await utils.fetchJson(utils.resolveUrl(`/api/novels/${slug}`, ctx.url)).catch(() => null);\n    if (!d?.title) return null;\n    const status = String(d.status || '').toLowerCase();\n    return {\n      title: utils.cleanText(d.title),\n      author: utils.cleanText(d.author || ''),\n      cover: d.image_url ? utils.resolveUrl(d.image_url, ctx.url) : '',\n      description: d.description ? utils.sanitize(d.description) : '',\n      status: ['completed', 'complete', 'full'].includes(status) ? 'Hoàn thành' : status ? 'Đang ra' : '',\n      genres: (d.categories || []).map(c => c?.name).filter(Boolean).join(', '),\n    };\n  },\n})",
+  "config": {
+    "rate_limit_ms": 2000
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "vi",
+  "description": "truyendich.space — TruyenDich.AI, Vietnamese translated/convert/AI novels. Pick the edition by the URL you start from, as on the site: /doc-truyen/<slug> (site default, usually bản dịch), /doc-truyen/ai/<slug> (AI) or /doc-truyen/cv/<slug> (convert). ToC and chapters come from the JSON API (/api/novels/<slug>?edition_type=). The API answers bursts with a human-verification challenge; if chapters fail with 'human verification', pass the check on truyendich.space in the browser and enable Force Hybrid Mode."
+}
