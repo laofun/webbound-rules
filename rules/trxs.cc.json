@@ -1,0 +1,36 @@
+{
+  "domain": "trxs.cc",
+  "url_pattern": "trxs\\.cc/tongren/\\d+\\.html",
+  "parser_type": "generic",
+  "selectors": {
+    "title": ".infos h1",
+    "author": ".infos .date a[href*='/author/']",
+    "cover": ".book_info .pic img",
+    "desc": ".infos > p",
+    "status": "",
+    "genres": "",
+    "toc": {
+      "list_container": ".book_list",
+      "item": ".book_list ul li a",
+      "total_page": "",
+      "next_page": "",
+      "page_url_pattern": "",
+      "toc_url": ""
+    },
+    "chapter": {
+      "content": ".read_chapterDetail",
+      "remove": [
+        "script",
+        "style"
+      ]
+    }
+  },
+  "config": {
+    "pagination_mode": "single_page_ajax",
+    "rate_limit_ms": 1000
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "zh",
+  "description": "trxs.cc — 同人小说网, Chinese fan fiction (Cloudflare-protected). Book page /tongren/<id>.html holds the full ToC. Use Force Hybrid Mode if the site shows a Cloudflare check."
+}

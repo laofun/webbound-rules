@@ -1,0 +1,42 @@
+{
+  "domain": "jpxs123.com",
+  "url_pattern": "jpxs123\\.com/[a-z]+/\\d+\\.html",
+  "parser_type": "generic",
+  "selectors": {
+    "title": ".infos h1",
+    "author": ".infos .date a[href*='/author/']",
+    "cover": ".book_info .pic img",
+    "desc": ".infos > p",
+    "status": "",
+    "genres": "",
+    "toc": {
+      "list_container": ".book_list",
+      "item": ".book_list ul li a",
+      "total_page": "",
+      "next_page": "",
+      "page_url_pattern": "",
+      "toc_url": ""
+    },
+    "chapter": {
+      "content": ".read_chapterDetail",
+      "remove": [
+        "script",
+        "style"
+      ]
+    }
+  },
+  "config": {
+    "pagination_mode": "single_page_ajax",
+    "rate_limit_ms": 1000
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "zh",
+  "description": "jpxs123.com — 精品小說網, Chinese web novels (traditional-script pages). Book page /<category>/<id>.html holds the full ToC.",
+  "marketplace": {
+    "name": "精品小說",
+    "icon": "📗",
+    "featured": false,
+    "description": "精品小說 (jpxs123.com) — Chinese web novels."
+  }
+}

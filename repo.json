@@ -1,7 +1,7 @@
 {
   "repo_meta": {
     "name": "WebBound Official Rules",
-    "version": "1.4.0"
+    "version": "1.5.0"
   },
   "sources": [
     {
@@ -37,6 +37,18 @@
       "author": "WebBound",
       "description": "ikanshu5.net — 五块五毛小说网: 玄幻, 修真, 都市, 穿越 novels. Full ToC + complete multi-page chapters.",
       "icon": "📙",
+      "language": "zh",
+      "featured": false
+    },
+    {
+      "id": "jpxs123.com",
+      "name": "精品小說",
+      "domain": "jpxs123.com",
+      "rule_url": "./rules/jpxs123.com.json",
+      "version": "1.0.0",
+      "author": "WebBound",
+      "description": "精品小說 (jpxs123.com) — Chinese web novels.",
+      "icon": "📗",
       "language": "zh",
       "featured": false
     },
@@ -122,6 +134,18 @@
       "description": "TruyenDich.AI (truyendich.space) — bản dịch, AI và convert; chọn phiên bản bằng URL (/doc-truyen/ai/…, /doc-truyen/cv/…). Use Force Hybrid Mode if the site asks for verification.",
       "icon": "📗",
       "language": "vi",
+      "featured": false
+    },
+    {
+      "id": "trxs.cc",
+      "name": "同人小说网",
+      "domain": "trxs.cc",
+      "rule_url": "./rules/trxs.cc.json",
+      "version": "1.0.0",
+      "author": "WebBound",
+      "description": "同人小说网 (trxs.cc) — Chinese fan fiction. Use Force Hybrid Mode if Cloudflare blocks.",
+      "icon": "📙",
+      "language": "zh",
       "featured": false
     },
     {
