@@ -10,12 +10,13 @@ const defaultSrcDir = path.join(root, 'src');
 const rulesDir = path.join(root, 'rules');
 
 // canonical published-rule key order: domain, url_pattern?, parser_type,
-// selectors, script?, config, version, author, language, description
+// dataset?, selectors?, script?, config, version, author, language, description
 function buildRule(meta, script) {
   const rule = { domain: meta.domain };
   if (meta.url_pattern !== undefined) rule.url_pattern = meta.url_pattern;
   rule.parser_type = meta.parser_type;
-  rule.selectors = meta.selectors;
+  if (meta.dataset !== undefined) rule.dataset = meta.dataset;
+  if (meta.selectors !== undefined) rule.selectors = meta.selectors;
   if (script !== null) rule.script = script;
   rule.config = meta.config;
   rule.version = meta.version;
@@ -23,6 +24,15 @@ function buildRule(meta, script) {
   rule.language = meta.language;
   rule.description = meta.description;
   return rule;
+}
+
+// A parser.js / dataset.js file must be one object-literal expression.
+function evalScript(folder, file, text) {
+  let obj;
+  try { obj = new Function('return ' + text)(); }
+  catch (e) { throw new Error(`${folder}/${file}: not a valid expression — ${e.message}`); }
+  if (typeof obj !== 'object' || obj === null) throw new Error(`${folder}/${file}: must evaluate to an object ({ ... })`);
+  return obj;
 }
 
 // canonical repo.json source-entry key order
@@ -59,21 +69,34 @@ export function generate(srcDir = defaultSrcDir) {
   for (const folder of domainFolders(srcDir)) {
     const meta = JSON.parse(readFileSync(path.join(srcDir, folder, 'rule.json'), 'utf8'));
     const parserPath = path.join(srcDir, folder, 'parser.js');
+    const datasetPath = path.join(srcDir, folder, 'dataset.js');
     const hasParser = existsSync(parserPath);
+    const hasDataset = existsSync(datasetPath);
 
     if (!meta.domain) throw new Error(`${folder}/rule.json: missing "domain"`);
     if (meta.domain !== folder) throw new Error(`${folder}/rule.json: domain "${meta.domain}" != folder name "${folder}"`);
+    if (hasDataset && meta.parser_type !== 'dataset')
+      throw new Error(`${folder}: parser_type "${meta.parser_type}" must NOT have a dataset.js`);
 
     let script = null;
     if (meta.parser_type === 'scriptable') {
       if (!hasParser) throw new Error(`${folder}: parser_type "scriptable" requires src/${folder}/parser.js`);
       const text = readFileSync(parserPath, 'utf8').trim();
-      let obj;
-      try { obj = new Function('return ' + text)(); }
-      catch (e) { throw new Error(`${folder}/parser.js: not a valid expression — ${e.message}`); }
-      if (typeof obj !== 'object' || obj === null) throw new Error(`${folder}/parser.js: must evaluate to an object ({ ... })`);
+      const obj = evalScript(folder, 'parser.js', text);
       if (typeof obj.extractToC !== 'function' || typeof obj.extractChapter !== 'function')
         throw new Error(`${folder}/parser.js: must define extractToC and extractChapter functions`);
+      script = text;
+    } else if (meta.parser_type === 'dataset') {
+      if (hasParser) throw new Error(`${folder}: parser_type "dataset" must NOT have a parser.js`);
+      if (!hasDataset) throw new Error(`${folder}: parser_type "dataset" requires src/${folder}/dataset.js`);
+      let origin = null;
+      try { origin = new URL(meta.dataset?.origin); } catch { /* reported below */ }
+      if (!origin || (origin.protocol !== 'http:' && origin.protocol !== 'https:'))
+        throw new Error(`${folder}/rule.json: dataset.origin must be an http(s) URL`);
+      const text = readFileSync(datasetPath, 'utf8').trim();
+      const obj = evalScript(folder, 'dataset.js', text);
+      if (typeof obj.seed !== 'function' || typeof obj.run !== 'function')
+        throw new Error(`${folder}/dataset.js: must define seed and run functions`);
       script = text;
     } else if (hasParser) {
       throw new Error(`${folder}: parser_type "${meta.parser_type}" must NOT have a parser.js`);

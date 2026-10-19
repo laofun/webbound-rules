@@ -40,12 +40,13 @@ A(stvSrc.name === 'SangTacViet' && stvSrc.icon === '📗' && stvSrc.featured ===
 
 // --- validation rejects: synthetic temp src trees ---
 // (local helper; distinct from new.mjs's exported scaffold(destRoot, domain, opts))
-function makeSrc(domain, rule, parser) {
+function makeSrc(domain, rule, parser, dataset) {
   const dir = mkdtempSync(path.join(tmpdir(), 'wbbuild-'));
   writeFileSync(path.join(dir, 'repo.meta.json'), JSON.stringify({ name: 'x', version: '1' }));
   mkdirSync(path.join(dir, domain));
   writeFileSync(path.join(dir, domain, 'rule.json'), JSON.stringify(rule));
   if (parser != null) writeFileSync(path.join(dir, domain, 'parser.js'), parser);
+  if (dataset != null) writeFileSync(path.join(dir, domain, 'dataset.js'), dataset);
   return dir;
 }
 const base = (parser_type) => ({ domain: 'a.com', parser_type, selectors: {}, config: {}, version: '1', author: 'x', language: 'en', description: 'd' });
@@ -59,6 +60,30 @@ rejects(() => generate(makeSrc('a.com', base('scriptable'), '({ async extractToC
 rejects(() => generate(makeSrc('a.com', base('generic'), '({})')), /must NOT have a parser\.js/, 'generic with parser.js');
 rejects(() => generate(makeSrc('a.com', { ...base('generic'), domain: 'b.com' }, null)), /!= folder name/, 'domain != folder');
 
+// --- dataset rules ---
+const dsRule = {
+  domain: 'a.com-dataset', parser_type: 'dataset',
+  dataset: { origin: 'https://a.com', defaultParams: { from: 1 } },
+  config: {}, version: '1', author: 'x', language: 'en', description: 'd',
+};
+const dsScript = '({ async seed(ctx) { return []; }, async run(ctx, task) { return { status: "ok" }; } })';
+{
+  const { ruleFiles: rf } = generate(makeSrc('a.com-dataset', dsRule, null, dsScript));
+  const out = JSON.parse(rf.get('a.com-dataset'));
+  A(JSON.stringify(Object.keys(out)) === JSON.stringify(
+    ['domain','parser_type','dataset','script','config','version','author','language','description']),
+    'dataset: wrong key order — ' + Object.keys(out));
+  A(out.script === dsScript, 'dataset: script must be the dataset.js text');
+  A(out.dataset.origin === 'https://a.com' && out.dataset.defaultParams.from === 1, 'dataset: dataset block not copied');
+}
+rejects(() => generate(makeSrc('a.com-dataset', dsRule, null, null)), /requires src\/a\.com-dataset\/dataset\.js/, 'dataset missing dataset.js');
+rejects(() => generate(makeSrc('a.com-dataset', dsRule, null, '({ async seed() { return []; } })')), /seed and run/, 'dataset.js missing run');
+rejects(() => generate(makeSrc('a.com-dataset', dsRule, null, 'not js (')), /dataset\.js: not a valid expression/, 'dataset.js syntax error');
+rejects(() => generate(makeSrc('a.com-dataset', { ...dsRule, dataset: { origin: 'ftp://a.com' } }, null, dsScript)), /dataset\.origin must be an http\(s\) URL/, 'dataset bad origin');
+rejects(() => generate(makeSrc('a.com-dataset', { ...dsRule, dataset: undefined }, null, dsScript)), /dataset\.origin must be an http\(s\) URL/, 'dataset missing origin');
+rejects(() => generate(makeSrc('a.com-dataset', dsRule, '({})', dsScript)), /must NOT have a parser\.js/, 'dataset with parser.js');
+rejects(() => generate(makeSrc('a.com', base('generic'), null, dsScript)), /must NOT have a dataset\.js/, 'generic with dataset.js');
+
 // --- marketplace default-fallbacks fire when the block is absent ---
 {
   const { repoJson: rj } = generate(makeSrc('a.com', base('generic'), null));
@@ -69,4 +94,4 @@ rejects(() => generate(makeSrc('a.com', { ...base('generic'), domain: 'b.com' },
   A(s.description === 'd', 'fallback: description should default to meta.description — ' + s.description);
 }
 
-console.log('OK: build generate() — outputs canonical, validation rejects the 4 bad configs, marketplace fallbacks default');
+console.log('OK: build generate() — outputs canonical, validation rejects bad configs (incl. dataset rules), marketplace fallbacks default');
