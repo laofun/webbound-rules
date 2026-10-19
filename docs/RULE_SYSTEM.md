@@ -536,6 +536,63 @@ requires **Force Hybrid Mode**.
 
 ---
 
+## 11. Dataset rules (`parser_type: "dataset"`)
+
+A dataset rule does not produce a novel. It enumerates **tasks** and turns each
+into **records**; the extension's Datasets view runs it through the crawl tab
+(in-tab `fetch`, so a Cloudflare-fronted site works once that tab has passed the
+challenge), keeps everything in IndexedDB with resume, and exports NDJSON.
+
+Folder layout: `src/<site>-dataset/` with `rule.json`, `dataset.js`,
+`samples.json`, `rule.test.mjs`, `fixtures/`. The domain is the rule's identity,
+so use `<site>-dataset` — it never replaces the site's novel rule.
+
+```json
+{
+  "domain": "example.com-dataset",
+  "parser_type": "dataset",
+  "dataset": { "origin": "https://www.example.com", "defaultParams": { "from": 1, "to": 100 } },
+  "config": { "rate_limit_ms": 1000 },
+  "version": "1.0.0", "author": "…", "language": "en", "description": "…"
+}
+```
+
+No `selectors`. `dataset.js` is one object literal:
+
+```js
+({
+  async seed(ctx) { return [{ key: 'item:1', id: 1 }]; },   // first tasks
+  async run(ctx, task) {                                     // one task
+    const html = await ctx.fetch('/item/' + task.id);        // relative → dataset.origin
+    return { status: 'ok', records: [{ table: 'items', key: String(task.id), data: { … } }], tasks: [] };
+  },
+})
+```
+
+- `ctx` = the scriptable ctx (`fetch`, `utils`, `config`, `$`, DOM/DOMParser)
+  with `html: ''`, `url: dataset.origin`, `params` (the job's params, defaults
+  from `dataset.defaultParams`) and `task`.
+- A task is a JSON object with a string `key`, unique within the job; child
+  tasks are skipped when their key already exists.
+- `run` returns `{ status, records?, tasks?, message? }`:
+  - `ok` — upsert `records` by `(table, key)` (table matches `/^\w[\w.-]*$/`,
+    key is a non-empty string) and enqueue `tasks`;
+  - `notfound` — the item does not exist;
+  - `retry` (or a throw) — tried 3 times, then `failed` (Retry failed re-queues);
+  - `wall` — login/anti-bot page; needs a `message`, pauses the job and brings
+    the crawl window forward. A Cloudflare page on any `ctx.fetch` pauses the
+    job even if the script catches the error.
+- Never return `ok` with empty records for a page that should have data — throw
+  or `retry`.
+
+Tooling: `npm run build` checks that `dataset.js` defines `seed` and `run` and
+that `dataset.origin` is http(s); `src/_ctx/dataset-context.mjs` gives tests the
+same ctx (`createDatasetContext`, `runTask`) and the engine's result checks
+(`checkRunResult`); `npm run test:live <domain>` runs `seed(samples.params)` and
+`run(samples.task)`. Sites behind Cloudflare cannot be fetched from Node: save
+fixtures from a browser tab that passed the challenge and say so in
+`fixtures/README.md` (example: `src/youshu.me-dataset/`).
+
 ## See also
 - [`WRITE_A_RULE_WITH_AI.md`](WRITE_A_RULE_WITH_AI.md) — generate a rule from a
   page's HTML with an AI (fill-in-the-blanks prompt + worked examples).

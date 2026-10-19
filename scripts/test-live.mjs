@@ -4,10 +4,12 @@
 // Reads BUILT rules/<domain>.json + src/<domain>/samples.json and checks that the
 // real site still yields a ToC and a chapter body. Scriptable rules run their
 // parser like the sandbox does (ctx.html = the fetched start page); generic rules
-// apply toc_url → toc.item → chapter.content/remove (first ToC page only).
+// apply toc_url → toc.item → chapter.content/remove (first ToC page only). Dataset
+// rules run seed(samples.params) and run(samples.task) against dataset.origin.
 // Optional cookie via env WB_COOKIE_<DOMAIN> ([.-] → _, uppercased).
 import '../src/_ctx/dom-env.mjs';
 import { createScriptableContext } from '../src/_ctx/scriptable-context.mjs';
+import { createDatasetContext, checkRunResult } from '../src/_ctx/dataset-context.mjs';
 import { pickCharset, decode } from './fetch-fixture.mjs';
 import { parseHTML } from 'linkedom';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
@@ -101,6 +103,21 @@ async function checkGeneric(rule, samples, makeFetch) {
   console.log(`  chapter: ${text.length} chars of text`);
 }
 
+async function checkDataset(rule, samples, makeFetch) {
+  const ds = new Function('return ' + rule.script)();
+  const origin = rule.dataset.origin;
+  const fetch = makeFetch(origin);
+  const params = { ...rule.dataset.defaultParams, ...samples.params };
+  const tasks = await ds.seed(createDatasetContext({ origin, config: rule.config, params, fetch }));
+  A(Array.isArray(tasks) && tasks.length > 0, 'seed returned no tasks');
+  console.log(`  seed: ${tasks.length} tasks`);
+  const ctx = createDatasetContext({ origin, config: rule.config, params, task: samples.task, fetch });
+  const result = checkRunResult(await ds.run(ctx, samples.task));
+  A(result.status === 'ok' && result.records?.length > 0,
+    `run(${samples.task.key}) returned ${result.status}${result.message ? ': ' + result.message : ''}`);
+  console.log(`  run ${samples.task.key}: ${result.records.length} records, ${result.tasks?.length ?? 0} child tasks`);
+}
+
 async function checkDomain(domain) {
   const rulePath = path.join(root, 'rules', domain + '.json');
   const samplesPath = path.join(root, 'src', domain, 'samples.json');
@@ -108,13 +125,15 @@ async function checkDomain(domain) {
   A(existsSync(samplesPath), `src/${domain}/samples.json not found`);
   const rule = JSON.parse(readFileSync(rulePath, 'utf8'));
   const samples = JSON.parse(readFileSync(samplesPath, 'utf8'));
-  A(samples.book_url && samples.chapter_url, 'samples.json needs non-empty book_url and chapter_url');
+  if (rule.parser_type === 'dataset') A(samples.task?.key, 'samples.json needs a task with a key (and optional params)');
+  else A(samples.book_url && samples.chapter_url, 'samples.json needs non-empty book_url and chapter_url');
 
   const cookieEnv = 'WB_COOKIE_' + domain.replace(/[.-]/g, '_').toUpperCase();
   const cookie = process.env[cookieEnv];
   console.log(`live ${domain} [${rule.parser_type}]${cookie ? ' (with cookie)' : ''}`);
   const makeFetch = makeFetcher(rule.config?.rate_limit_ms ?? 1000, cookie);
-  await (rule.parser_type === 'scriptable' ? checkScriptable : checkGeneric)(rule, samples, makeFetch);
+  const check = { scriptable: checkScriptable, dataset: checkDataset }[rule.parser_type] ?? checkGeneric;
+  await check(rule, samples, makeFetch);
 }
 
 const args = process.argv.slice(2);
