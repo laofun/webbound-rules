@@ -31,7 +31,8 @@ rejects(() => checkRunResult({ status: 'ok', tasks: [{ id: 1 }] }), /Invalid tas
 rejects(() => checkRunResult({ status: 'ok', records: {} }), /must be arrays/, 'result: records not an array');
 rejects(() => checkRunResult({ status: 'wall' }), /wall needs a message/, 'result: wall without message');
 A(checkRunResult({ status: 'ok', records: [{ table: 'reviews.v2', key: '9', data: {} }], tasks: [{ key: 't' }] }).status === 'ok', 'result: valid ok');
-A(checkRunResult({ status: 'notfound' }).status === 'notfound', 'result: notfound without records');
+const notfound = checkRunResult({ status: 'notfound' });
+A(notfound.status === 'notfound' && Array.isArray(notfound.records) && notfound.records.length === 0 && Array.isArray(notfound.tasks) && notfound.tasks.length === 0 && notfound.message === '', 'result: notfound normalized with empty records, tasks and message');
 
 const script = '({ async seed() { return []; }, async run(ctx, task) { const html = await ctx.fetch("/p/" + task.id); return { status: "ok", records: [{ table: "t", key: String(task.id), data: { len: html.length, from: ctx.params.from } }] }; } })';
 const r = await runTask(script, { origin: 'https://ex.com', params: { from: 3 }, task: { key: 'p:7', id: 7 }, fetch });

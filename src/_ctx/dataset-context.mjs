@@ -35,8 +35,9 @@ export function checkRunResult(result) {
   for (const t of tasks) {
     if (!t || typeof t.key !== 'string' || !t.key) throw new Error(`Invalid task: ${JSON.stringify(t)?.slice(0, 200)}`);
   }
+  // Deliberately stricter than normalizeResult: an empty wall message pauses the job without explaining why.
   if (result.status === 'wall' && !result.message) throw new Error('wall needs a message');
-  return result;
+  return { status: result.status, records, tasks, message: typeof result.message === 'string' ? result.message : '' };
 }
 
 export async function runTask(script, { origin, config, params, task, fetch }) {
