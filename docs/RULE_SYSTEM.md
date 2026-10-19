@@ -579,9 +579,11 @@ No `selectors`. `dataset.js` is one object literal:
     key is a non-empty string) and enqueue `tasks`;
   - `notfound` — the item does not exist;
   - `retry` (or a throw) — tried 3 times, then `failed` (Retry failed re-queues);
-  - `wall` — login/anti-bot page; needs a `message`, pauses the job and brings
-    the crawl window forward. A Cloudflare page on any `ctx.fetch` pauses the
-    job even if the script catches the error.
+  - `wall` — login/anti-bot page; pauses the job and brings the crawl window
+    forward. Always give a `message` telling the user what to do: the engine falls
+    back to a generic one, and `checkRunResult` in tests rejects a wall without it.
+    A Cloudflare page on any `ctx.fetch` pauses the job even if the script catches
+    the error.
 - Never return `ok` with empty records for a page that should have data — throw
   or `retry`.
 

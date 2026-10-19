@@ -106,13 +106,22 @@ async function checkGeneric(rule, samples, makeFetch) {
 async function checkDataset(rule, samples, makeFetch) {
   const ds = new Function('return ' + rule.script)();
   const origin = rule.dataset.origin;
-  const fetch = makeFetch(origin);
+  // Like the engine: a bot wall on any fetch wins, even if the script caught it.
+  let blocked = null;
+  const raw = makeFetch(origin);
+  const fetch = async (url, init) => {
+    try { return await raw(url, init); } catch (e) { if (e instanceof Blocked) blocked ??= e; throw e; }
+  };
   const params = { ...rule.dataset.defaultParams, ...samples.params };
-  const tasks = await ds.seed(createDatasetContext({ origin, config: rule.config, params, fetch }));
+  const tasks = await ds.seed(createDatasetContext({ origin, config: rule.config, params, fetch }))
+    .catch((e) => { throw blocked ?? e; });
+  if (blocked) throw blocked;
   A(Array.isArray(tasks) && tasks.length > 0, 'seed returned no tasks');
   console.log(`  seed: ${tasks.length} tasks`);
   const ctx = createDatasetContext({ origin, config: rule.config, params, task: samples.task, fetch });
-  const result = checkRunResult(await ds.run(ctx, samples.task));
+  const rawResult = await ds.run(ctx, samples.task).catch((e) => { throw blocked ?? e; });
+  if (blocked) throw blocked;
+  const result = checkRunResult(rawResult);
   A(result.status === 'ok' && result.records?.length > 0,
     `run(${samples.task.key}) returned ${result.status}${result.message ? ': ' + result.message : ''}`);
   console.log(`  run ${samples.task.key}: ${result.records.length} records, ${result.tasks?.length ?? 0} child tasks`);
