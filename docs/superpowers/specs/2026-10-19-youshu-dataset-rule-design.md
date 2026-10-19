@@ -57,9 +57,8 @@ Folder `src/youshu.me-dataset/` (domain = folder name), files `rule.json`,
 - `seed(ctx)` returns `{ key: "book:<id>", kind: "book", id }` for every ID in
   `from..to`.
 - `book:<id>` fetches `/book/<id>`:
-  - not-found page (`#content .msgbox .blocktitle` contains `出现错误` and the
-    message contains `不存在`, or the page has no `.divbox.cf.blockn` title block
-    and is titled `优书网`) → `notfound`;
+  - not-found page (no `.divbox.cf.blockn` title block and `#content .msgbox`
+    contains `不存在`) → `notfound`;
   - another `.msgbox` error, or a page missing the title block → `retry` with
     the message or page title;
   - otherwise one `books` record. The newest date in the book page's 最新书评
@@ -75,8 +74,8 @@ Folder `src/youshu.me-dataset/` (domain = folder name), files `rule.json`,
   - `full` mode, page 1: read `.pages #pagestats` (`1/166`) and enqueue pages
     2..N in one go (workers then fetch them in parallel); a page without
     `#pagestats` has one page;
-  - `update` mode: enqueue page `p+1` only when the oldest card on page `p` is
-    at or after `since` and page `p` had 30 cards.
+  - `update` mode: enqueue page `p+1` only when `p` < N (from `#pagestats`)
+    and the oldest card on page `p` is at or after `since`.
 - Never `ok` with an empty `records` array.
 
 ### 2.3 Records
@@ -183,10 +182,10 @@ missing values are `null`, never omitted.
 | `intro` | string | `.tabcontent .tabvalue:first-child` text, newlines kept |
 | `scoreArchived` | number \| null | `#project-desc .book-score-overview .score` (优书评分（存档，截止2024/7）) |
 | `scoreArchivedCount` | number \| null | `#project-desc .book-score-overview .scorer-count` |
-| `scoreLive` | number \| null | `#download-review-over-view .star-rating-average` |
-| `scoreLiveCount` | number \| null | `.star-rating-summary .color-1` |
-| `histogramArchived` | object \| null | `#project-desc .book-score-charts .bar-item` → `{ "<.bar-name>": "<.bar-rate>" }` |
-| `histogramLive` | object \| null | `.star-rating-chart tr` → `{ "<star label>": "<percent>" }` |
+| `scoreLive` | number \| null | `.ratenum` |
+| `scoreLiveCount` | number \| null | `.ratenum` + next sibling `(8272人已评)` |
+| `histogramArchived` | object \| null | `#project-desc .book-score-charts .bar-item` → `{ "5星": "69%", … }` |
+| `histogramLive` | object \| null | `.star-rating-chart tr` → `{ "5星": "69%", … }` |
 | `latestReviewAt` | string \| null | newest 时间： in the 最新书评 block |
 
 ### `reviews` (key = `rid` as string)
@@ -214,4 +213,4 @@ missing values are `null`, never omitted.
 | `id` | number | review card link |
 | `name` | string | review card link `p` |
 | `level` | string \| null | `.user-level` |
-| `joinedAt` | string \| null | `.pop0` |
+| `joinedAt` | string \| null | `.pop0` without `加入` (`YYYY-MM-DD`) |
