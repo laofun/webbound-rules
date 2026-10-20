@@ -20,6 +20,7 @@ webbound-rules/
 │   └── <domain>/             # ONE folder per site — the source of truth
 │       ├── rule.json         #   rule fields + a `marketplace` block
 │       ├── parser.js         #   scriptable only: the ({ extractToC, extractChapter, ... }) object
+│       ├── dataset.js        #   dataset only: the ({ seed, run }) object
 │       ├── samples.json      #   { book_url, chapter_url } for `npm run test:live`
 │       ├── fixtures/         #   saved HTML/JSON responses for offline tests
 │       └── *.test.mjs        #   offline assertions against the fixtures

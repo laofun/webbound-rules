@@ -1,6 +1,6 @@
 ---
 name: webbound-rule-authoring
-description: Workflow for creating, porting, fixing, and testing WebBound / NovelPacker site rules in the webbound-rules repo. Use when asked to add a site rule, port a vbook extension, update or debug a rule (empty ToC, missing chapter text, garbled Chinese), or write offline tests for a generic or scriptable rule.
+description: Workflow for creating, porting, fixing, and testing WebBound / NovelPacker site and dataset rules in the webbound-rules repo. Use when asked to add a site rule, port a vbook extension, update or debug a rule (empty ToC, missing chapter text, garbled Chinese), or write offline tests for a generic, scriptable, or dataset rule.
 ---
 
 # WebBound rule authoring

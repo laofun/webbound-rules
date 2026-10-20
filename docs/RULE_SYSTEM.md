@@ -58,7 +58,7 @@ The full rule schema, annotated:
 {
   "domain": "example.com",              // required — hostname, no www.
   "url_pattern": "example\\.com/novel/", // optional — regex on full URL
-  "parser_type": "generic",             // "generic" | "scriptable"
+  "parser_type": "generic",             // "generic" | "scriptable" | "dataset" (see §11)
   "script": "...",                      // required IFF parser_type === "scriptable"
 
   "selectors": {
@@ -430,7 +430,7 @@ SCHEMA (required fields marked *):
 {
   "domain"*: "<hostname, no www>",
   "url_pattern": "<regex tested on full URL; escape dots; omit if any page is ok>",
-  "parser_type"*: "generic" | "scriptable",
+  "parser_type"*: "generic" | "scriptable" | "dataset", // dataset: see §11
   "script": "<required ONLY if scriptable>",
   "selectors": {
     "title","author","cover","desc": "<CSS>",   // cover: @src implied
@@ -575,10 +575,12 @@ No `selectors`. `dataset.js` is one object literal:
 - A task is a JSON object with a string `key`, unique within the job; child
   tasks are skipped when their key already exists.
 - `run` returns `{ status, records?, tasks?, message? }`:
-  - `ok` — upsert `records` by `(table, key)` (table matches `/^\w[\w.-]*$/`,
-    key is a non-empty string) and enqueue `tasks`;
+  - `ok` — replace `records` by `(table, key)` (whole record, last write wins;
+    table matches `/^\w[\w.-]*$/`, key is a non-empty string) and enqueue `tasks`;
   - `notfound` — the item does not exist;
   - `retry` (or a throw) — tried 3 times, then `failed` (Retry failed re-queues);
+    `ctx.fetch` throws on a non-2xx response, which counts as a retry;
+  - a network failure pauses the job with `Crawl tab lost`;
   - `wall` — login/anti-bot page; pauses the job and brings the crawl window
     forward. Always give a `message` telling the user what to do: the engine falls
     back to a generic one, and `checkRunResult` in tests rejects a wall without it.

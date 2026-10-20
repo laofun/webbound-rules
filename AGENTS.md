@@ -26,7 +26,7 @@ npm test                         # drift + build --check + all tests
 npm run build                    # regenerate rules/ + repo.json
 npm run new <domain> [-- --generic]
 npm run fixture -- <url> src/<domain>/fixtures/<name>.html
-npm run test:live <domain>       # hits the network; generic + scriptable
+npm run test:live <domain>       # hits the network; generic + scriptable + dataset
 npm run test:live -- --all       # every rule; BLOCKED = bot wall / network, not a rule bug
 ```
 

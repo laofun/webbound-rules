@@ -1,12 +1,18 @@
 ({
+  loginMessage: 'Login required: open the crawl tab, log in to youshu.me, then Resume.',
+
   // One task per book ID; review pages are discovered from each book page.
   async seed(ctx) {
     const p = ctx.params || {};
     const from = Number(p.from ?? 1);
     const to = Number(p.to ?? 330000);
+    const mode = p.mode ?? 'update';
+    const since = String(p.since ?? '2024-07-01');
     if (!Number.isInteger(from) || !Number.isInteger(to) || from < 1 || to < from) {
       throw new Error(`Invalid book ID range: from=${p.from} to=${p.to}`);
     }
+    if (mode !== 'update' && mode !== 'full') throw new Error(`Invalid mode: ${mode}`);
+    if (mode === 'update' && !/^\d{4}-\d{2}-\d{2}( \d{2}:\d{2}:\d{2})?$/.test(since)) throw new Error(`Invalid since: ${since}`);
     const tasks = [];
     for (let id = from; id <= to; id++) tasks.push({ key: `book:${id}`, kind: 'book', id });
     return tasks;
@@ -22,6 +28,7 @@
 
   async book(ctx, task, opts) {
     const d = this.doc(await ctx.fetch(`/book/${task.id}`));
+    if (opts.reviews && !d.querySelector('a[href$="/logout.php"]')) return { status: 'wall', message: this.loginMessage };
     const titleEl = d.querySelector('.divbox.cf.blockn span[style*="font-size:20px"]');
     if (!titleEl) {
       const box = this.text(d.querySelector('#content .msgbox'));
@@ -86,7 +93,7 @@
   async reviews(ctx, task, opts) {
     const d = this.doc(await ctx.fetch(`/reviews/${task.bookId}/${task.page}.html`));
     if ([...d.querySelectorAll('legend')].some((l) => l.textContent.includes('用户登录'))) {
-      return { status: 'wall', message: 'Login required: open the crawl tab, log in to youshu.me, then Resume.' };
+      return { status: 'wall', message: this.loginMessage };
     }
     const cards = [...d.querySelectorAll('#jieqi_page_contents .pb.c_row.cf')];
     if (!cards.length) return { status: 'retry', message: `No reviews on ${task.key}: ${this.text(d.querySelector('title'))}` };
@@ -102,7 +109,10 @@
       for (const label of card.querySelectorAll('.c_tag .c_label')) {
         meta[this.text(label).replace(/[：:]$/, '')] = this.text(label.nextElementSibling);
       }
-      const content = this.multiline(card.querySelector('.c_description'));
+      const description = card.querySelector('.c_description');
+      const truncated = !!description?.querySelector('a.c_all');
+      if (truncated) description.querySelector('a.c_all').remove();
+      const content = this.multiline(description).replace(/(?:\.{6,}|…+)$/, '').trim();
       const userName = this.text(userLink.querySelector('p'));
       const review = {
         rid,
@@ -111,6 +121,7 @@
         userName,
         title: this.text(card.querySelector('.c_subject a.pop')),
         content,
+        truncated,
         deleted: content === '本评论已被清空。',
         stars: this.num(card.querySelector('.c_subject .rt [title$="颗星"]')?.getAttribute('title')),
         createdAt: meta['时间'] || null,
@@ -163,7 +174,7 @@
   // Text with <br> kept as newlines.
   multiline(el) {
     if (!el) return '';
-    const html = el.innerHTML.replace(/<br\s*\/?>/gi, '\n');
+    const html = el.innerHTML.replace(/<br\s*\/?>[ \t]*\r?\n?/gi, '\n');
     const tmp = new DOMParser().parseFromString(`<div>${html}</div>`, 'text/html').querySelector('div');
     return (tmp.textContent || '').split('\n').map((l) => l.trim()).join('\n').trim();
   },

@@ -15,7 +15,7 @@ The end goal is a 2026 snapshot of the yousuu database that replaces the 2024
 SQLite (`HeliumOctahelide/yousuu-database`, tables `books` / `comments` /
 `users`) used by Yousuu-VI. It has three sub-projects:
 
-1. Dataset engine in the extension — done (unmerged).
+1. Dataset engine in the extension — done (merged as WebBound-Extension PR #5, released in 1.1.0 on 2026-10-20).
 2. **This spec:** a `youshu.me-dataset` rule, the webbound-rules tooling that
    builds and tests dataset rules, and its publication in the marketplace.
 3. Converter: NDJSON exports → SQLite in the 2024 schema, merged with the 2024
@@ -144,8 +144,8 @@ The released extension (v1.0.9) lists every marketplace source and rejects
 `parser_type: "dataset"` on install ("Invalid parser_type"); `repo.json` has no
 way to hide a source from old clients. So:
 
-1. Finish the Datasets UI, merge `feat/dataset-crawl`, release the extension
-   as 1.1.0.
+1. Done: finished the Datasets UI, merged as WebBound-Extension PR #5, and
+   released the extension as 1.1.0 on 2026-10-20.
 2. Then push `feat/youshu-dataset` to webbound-rules `main` (outward-facing —
    confirmed with the user at that moment).
 
@@ -198,6 +198,7 @@ missing values are `null`, never omitted.
 | `userName` | string | that link's `p` |
 | `title` | string | `.c_subject a.pop` text |
 | `content` | string | `.c_description`, `<br>` → `\n`, entities decoded |
+| `truncated` | boolean | `.c_description a.c_all` (list page shows a ~300-char preview; full text is on `/reviewshow/<rid>/1.html`) |
 | `deleted` | boolean | content is `本评论已被清空。` |
 | `stars` | number \| null | `.c_subject .rt [title$="颗星"]` → N (1–5) |
 | `createdAt` | string | `时间：` value (`YYYY-MM-DD HH:mm:ss`) |

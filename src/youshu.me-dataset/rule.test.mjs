@@ -44,9 +44,15 @@ A(JSON.stringify(rule.dataset.defaultParams) === JSON.stringify({ from: 1, to: 3
   const tasks = await ds.seed(createDatasetContext({ origin, params: params({ from: 141150, to: 141160 }), fetch: pages() }));
   A(tasks.length === 11 && new Set(tasks.map(t => t.key)).size === 11, 'seed: 11 unique book tasks');
   A(tasks[0].key === 'book:141150' && tasks[0].kind === 'book' && tasks[0].id === 141150, 'seed: task shape — ' + JSON.stringify(tasks[0]));
-  let threw = false;
-  try { await ds.seed(createDatasetContext({ origin, params: params({ from: 10, to: 5 }), fetch: pages() })); } catch { threw = true; }
-  A(threw, 'seed: an inverted range must throw');
+  const seedThrows = async (p) => {
+    try { await ds.seed(createDatasetContext({ origin, params: p, fetch: pages() })); } catch { return true; }
+    return false;
+  };
+  A(await seedThrows(params({ from: 10, to: 5 })), 'seed: an inverted range must throw');
+  A(await seedThrows(params({ mode: 'Full' })), 'seed: invalid mode must throw');
+  A(await seedThrows(params({ since: '2024-7-1' })), 'seed: invalid update since must throw');
+  A(!(await seedThrows(params({ mode: 'full', since: 'garbage' }))), 'seed: full mode ignores since format');
+  A((await ds.seed(createDatasetContext({ origin, params: { from: 1, to: 1 }, fetch: pages() }))).length === 1, 'seed: defaults are valid');
 }
 
 // --- book pages ---
@@ -79,9 +85,14 @@ for (const [id, want] of Object.entries(BOOKS)) {
   A(full.tasks.length === 1, 'book: full mode always enqueues review page 1');
   const none = await run(bookTask(141152), params({ reviews: false }));
   A(none.tasks.length === 0, 'book: reviews:false enqueues nothing');
+  const bookHtml = readFileSync(path.join(here, 'fixtures', 'book-141152.html'), 'utf8').replace(/href="(?:https:\/\/www\.youshu\.me)?\/logout\.php"/g, '');
+  const loggedOut = await run(bookTask(141152), params(), { '/book/141152': bookHtml });
+  A(loggedOut.status === 'wall' && /log in/i.test(loggedOut.message), 'book: logged out with reviews → wall');
+  const loggedOutBookOnly = await run(bookTask(141152), params({ reviews: false }), { '/book/141152': bookHtml });
+  A(loggedOutBookOnly.status === 'ok' && loggedOutBookOnly.records[0]?.table === 'books', 'book: logged out with reviews:false → book ok');
   const missing = await run(bookTask(999999999));
   A(missing.status === 'notfound' && !missing.records?.length, 'book: not-found page → notfound');
-  const broken = await run(bookTask(141152), params(), { '/book/141152': '<html><head><title>维护中</title></head><body>x</body></html>' });
+  const broken = await run(bookTask(141152), params({ reviews: false }), { '/book/141152': '<html><head><title>维护中</title></head><body>x</body></html>' });
   A(broken.status === 'retry' && /维护中/.test(broken.message), 'book: page without the book block → retry — ' + broken.message);
 }
 
@@ -101,9 +112,11 @@ const reviewsOf = (r) => r.records.filter(x => x.table === 'reviews').map(x => x
   const xps = reviews.find(x => x.rid === 1741334);
   A(JSON.stringify(xps) === JSON.stringify({
     rid: 1741334, bookId: 141152, userId: 79329, userName: 'XPS', title: '无论从任何意义上来说都算得上一本好书，只...',
-    content: '无论从任何意义上来说都算得上一本好书，只是我个人对西幻和翻译腔有点不习惯。', deleted: false, stars: 5,
+    content: '无论从任何意义上来说都算得上一本好书，只是我个人对西幻和翻译腔有点不习惯。', truncated: false, deleted: false, stars: 5,
     createdAt: '2024-07-03 22:56:35', likes: 3, dislikes: 0, replies: 0, views: 101,
   }), 'reviews p1: XPS review — ' + JSON.stringify(xps));
+  const truncated1 = reviews.filter(x => x.truncated);
+  A(truncated1.length === 3 && truncated1.every(x => !/(?:全文|\.{6}|…+)$/.test(x.content)), 'reviews p1: 3 clean truncated previews');
   const user = r1.records.find(x => x.table === 'users' && x.key === '79329');
   A(JSON.stringify(user?.data) === JSON.stringify({ id: 79329, name: 'XPS', level: '新手上路', joinedAt: '2024-07-03' }), 'reviews p1: XPS user — ' + JSON.stringify(user?.data));
   A(reviews.every(x => !('avatar' in x)) && r1.records.filter(x => x.table === 'users').every(x => !('avatar' in x.data)), 'reviews p1: avatars are not collected');
@@ -121,9 +134,12 @@ const reviewsOf = (r) => r.records.filter(x => x.table === 'reviews').map(x => x
   A(page2.length === 30 && page2[0].createdAt <= reviews.at(-1).createdAt, 'reviews p2: 30 reviews, older than page 1');
   A(page2.every(x => typeof x.likes === 'number' && typeof x.dislikes === 'number' && typeof x.replies === 'number'), 'reviews p2: all counters parsed');
   A(page2.every(x => r2.records.some(y => y.table === 'users' && y.key === String(x.userId))), 'reviews p2: every review has a matching user');
+  const truncated2 = page2.filter(x => x.truncated);
+  A(truncated2.length === 3 && truncated2.every(x => !/(?:全文|\.{6}|…+)$/.test(x.content)), 'reviews p2: 3 clean truncated previews');
   const del = page2.find(x => x.deleted);
   A(del?.rid === 711523 && del.content === '本评论已被清空。', 'reviews p2: deleted review flagged — ' + JSON.stringify(del));
-  A(page2.some(x => x.content.includes('\n')), 'reviews p2: <br> kept as newlines');
+  const multiline = page2.find(x => x.content.startsWith('这本和道诡两本书都硬着肉皮看了四五次'));
+  A(multiline?.content === '这本和道诡两本书都硬着肉皮看了四五次，\n属实看不下去了，\n看来我不适合这类型的。\n弃书记录+1', 'reviews p2: <br> kept as single newlines — ' + JSON.stringify(multiline?.content));
   const fullP2 = await run(reviewsTask(2), params({ mode: 'full' }));
   A(fullP2.tasks.length === 0, 'reviews p2: full mode enqueues only from page 1');
 }
