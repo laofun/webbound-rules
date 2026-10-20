@@ -113,13 +113,15 @@ async function checkDataset(rule, samples, makeFetch) {
     try { return await raw(url, init); } catch (e) { if (e instanceof Blocked) blocked ??= e; throw e; }
   };
   const params = { ...rule.dataset.defaultParams, ...samples.params };
-  const tasks = await ds.seed(createDatasetContext({ origin, config: rule.config, params, fetch }))
-    .catch((e) => { throw blocked ?? e; });
+  let tasks;
+  try { tasks = await ds.seed(createDatasetContext({ origin, config: rule.config, params, fetch })); }
+  catch (e) { throw blocked ?? e; }
   if (blocked) throw blocked;
   A(Array.isArray(tasks) && tasks.length > 0, 'seed returned no tasks');
   console.log(`  seed: ${tasks.length} tasks`);
   const ctx = createDatasetContext({ origin, config: rule.config, params, task: samples.task, fetch });
-  const rawResult = await ds.run(ctx, samples.task).catch((e) => { throw blocked ?? e; });
+  let rawResult;
+  try { rawResult = await ds.run(ctx, samples.task); } catch (e) { throw blocked ?? e; }
   if (blocked) throw blocked;
   const result = checkRunResult(rawResult);
   A(result.status === 'ok' && result.records?.length > 0,
