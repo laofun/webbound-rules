@@ -48,7 +48,7 @@ Folder `src/youshu.me-dataset/` (domain = folder name), files `rule.json`,
 | Param | Meaning |
 |---|---|
 | `from`, `to` | Book ID range (inclusive). Default 1–330000: the site's newest ID was 328064 at survey time; IDs past the end return `notfound`, which is cheap. |
-| `mode` | `full` = every review page of every book; `update` = only reviews at or after `since`. Books are always fetched. |
+| `mode` | `full` = every review page of every book; `update` = only the review pages that can hold reviews at or after `since` (the last page fetched may also carry older ones; they are kept). Books are always fetched. |
 | `since` | Site-time cut-off `YYYY-MM-DD` (or `YYYY-MM-DD HH:mm:ss`), compared as a string with the site's `YYYY-MM-DD HH:mm:ss` times. Used by `update`. |
 | `reviews` | `false` = books only. |
 
@@ -201,9 +201,9 @@ missing values are `null`, never omitted.
 | `deleted` | boolean | content is `本评论已被清空。` |
 | `stars` | number \| null | `.c_subject .rt [title$="颗星"]` → N (1–5) |
 | `createdAt` | string | `时间：` value (`YYYY-MM-DD HH:mm:ss`) |
-| `likes` | number | `[class^="love-count-"]` |
-| `dislikes` | number | `[class^="hate-count-"]` |
-| `replies` | number | `回复：` value |
+| `likes` | number \| null | `[class^="love-count-"]` |
+| `dislikes` | number \| null | `[class^="hate-count-"]` |
+| `replies` | number \| null | `回复：` value |
 | `views` | number \| null | `点击：` value |
 
 ### `users` (key = site user ID as string)

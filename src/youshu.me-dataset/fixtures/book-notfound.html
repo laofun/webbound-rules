@@ -1,0 +1,221 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="keywords" content="优书,新优书,优书网,书荒找书,书荒推书,小说推荐,小说评分" />
+	<meta name="description" content="优书网(www.youshu.me)集小说搜索、读者评分、书单推荐于一体,不但可以一站式收藏各个原创站的小说,还可以解决书荒寻找到更多更好看的小说,在这里你可以吐槽、..." />
+	<meta name="author" content="https://www.youshu.me" />
+	<meta name="copyright" content="&copy;2024 优书网（https://www.youshu.me）" />
+	<meta name="generator" content="youshu.me" />
+	<title>优书网</title>
+	<link rel="stylesheet" href="/themes/ys/style.css?v=2024082101" type="text/css" media="all" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+	<!--[if lt IE 9]><script type="text/javascript" src="/scripts/html5.js" charset="UTF-8"></script><![endif]-->
+	<!--[if lt IE 9]><script type="text/javascript" src="/scripts/css3-mediaqueries.js" charset="UTF-8"></script><![endif]-->
+	<script type="bbff80abdff3efaacdded0ec-text/javascript" src="/scripts/common.js" charset="UTF-8"></script>
+	<script type="bbff80abdff3efaacdded0ec-text/javascript" src="/scripts/theme.js" charset="UTF-8"></script>	
+	
+</head>
+<body>
+<div class="top cf">
+	<div class="main">
+		<div class="fl">
+			
+			<ul class="topnav">
+				<li><strong>viewer：</strong></li>
+				<li><a href="/message.php?box=inbox" class="droplink"><i class="iconfont">&#xee36;</i>消息</a></li>
+				<li class="dropdown"><a href="/userdetail.php" class="droplink"><i class="iconfont">&#xee21;</i>会员<b class="dropico"></b></a>
+					<ul class="droplist">
+						<li><a href="/modules/article/bookcase.php">我的书架</a></li>
+						<li><a href="/modules/article/masterpage.php">我的推书</a></li>
+						<li><a href="/modules/article/myreviews.php">我的书评</a></li>
+						<li><a href="/modules/books/bookscase.php">我关注的书单</a></li>
+						<li><a href="/modules/books/masterpage.php">我创建的书单</a></li>
+						<li><a href="/modules/books/my_reviews.php">写的书单评论</a></li>
+						<li><a href="/ptopics.php">我的话题</a></li>
+						<li><a href="/modules/article/authorpage.php">我的专栏</a></li>
+						<li><a href="/myfriends.php">我的好友</a></li>
+						<li><a href="/userdetail.php">我的资料</a></li>
+						
+						
+						<li><a href="/setavatar.php">设置头像</a></li>
+						<li><a href="/useredit.php">修改资料</a></li>
+						<li><a href="https://www.youshu.me/logout.php">退出登录</a></li>
+					</ul>
+				</li>
+				<li><a href="/modules/article/bookcase.php" class="droplink"><i class="iconfont">&#xee43;</i>书架</a></li>
+				<li><a href="/modules/books/masterpage.php" class="droplink"><i class="iconfont">&#xee44;</i>书单</a></li>
+				
+				<li><a href="https://www.youshu.me/logout.php" class="droplink"><i class="iconfont">&#xee2a;</i>退出</a></li>
+			</ul>
+			
+		</div>
+		<div class="fr">
+			
+			<a href="/ptopics.php">我的话题(会客室)</a> &nbsp;|&nbsp; <a class="hot" id="GB_BIG">繁體</a>
+			
+			  &nbsp;|&nbsp;<a id="dark-mode-btn" title="夜间模式" href="javascript:void(0)" ><i class="iconfont" id="darkIcon">&#xee78;</i><span id="darkModeText">夜间模式</span></a>
+ <div class="dark-tip" id="darkTip"></div>
+ <script type="bbff80abdff3efaacdded0ec-text/javascript">(function(){'use strict';const body=document.body;const ysDarkMode="0";if(ysDarkMode==="1"){body.style.cssText="background-color: #606061 !important; color: #ffffff !important; transition: none !important;"}const btn=document.getElementById('dark-mode-btn');const icon=document.getElementById('darkIcon');const modeText=document.getElementById('darkModeText');const tip=document.getElementById('darkTip');const isDarkInit=body.classList.contains('dark-mode-root');let clickDebounce=false;if(!btn.title){const initText=isDarkInit?"日间模式":"夜间模式";btn.title=initText;btn.classList.toggle('active',isDarkInit);icon.innerHTML=isDarkInit?'&#xee79;':'&#xee78;';modeText.textContent=initText;}btn.onclick=function(e){e.preventDefault();e.stopPropagation();if(clickDebounce)return;clickDebounce=true;setTimeout(()=>clickDebounce=false,500);const isDark=body.classList.toggle('dark-mode-root');updateModeUI(isDark);setModeCookie(isDark?'1':'0');showTip(isDark?'已切换为夜间模式':'已切换为日间模式');};window.darkMode=function(){updateModeUI(true);setModeCookie('1');showTip('已切换为夜间模式');};window.dayMode=function(){updateModeUI(false);setModeCookie('0');showTip('已切换为白天模式');};function updateModeUI(isDark){const currentText=isDark?"日间模式":"夜间模式";icon.innerHTML=isDark?'&#xee79;':'&#xee78;';modeText.textContent=currentText;btn.title=currentText;btn.classList.toggle('active',isDark);if(isDark){body.classList.add('dark-mode-root');body.style.cssText="background-color: #606061 !important; color: #ffffff !important; transition: none !important;"}else{body.classList.remove('dark-mode-root');body.style.cssText='';}}function setModeCookie(value){if(window.Cookie){try{Cookie.set("dark",value,7);}catch(e){const expires=new Date(Date.now()+604800000).toUTCString();document.cookie="dark="+value+"; expires="+expires+"; path=/; HttpOnly";}}}function showTip(text){tip.textContent=text;tip.style.cssText="display: block; opacity: 0; transition: opacity 0.2s ease;";setTimeout(()=>tip.style.opacity='1',10);setTimeout(()=>{tip.style.opacity='0';setTimeout(()=>tip.style.display='none',200);},1500);}})();</script>
+		</div>
+	</div>
+</div>
+
+<div id="pin-nav" class="pin-nav-wrap need-search" data-l1="200"><div class="box-center cf"><div class="nav-list site-nav fl"><ul><li class="site"><a class="pin-logo" href="/"><div class="logotext">优书网</div> <span class="third-remove"></span></a><div class="dropdown third-remove"><a href="https://qidianclub.com" target="_blank">起点社区</a> <a href="/bbs">优书论坛</a></div></li><li><a href="/books">书库</a></li><li><a href="/booklists">书单</a></li><li><a href="/topics">话题</a></li><li><a href="/top/allvisit/1.html">榜单</a></li><li><a href="/fulltop/allvisit/1.html">全本</a></li><li><a href="/taglist/tagid/1.html">标签</a></li><li class="more"><a href="javascript:" id="top-nav-more">男频<span></span></a><div class="dropdown header-drop"><a href="/sort/1/1.html">玄幻</a> <a href="/sort/2/1.html">奇幻</a> <a href="/sort/3/1.html">武侠</a> <a href="/sort/4/1.html">仙侠</a> <a href="/sort/5/1.html">都市</a> <a href="/sort/6/1.html">现实</a> <a href="/sort/7/1.html">军事</a> <a href="/sort/8/1.html">历史</a> <a href="/sort/9/1.html">悬疑</a> <a href="/sort/10/1.html"> 游戏</a> <a href="/sort/11/1.html">竞技</a> <a href="/sort/12/1.html">科幻</a> <a href="/sort/13/1.html">灵异</a> <a href="/sort/14/1.html">二次元</a> <a href="/sort/15/1.html">同人</a> <a href="/sort/16/1.html">其他</a></div></li>
+<li class="more"><a href="javascript:" id="top-nav-more" data-eid="qd_A54">女频<span></span></a><div class="dropdown header-drop"><a href="/sort/17/1.html">穿越时空</a> <a href="/sort/18/1.html">架空历史</a> <a href="/sort/19/1.html">总裁豪门</a> <a href="/sort/20/1.html">都市言情</a> <a href="/sort/21/1.html">仙侠奇缘</a> <a href="/sort/22/1.html">幻想言情</a> <a href="/sort/23/1.html">悬疑推理</a> <a href="/sort/24/1.html">耽美纯爱</a> <a href="/sort/25/1.html">衍生同人</a> <a href="/sort/26/1.html">轻小说</a> <a href="/sort/27/1.html">综合其他</a></div></li></ul></div><div class="nav-list min-user fr"><ul><li id="min-search"><form id="navFormUrl" action="/search/all/"><label id="pin-search"><em class="iconfont" style="cursor: pointer">&#xee28;</em></label>  <input id="pin-input" class="pin-input hide" name="kw" placeholder="李安平的恶魔契约"> <input class="submit-input" type="submit" id="topSearchSubmit" style="display: none;"></form></li><li class="sign-in hidden"><a href="/userdetail.php" target="_blank"><i id="nav-user-name">viewer</i><span></span></a><div class="dropdown"><a href="/message.php?box=inbox" target="_blank">消息</a> <a class="qqlivepay" href="/modules/article/bookcase.php" target="_blank">我的书架</a> <a href="/userdetail.php" target="_blank">个人中心</a> <a href="/modules/article/masterpage.php" target="_blank">我推的小说</a>  <a href="/modules/books/masterpage.php" target="_blank">我建的书单</a> <a href="/modules/books/bookscase.php" target="_blank">我收藏的书单</a> <a href="/ptopics.php" target="_blank">我的话题</a>  <a href="/modules/article/myreviews.php" target="_blank">我的书评</a>  <a href="/modules/books/my_reviews.php" target="_blank">写的书单评论</a>  <a href="/setavatar.php" target="_blank">设置头像</a> <a href="/useredit.php" target="_blank">修改资料</a>  <a href="/logout.php">退出</a></div></li><li class="line"></li><li class="book-shelf" id="top-book-shelf"><a href="/modules/article/bookcase.php" rel="nofollow" target="_blank"><em class="iconfont">&#xee60;</em><i>我的书架</i></a></li><li class="close-nav-btn" style="list-style: none;width:29px"><a href="javascript:;" class="close-nav-link" style="color: #999; cursor: pointer; font-size: 12px;" onclick="if (!window.__cfRLUnblockHandlers) return false; hidePinNavFor24h()" rel="nofollow" data-cf-modified-bbff80abdff3efaacdded0ec-=""><em class="iconfont" style="font-size: 12px;">&#xee58;</em></a></li></ul></div></div></div>
+<style>.pin-nav-wrap .nav-list li a.close-nav-link:hover{background:none !important;border-top:none !important;height:40px;line-height:38px;transition:none;text-decoration:none;cursor: pointer}.dropmenu li.now {background: #dc3545 !important;box-shadow: 0 -2px 6px rgba(0,0,0,.3) inset;font-weight: 700;border-radius: 4px;display: block;font-size: 14px;color: #fff;overflow: hidden;}</style>
+<script type="bbff80abdff3efaacdded0ec-text/javascript">(function(){if(Cookie.get("hide_pin_nav")==="1"&&document.getElementById('pin-nav')){document.getElementById('pin-nav').style.display='none';}})();function hidePinNavFor24h(){if(confirm('确定24小时内不再显示该导航栏吗？')){Cookie.set("hide_pin_nav","1",1,"/");$_('pin-nav')&&($_('pin-nav').hide(),document.getElementById('pin-nav').style.display='none');}}function checkPinNavCookie(){var hideNav=Cookie.get("hide_pin_nav");hideNav==="1"&&$_('pin-nav')&&($_('pin-nav').hide(),document.getElementById('pin-nav').style.display='none');}addEvent(window,'load',checkPinNavCookie);function clearPinNavCookie(){Cookie.del("hide_pin_nav");$_('pin-nav')&&($_('pin-nav').show(),document.getElementById('pin-nav').style.display='block');}
+(function(){const safeArrayFrom=function(arrayLike){return Array.from?Array.from(arrayLike):[].slice.call(arrayLike)};const elements={navFormUrl:$_('navFormUrl'),pinInput:$_('pin-input'),pinSearch:$_('pin-search'),pinNav:$_('pin-nav')};if(!elements.navFormUrl||!elements.pinInput||!elements.pinNav)return;function handleSearch(){const keyword=(elements.pinInput.value||elements.pinInput.placeholder||'').trim();if(!keyword)return;const encodedKeyword=encodeURIComponent(keyword);const searchUrl=`/search/all/${encodedKeyword}/1.html`;try{const existingTab=safeArrayFrom(window.frames).find(frame=>frame.location?.href?.startsWith(elements.navFormUrl.action));if(existingTab){existingTab.focus();return;}}catch(e){}window.open(searchUrl,'_blank','noopener,noreferrer')}addEvent(elements.navFormUrl,'submit',function(e){stopEvent(e);handleSearch()});if(elements.pinSearch)addEvent(elements.pinSearch,'click',handleSearch);const scrollThreshold=parseInt(elements.pinNav.dataset.l1)||200;let scrollTimer=null;let isVisible=false;function toggleNav(show){if(show===isVisible)return;isVisible=show;elements.pinNav.classList.toggle('show',show)}function handleScroll(){clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{const scrollTop=pageTop();toggleNav(scrollTop>=scrollThreshold)},16)}addEvent(window,'scroll',handleScroll);handleScroll();const dropdownItems=safeArrayFrom(document.querySelectorAll('.nav-list li, .min-user li')).filter(li=>li.querySelector('.dropdown'));dropdownItems.forEach(item=>{const trigger=item.querySelector('a');const dropdown=item.querySelector('.dropdown');if(!trigger||!dropdown)return;let hoverTimer=null;addEvent(item,'mouseenter',()=>{clearTimeout(hoverTimer);hoverTimer=setTimeout(()=>{dropdown.style.display='block';item.classList.add('act')},200)});addEvent(item,'mouseleave',()=>{clearTimeout(hoverTimer);hoverTimer=setTimeout(()=>{dropdown.style.display='none';if(!item.classList.contains('permanent-act'))item.classList.remove('act')},100)});const href=trigger.getAttribute('href')||'';if(href==='javascript:'||href==='#')addEvent(trigger,'click',(e)=>{stopEvent(e);const isShow=dropdown.style.display!=='block';dropdown.style.display=isShow?'block':'none';item.classList.toggle('act',isShow)})})})();</script>
+<div class="header cf">
+	<div class="main row cf">
+		<div class="col9">
+			<div class="logo">
+			<a href="/"><img src="/themes/ys/logo.png" border="0" alt="优书网" /></a>
+			</div>
+			<div class="mainnav">
+				<ul class="dropmenu">
+					<li><a href="/">首页</a></li>
+					<li><a href="/books">书库</a></li>
+					<li><a href="/booklists">书单</a></li>
+					<li><a href="/topics">话题</a></li>
+					<li><a href="/top/allvisit/1.html">榜单</a></li>
+					<li><a href="/sort/0/1.html">分类</a>
+						<ul>
+						<li><div class="top">男频：</div></li>
+							<li><a href="/sort/1/1.html" class="dil">玄幻</a> | <a href="/sort/2/1.html" class="dil">奇幻</a> | <a href="/sort/3/1.html" class="dil">武侠</a> | <a href="/sort/4/1.html" class="dil">仙侠</a></li>
+							<li><a href="/sort/5/1.html" class="dil">都市</a> | <a href="/sort/6/1.html" class="dil">现实</a> | <a href="/sort/7/1.html" class="dil">军事</a> | <a href="/sort/8/1.html" class="dil">历史</a></li>
+							<li><a href="/sort/9/1.html" class="dil">悬疑</a> | <a href="/sort/10/1.html" class="dil">游戏</a> | <a href="/sort/11/1.html" class="dil">竞技</a> | <a href="/sort/12/1.html" class="dil">科幻</a></li>
+							<li><a href="/sort/13/1.html" class="dil">灵异</a> | <a href="/sort/14/1.html" class="dil">二次元</a> | <a href="/sort/15/1.html" class="dil">同人</a> | <a href="/sort/16/1.html" class="dil">其他</a></li>
+						<li><div class="top">女频：</div></li>
+							<li><a href="/sort/17/1.html" class="dil">穿越时空</a> | <a href="/sort/18/1.html" class="dil">架空历史</a> | <a href="/sort/19/1.html" class="dil">总裁豪门</a></li>
+							<li><a href="/sort/20/1.html" class="dil">都市言情</a> | <a href="/sort/21/1.html" class="dil">仙侠奇缘</a> | <a href="/sort/22/1.html" class="dil">幻想言情</a></li>
+							<li><a href="/sort/23/1.html" class="dil">悬疑推理</a> | <a href="/sort/24/1.html" class="dil">耽美纯爱</a> | <a href="/sort/25/1.html" class="dil">衍生同人</a></li>
+							<li><a href="/sort/26/1.html" class="dil">轻小说</a> | <a href="/sort/27/1.html" class="dil">综合其他</a></li>
+						</ul>
+					</li>
+					<li><a href="/fulltop/allvisit/1.html">全本</a></li>
+					<li><a href="/taglist/tagid/1.html">标签</a></li>
+					<li><a href="/bbs">论坛</a></li>
+					<li><a href="/modules/article/myarticle.php">作家专区</a>
+						<ul>
+							<li><a href="/modules/article/newarticle.php">添加新书/推书</a></li>
+							<li><a href="/modules/article/masterpage.php">管理我的推书</a></li>
+							<li><a href="/modules/books/newbooks.php">创建我的书单</a></li>
+							<li><a href="/modules/books/masterpage.php">管理我的书单</a></li>
+							<li><a href="/ptopics.php?oid=self">用户留言</a></li>
+							<li><a href="/modules/article/authorpage.php">我的专栏</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col3 last banner">
+			
+			<form style="width:235px;height:32px;padding:0;margin:13px auto 0 auto;position:relative;background:#fff;border:2px solid #ffaa00;border-radius:5px;float: right;" name="t_frmsearch" method="post" action="/modules/article/search.php">
+				<select name="searchtype" style="width:55px;height:30px;padding:0;margin:0;line-height:30px;border:0;font-size:14px;position:absolute;left:5px;top:0;">
+					<option value="all" selected="selected">综合</option>
+					<option value="articlename">书名</option>
+					<option value="author">作者</option>
+					<option value="keywords">标签</option>
+				</select>
+				<input name="searchkey" type="text" style="width:128px;height:30px;padding:0;margin:0;line-height:30px;border:0;font-size:14px;position:absolute;left:62px;top:0;">
+				<button type="submit" name="t_btnsearch" class="iconfont" style="width:45px;height:32px;padding:0;margin:0;line-height:32px;text-align:center;background:#ffaa00;color:#fff;cursor:pointer;border:0;font-size:14px;position:absolute;right:-2px;top:0;border-radius:0 5px 5px 0;">&#xee28;</button>
+			</form>
+			
+		</div>
+	</div>
+</div>
+
+
+
+<!--<div class="subnav">
+	<div class="main">
+		<a href="/sort/0/1.html">全部</a>|
+		<a href="/sort/1/1.html">玄幻</a>|
+		<a href="/sort/2/1.html">奇幻</a>|
+		<a href="/sort/3/1.html">武侠</a>|
+		<a href="/sort/4/1.html">仙侠</a>|
+		<a href="/sort/5/1.html">都市</a>|
+		<a href="/sort/6/1.html">现实</a>|
+		<a href="/sort/7/1.html">军事</a>|
+		<a href="/sort/8/1.html">历史</a>|
+		<a href="/sort/9/1.html">悬疑</a>|
+		<a href="/sort/10/1.html">游戏</a>|
+		
+		<a href="/sort/11/1.html">竞技</a>|
+		<a href="/sort/12/1.html">科幻</a>|
+		<a href="/sort/13/1.html">灵异</a>|
+		<a href="/sort/14/1.html">二次元</a>|
+		<a href="/sort/15/1.html">同人</a>|
+		<a href="/sort/16/1.html">其他</a>
+	</div>
+	<div class="main">
+		<a href="/sort/17/1.html">穿越时空</a>|
+		<a href="/sort/18/1.html">架空历史</a>|
+		<a href="/sort/19/1.html">总裁豪门</a>|
+		<a href="/sort/20/1.html">都市言情</a>|
+		<a href="/sort/21/1.html">仙侠奇缘</a>|
+		<a href="/sort/22/1.html">幻想言情</a>|
+		<a href="/sort/23/1.html">悬疑推理</a>|
+		<a href="/sort/24/1.html">耽美纯爱</a>|
+		<a href="/sort/25/1.html">衍生同人</a>|		
+		<a href="/sort/26/1.html">轻小说</a>|
+		<a href="/sort/27/1.html">综合其他</a>
+	</div>	
+</div>-->
+
+<div class="main">
+  <div class="h10"></div>
+    
+		
+
+		
+		<div id="content" class="row"><div class="msgbox">
+	<div class="block">
+		<div class="blocktitle">出现错误！</div>
+		<div class="blockcontent">
+			<div style="padding:10px;text-align:left;">
+				错误原因：对不起，该小说不存在！
+				
+				
+			</div>
+		</div>
+	</div>
+</div></div>
+		
+
+		
+		<div class="cb"></div>
+    
+</div>
+
+<div class="footer">
+	<div class="main">
+		<p><a href="/page.php?bid=11">关于本站</a>&emsp;|&emsp;<a href="/page.php?bid=12">联系我们</a>&emsp;|&emsp;<a href="/page.php?bid=13">用户指南</a>&emsp;|&emsp;<a href="/page.php?bid=14">版权声明</a>&emsp;|&emsp;<a href="/page.php?bid=15">作家福利</a>&emsp;|&emsp;<a href="https://m.youshu.me">手机版</a></p>
+		<p>&copy;2026 <a href="https://youshu.me" target="_blank">优书网（youshu.me）</a></p>
+		<p>2026-10-19 00:48:40, Processed in 0.034018 second(s).</p>
+	</div>
+</div>
+
+<div><a class="gotop" id="gotop" href="javascript:scroll(0,0);"><i class="iconfont">&#xee6b;</i></a></div>
+<script type="bbff80abdff3efaacdded0ec-text/javascript">
+window.onscroll = function(){
+	if(document.body.scrollTop || document.documentElement.scrollTop > 0) document.getElementById('gotop').style.display = 'block';
+	else document.getElementById('gotop').style.display = 'none';
+}
+</script>
+    <script type="bbff80abdff3efaacdded0ec-text/javascript">
+    var defaultEncoding = "2";
+    var translateDelay = "10";
+    var cookieDomain = "https://www.youshu.me";
+    var msgToTraditionalChinese = "繁體";
+    var msgToSimplifiedChinese = "简体";
+    var translateButtonId = "GB_BIG";
+    </script>
+    <script type="bbff80abdff3efaacdded0ec-text/javascript" src="/scripts/GB_BIG.js?v=11" mce_src="/scripts/GB_BIG.js?v=11"></script>
+    <script type="bbff80abdff3efaacdded0ec-text/javascript">
+    translateInitilization();
+    </script>
+<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="bbff80abdff3efaacdded0ec-|49" defer></script></body>
+</html>
