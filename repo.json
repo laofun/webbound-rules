@@ -1,7 +1,7 @@
 {
   "repo_meta": {
     "name": "WebBound Official Rules",
-    "version": "1.5.0"
+    "version": "1.6.0"
   },
   "sources": [
     {
@@ -171,6 +171,18 @@
       "icon": "🍃",
       "language": "zh",
       "featured": true
+    },
+    {
+      "id": "xbanxia.cc",
+      "name": "半夏小說",
+      "domain": "xbanxia.cc",
+      "rule_url": "./rules/xbanxia.cc.json",
+      "version": "1.0.0",
+      "author": "WebBound",
+      "description": "半夏小說 (xbanxia.cc) — Traditional-Chinese web novels.",
+      "icon": "📖",
+      "language": "zh",
+      "featured": false
     }
   ]
 }

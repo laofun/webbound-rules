@@ -1,0 +1,38 @@
+{
+  "domain": "xbanxia.cc",
+  "url_pattern": "^https?://(?:www\\.)?xbanxia\\.cc/books/\\d+\\.html(?:[?#].*)?$",
+  "parser_type": "scriptable",
+  "selectors": {
+    "title": ".book-describe > h1",
+    "author": ".book-describe > p:nth-of-type(1) > a",
+    "cover": ".book-img img@data-original",
+    "desc": ".book-describe .describe-html > p:nth-of-type(1)",
+    "status": ".book-describe > p:nth-of-type(3)|after:狀態︰|trim",
+    "genres": ".book-describe > p:nth-of-type(2)|after:類型︰|trim",
+    "toc": {
+      "list_container": ".book-list > ul",
+      "item": ".book-list > ul > li > a",
+      "total_page": "",
+      "next_page": "",
+      "page_url_pattern": ""
+    },
+    "chapter": {
+      "content": "article #nr1",
+      "remove": ["div", "script", "style", "iframe", "span"]
+    }
+  },
+  "config": {
+    "pagination_mode": "single_page_ajax",
+    "rate_limit_ms": 1000
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "zh",
+  "description": "xbanxia.cc — 半夏小說, Traditional-Chinese novels. Single-page ToC and chapters; strips inline ads and footer text.",
+  "marketplace": {
+    "name": "半夏小說",
+    "icon": "📖",
+    "featured": false,
+    "description": "半夏小說 (xbanxia.cc) — Traditional-Chinese web novels."
+  }
+}

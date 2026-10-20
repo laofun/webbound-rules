@@ -1,0 +1,39 @@
+{
+  "domain": "xbanxia.cc",
+  "url_pattern": "^https?://(?:www\\.)?xbanxia\\.cc/books/\\d+\\.html(?:[?#].*)?$",
+  "parser_type": "scriptable",
+  "selectors": {
+    "title": ".book-describe > h1",
+    "author": ".book-describe > p:nth-of-type(1) > a",
+    "cover": ".book-img img@data-original",
+    "desc": ".book-describe .describe-html > p:nth-of-type(1)",
+    "status": ".book-describe > p:nth-of-type(3)|after:狀態︰|trim",
+    "genres": ".book-describe > p:nth-of-type(2)|after:類型︰|trim",
+    "toc": {
+      "list_container": ".book-list > ul",
+      "item": ".book-list > ul > li > a",
+      "total_page": "",
+      "next_page": "",
+      "page_url_pattern": ""
+    },
+    "chapter": {
+      "content": "article #nr1",
+      "remove": [
+        "div",
+        "script",
+        "style",
+        "iframe",
+        "span"
+      ]
+    }
+  },
+  "script": "({\n  async extractToC(ctx) {\n    const doc = new DOMParser().parseFromString(ctx.html, 'text/html');\n    const links = [...doc.querySelectorAll('.book-list > ul > li > a')];\n    if (!links.length) throw new Error('xbanxia: missing chapter list: ' + ctx.url);\n    return links.map(a => ({\n      title: ctx.utils.cleanText(a.textContent),\n      url: ctx.utils.resolveUrl(a.getAttribute('href'), ctx.url),\n    }));\n  },\n\n  async extractChapter(ctx) {\n    const doc = new DOMParser().parseFromString(ctx.html, 'text/html');\n    const body = doc.querySelector('article #nr1');\n    if (!body) throw new Error('xbanxia: missing chapter body: ' + ctx.url);\n    body.querySelectorAll('div, script, style, iframe').forEach(el => el.remove());\n    body.querySelectorAll('span').forEach(el => {\n      if (el.textContent.trim() === '半夏小說，快樂很多') el.remove();\n    });\n    const html = ctx.utils.sanitize(body.innerHTML.replace(/本作品源自晉江文學城\\s*歡迎登陸閱讀更多好作品/g, ''));\n    if (!html.replace(/<[^>]*>/g, '').trim()) throw new Error('xbanxia: empty chapter body: ' + ctx.url);\n    return html;\n  },\n})",
+  "config": {
+    "pagination_mode": "single_page_ajax",
+    "rate_limit_ms": 1000
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "zh",
+  "description": "xbanxia.cc — 半夏小說, Traditional-Chinese novels. Single-page ToC and chapters; strips inline ads and footer text."
+}
