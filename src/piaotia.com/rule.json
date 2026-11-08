@@ -4,11 +4,11 @@
   "parser_type": "generic",
   "selectors": {
     "title": "h1",
-    "author": "tr:nth-of-type(2) td:nth-of-type(2)|after:者：|trim",
-    "cover": "img[src*='/files/article/image/']@src",
-    "desc": "td[width='80%'] tr:last-child td|after:內容簡介：|trim",
-    "status": "tr:nth-of-type(3) td:nth-of-type(2)|after:文章状态：|trim",
-    "genres": "tr:nth-of-type(2) td:nth-of-type(1)|after:别：|trim",
+    "author": "td[width='25%']:nth-of-type(2)|after:者：|trim",
+    "cover": "a[href*='/files/article/image/'] img@src",
+    "desc": "td[width='80%'] div[style*='float']|regex:内容简介：(?:</span>)?([\\s\\S]+)",
+    "status": "table[cellpadding='3']|regex:文章状态：(\\S+)",
+    "genres": "td[width='25%']:nth-of-type(1):not(.odd)|after:别：|trim",
     "toc": {
       "list_container": "div.centent",
       "item": "div.centent ul li a",
@@ -22,6 +22,7 @@
       "remove": [
         "h1",
         ".toplink",
+        ".bottomlink",
         "table",
         "#guild",
         "#shop",
@@ -36,7 +37,7 @@
     "pagination_mode": "single_page_ajax",
     "rate_limit_ms": 1000
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "WebBound",
   "language": "zh",
   "description": "piaotia.com — Chinese web novels (飘天文学).",

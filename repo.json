@@ -93,7 +93,7 @@
       "name": "Piaotia",
       "domain": "piaotia.com",
       "rule_url": "./rules/piaotia.com.json",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "WebBound",
       "description": "Piaotia (piaotia.com) — Chinese web novels.",
       "icon": "📕",
