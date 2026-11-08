@@ -189,10 +189,10 @@
       "name": "优书网 数据集 (youshu.me)",
       "domain": "youshu.me-dataset",
       "rule_url": "./rules/youshu.me-dataset.json",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "WebBound",
       "description": "优书网 (youshu.me) dataset — books, reviews and reviewers by book ID, for the yousuu database snapshot. Runs in the Datasets view; needs a youshu.me tab that has passed Cloudflare and is logged in (reviews require login). Params: from/to = book ID range; mode \"update\" keeps reviews at or after `since` (site time), \"full\" takes every review page; reviews:false = books only.",
-      "icon": "🗂️",
+      "icon": "https://www.youshu.me/favicon.ico",
       "language": "zh",
       "featured": false
     }
