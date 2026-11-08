@@ -33,13 +33,13 @@
     "rate_limit_ms": 1000,
     "render_mode": "dynamic"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "WebBound",
   "language": "zh",
   "description": "8novel.com — Infinite Light Novel (無限輕小說).",
   "marketplace": {
     "name": "無限輕小說",
-    "icon": "📖",
+    "icon": "https://8novel.com/apple-touch-icon.png",
     "featured": true,
     "description": "無限輕小說 (8novel.com) — Light novel & web novel site."
   }

@@ -32,13 +32,13 @@
     "pagination_mode": "single_page_ajax",
     "rate_limit_ms": 1000
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "WebBound",
   "language": "zh",
   "description": "52shuku.net — Chinese web novels repository.",
   "marketplace": {
     "name": "52书库",
-    "icon": "📚",
+    "icon": "https://www.52shuku.net/favicon.ico",
     "featured": true,
     "description": "52书库 (52shuku.net) — Chinese web novel site."
   }

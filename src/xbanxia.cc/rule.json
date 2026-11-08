@@ -25,13 +25,13 @@
     "pagination_mode": "single_page_ajax",
     "rate_limit_ms": 1000
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "WebBound",
   "language": "zh",
   "description": "xbanxia.cc — 半夏小說, Traditional-Chinese novels. Single-page ToC and chapters; strips inline ads and footer text.",
   "marketplace": {
     "name": "半夏小說",
-    "icon": "📖",
+    "icon": "https://www.xbanxia.cc/static/favicon.ico",
     "featured": false,
     "description": "半夏小說 (xbanxia.cc) — Traditional-Chinese web novels."
   }
