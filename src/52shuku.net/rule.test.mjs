@@ -2,6 +2,7 @@ import { parseHTML } from 'linkedom';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { extractMetadata, htmlToText } from '../_ctx/generic-context.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(here, '../..');
@@ -23,25 +24,12 @@ A(pattern.test(bookUrl), 'url_pattern must match a book page');
 A(!pattern.test(chapterUrl), 'url_pattern must reject chapter pages');
 
 const { document: book } = parseHTML(bookHtml);
-const text = (selector) => (book.querySelector(selector)?.textContent || '').trim();
-const transformedText = (selector) => {
-  const [css, ...ops] = selector.split('|');
-  let value = text(css);
-  for (const op of ops) {
-    if (op.startsWith('before:')) value = value.split(op.slice(7))[0];
-    if (op.startsWith('after:')) value = value.split(op.slice(6)).slice(1).join(op.slice(6));
-    if (op === 'trim') value = value.trim();
-  }
-  return value;
-};
-
-A(transformedText(rule.selectors.title) === '厮磨', `title selector failed, got: "${transformedText(rule.selectors.title)}"`);
-A(text(rule.selectors.author) === '孟宋', `author selector failed, got: "${text(rule.selectors.author)}"`);
-A(text(rule.selectors.desc).includes('老舍先生说过'), 'description selector failed');
-
-const genreElements = Array.from(book.querySelectorAll(rule.selectors.genres));
-const genres = genreElements.map((el) => (el.textContent || '').trim()).filter(Boolean).join(', ');
-A(genres.includes('现代言情') && genres.includes('破镜重圆'), 'genres selector failed');
+const meta = extractMetadata(book, rule.selectors);
+A(meta.title === '厮磨', `title selector failed, got: "${meta.title}"`);
+A(meta.author === '孟宋', `author selector failed, got: "${meta.author}"`);
+A(htmlToText(meta.description).includes('老舍先生说过'), 'description selector failed');
+// The 所属专题 paragraph also links the author; that is not a genre.
+A(meta.genres === '现代言情, 破镜重圆, 大叔文', `genres selector failed, got: "${meta.genres}"`);
 
 const tocLinks = Array.from(book.querySelectorAll(rule.selectors.toc.item));
 A(tocLinks.length === 201, `expected 201 ToC links, got ${tocLinks.length}`);

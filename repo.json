@@ -9,7 +9,7 @@
       "name": "52书库",
       "domain": "52shuku.net",
       "rule_url": "./rules/52shuku.net.json",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": "WebBound",
       "description": "52书库 (52shuku.net) — Chinese web novel site.",
       "icon": "https://www.52shuku.net/favicon.ico",
