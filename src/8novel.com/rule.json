@@ -6,7 +6,7 @@
     "title": "meta[property='og:title']@content",
     "author": "meta[property='og:novel:author']@content",
     "cover": "meta[property='og:image']@content",
-    "desc": "meta[property='og:description']@content",
+    "desc": "li.full_text",
     "status": "meta[property='og:novel:status']@content",
     "genres": "meta[property='og:novel:category']@content",
     "toc": {
@@ -33,7 +33,7 @@
     "rate_limit_ms": 1000,
     "render_mode": "dynamic"
   },
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "WebBound",
   "language": "zh",
   "description": "8novel.com — Infinite Light Novel (無限輕小說).",

@@ -2,6 +2,7 @@ import { parseHTML } from 'linkedom';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { extractMetadata, htmlToText } from '../_ctx/generic-context.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const A = (condition, message) => {
@@ -22,13 +23,13 @@ const pattern = new RegExp(rule.url_pattern);
 A(pattern.test(bookUrl), 'url_pattern must match book info page');
 
 const { document: book } = parseHTML(bookHtml);
-const metaText = (property) => book.querySelector(`meta[property='${property}']`)?.getAttribute('content') || '';
-
-A(metaText('og:title') === '廝磨', `title failed, got: "${metaText('og:title')}"`);
-A(metaText('og:novel:author') === '孟宋', `author failed, got: "${metaText('og:novel:author')}"`);
-A(metaText('og:image') === 'https://www.8novel.com/pics/0/17706-hgwo.jpg', 'cover failed');
-A(metaText('og:description').includes('老舍先生說過'), 'description failed');
-A(metaText('og:novel:category') === '都市現代', 'genres failed');
+const meta = extractMetadata(book, rule.selectors);
+A(meta.title === '廝磨', `title failed, got: "${meta.title}"`);
+A(meta.author === '孟宋', `author failed, got: "${meta.author}"`);
+A(meta.cover === 'https://www.8novel.com/pics/0/17706-hgwo.jpg', `cover failed, got: "${meta.cover}"`);
+// desc is read as innerHTML, so a <meta …@content> selector yields nothing.
+A(htmlToText(meta.description).includes('老舍先生說過'), `description failed, got: "${meta.description.slice(0, 40)}"`);
+A(meta.genres === '都市現代', `genres failed, got: "${meta.genres}"`);
 
 const tocLinks = Array.from(book.querySelectorAll(rule.selectors.toc.item));
 A(tocLinks.length === 105, `expected 105 ToC links, got ${tocLinks.length}`);

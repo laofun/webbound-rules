@@ -21,7 +21,7 @@
       "name": "無限輕小說",
       "domain": "8novel.com",
       "rule_url": "./rules/8novel.com.json",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": "WebBound",
       "description": "無限輕小說 (8novel.com) — Light novel & web novel site.",
       "icon": "https://8novel.com/apple-touch-icon.png",
