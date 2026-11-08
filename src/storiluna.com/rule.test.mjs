@@ -2,6 +2,7 @@ import { parseHTML } from 'linkedom';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { extractMetadata, htmlToText } from '../_ctx/generic-context.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(here, '../..');
@@ -23,25 +24,12 @@ A(pattern.test(bookUrl), 'url_pattern must match a book page');
 A(!pattern.test(chapterUrl), 'url_pattern must reject chapter pages');
 
 const { document: book } = parseHTML(bookHtml);
-const text = (selector) => (book.querySelector(selector)?.textContent || '').trim();
-const transformedText = (selector) => {
-  const [css, ...ops] = selector.split('|');
-  let value = text(css);
-  for (const op of ops) {
-    if (op.startsWith('after:')) value = value.split(op.slice(6)).slice(1).join(op.slice(6));
-    if (op === 'trim') value = value.trim();
-  }
-  return value;
-};
-
-A(text(rule.selectors.title) === 'The Secret of Secrets: A Novel', 'title selector failed');
-A(transformedText(rule.selectors.author) === 'Dan Brown', 'author selector/transform failed');
-A(
-  book.querySelector("meta[property='og:image']")?.getAttribute('content') === 'https://books.google.com/example-cover.jpg',
-  'cover selector failed',
-);
-A(text(rule.selectors.desc).includes('snowy Prague'), 'description selector failed');
-A(text(rule.selectors.genres) === 'Thriller, Mystery, Suspense, Fiction', 'genres selector failed');
+const meta = extractMetadata(book, rule.selectors);
+A(meta.title === 'The Secret of Secrets: A Novel', `title selector failed, got: "${meta.title}"`);
+A(meta.author === 'Dan Brown', `author selector/transform failed, got: "${meta.author}"`);
+A(meta.cover === 'https://books.google.com/example-cover.jpg', `cover selector failed, got: "${meta.cover}"`);
+A(htmlToText(meta.description).includes('snowy Prague'), 'description selector failed');
+A(meta.genres === 'Thriller, Mystery, Suspense, Fiction', `genres selector failed, got: "${meta.genres}"`);
 
 const tocLinks = Array.from(book.querySelectorAll(rule.selectors.toc.item));
 A(tocLinks.length === 3, `expected 3 desktop ToC links without mobile duplicates, got ${tocLinks.length}`);

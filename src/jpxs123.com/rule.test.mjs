@@ -2,6 +2,7 @@ import { parseHTML } from 'linkedom';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { extractMetadata, htmlToText } from '../_ctx/generic-context.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const A = (condition, message) => {
@@ -23,11 +24,11 @@ A(!pattern.test(chapterUrl), 'url_pattern must reject chapter pages');
 A(!pattern.test(new URL('/author/1/x.html', bookUrl).toString()), 'url_pattern must reject author pages');
 
 const { document: book } = parseHTML(bookHtml);
-const text = (selector) => (book.querySelector(selector)?.textContent || '').trim();
-A(text(rule.selectors.title) === '基金會：我徵召諸天次元鬥蛐蛐(1-235)', `title selector failed, got: "${text(rule.selectors.title)}"`);
-A(text(rule.selectors.author) === 'Clef', `author selector failed, got: "${text(rule.selectors.author)}"`);
-A(book.querySelector(rule.selectors.cover)?.getAttribute('src')?.endsWith('88dda52c3b1d615945942ccafbcee1e0.jpg'), 'cover selector failed');
-A(text(rule.selectors.desc).includes('楚雲穿越SCP基金會世界'), 'description selector failed');
+const meta = extractMetadata(book, rule.selectors);
+A(meta.title === '基金會：我徵召諸天次元鬥蛐蛐(1-235)', `title selector failed, got: "${meta.title}"`);
+A(meta.author === 'Clef', `author selector failed, got: "${meta.author}"`);
+A(meta.cover.endsWith('88dda52c3b1d615945942ccafbcee1e0.jpg'), `cover selector failed, got: "${meta.cover}"`);
+A(htmlToText(meta.description).includes('楚雲穿越SCP基金會世界'), 'description selector failed');
 
 const tocLinks = Array.from(book.querySelectorAll(rule.selectors.toc.item));
 A(tocLinks.length === 386, `expected 386 ToC links, got ${tocLinks.length}`);

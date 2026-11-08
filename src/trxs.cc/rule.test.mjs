@@ -2,6 +2,7 @@ import { parseHTML } from 'linkedom';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { extractMetadata, htmlToText } from '../_ctx/generic-context.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const A = (condition, message) => {
@@ -23,11 +24,11 @@ A(!pattern.test(chapterUrl), 'url_pattern must reject chapter pages');
 A(!pattern.test(new URL('/author/1/x.html', bookUrl).toString()), 'url_pattern must reject author pages');
 
 const { document: book } = parseHTML(bookHtml);
-const text = (selector) => (book.querySelector(selector)?.textContent || '').trim();
-A(text(rule.selectors.title) === '东京：从收留离家JK开始(1-171)', `title selector failed, got: "${text(rule.selectors.title)}"`);
-A(text(rule.selectors.author) === '南猫一只天', `author selector failed, got: "${text(rule.selectors.author)}"`);
-A(book.querySelector(rule.selectors.cover)?.getAttribute('src')?.endsWith('4fa43e00d1044ccca0102acd7ddaf594.jpeg'), 'cover selector failed');
-A(text(rule.selectors.desc).includes('上杉朔继承了一家老旅馆'), 'description selector failed');
+const meta = extractMetadata(book, rule.selectors);
+A(meta.title === '东京：从收留离家JK开始(1-171)', `title selector failed, got: "${meta.title}"`);
+A(meta.author === '南猫一只天', `author selector failed, got: "${meta.author}"`);
+A(meta.cover.endsWith('4fa43e00d1044ccca0102acd7ddaf594.jpeg'), `cover selector failed, got: "${meta.cover}"`);
+A(htmlToText(meta.description).includes('上杉朔继承了一家老旅馆'), 'description selector failed');
 
 const tocLinks = Array.from(book.querySelectorAll(rule.selectors.toc.item));
 A(tocLinks.length === 140, `expected 140 ToC links, got ${tocLinks.length}`);
