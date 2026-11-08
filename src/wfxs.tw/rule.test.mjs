@@ -2,6 +2,7 @@ import { parseHTML } from 'linkedom';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { extractMetadata, htmlToText } from '../_ctx/generic-context.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(here, '../..');
@@ -26,25 +27,16 @@ A(pattern.test(bookUrl), 'url_pattern must match book info page');
 A(pattern.test(tocPageUrl), 'url_pattern must match booklist page');
 
 const { document: book } = parseHTML(bookHtml);
-const text = (selector) => (book.querySelector(selector)?.textContent || '').trim();
-const transformedText = (selector) => {
-  const [css, ...ops] = selector.split('|');
-  const [sel, attr] = css.includes('@') ? css.split('@') : [css, ''];
-  const el = book.querySelector(sel);
-  let value = (attr ? el?.getAttribute(attr) || '' : el?.textContent || '').trim();
-  for (const op of ops) {
-    if (op.startsWith('after:')) value = value.split(op.slice(6)).slice(1).join(op.slice(6));
-    if (op === 'trim') value = value.trim();
-  }
-  return value;
-};
-
-A(text(rule.selectors.title) === '廝磨', `title failed, got: "${text(rule.selectors.title)}"`);
-A(book.querySelector("meta[property='og:novel:author']")?.getAttribute('content') === '孟宋', 'author failed');
-A(book.querySelector("meta[property='og:image']")?.getAttribute('content') === 'https://img.wfxs.tw/195/195691/195691s.jpg', 'cover failed');
-A(transformedText(rule.selectors.desc).includes('喬眠來到他房間'), 'description failed');
-A(book.querySelector("meta[property='og:novel:status']")?.getAttribute('content') === '連載中', 'status failed');
-A(book.querySelector("meta[property='og:novel:category']")?.getAttribute('content') === '都市言情', 'genres failed');
+const meta = extractMetadata(book, rule.selectors);
+A(meta.title === '廝磨', `title failed, got: "${meta.title}"`);
+A(meta.author === '孟宋', `author failed, got: "${meta.author}"`);
+A(meta.cover === 'https://img.wfxs.tw/195/195691/195691s.jpg', `cover failed, got: "${meta.cover}"`);
+A(htmlToText(meta.description).includes('喬眠來到他房間'), 'description failed');
+// desc is innerHTML; cutting after the label inside <p> must not leave a dangling </p>
+// (the EPUB intro page embeds this in XHTML).
+A(!meta.description.includes('</p>'), `description has a dangling </p>: "…${meta.description.slice(-20)}"`);
+A(meta.status === '連載中', `status failed, got: "${meta.status}"`);
+A(meta.genres === '都市言情', `genres failed, got: "${meta.genres}"`);
 
 const tocUrlAttr = book.querySelector(rule.selectors.toc.toc_url)?.getAttribute('href');
 A(tocUrlAttr === '/booklist/195691.html', 'toc_url selector failed');
