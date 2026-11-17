@@ -6,7 +6,7 @@
     "title": "h1.f20h|before:作者：",
     "author": "h1.f20h em|after:作者：",
     "cover": "div.box_intro div.pic img",
-    "desc": "div.intro|after:：|trim",
+    "desc": "div.intro|regex:^(?:<!--[^>]*-->)?\\s*關於[^：<]*：\\s*([\\s\\S]*)|trim",
     "status": "table.ui_tb1 tr:nth-child(5) td:nth-child(3)|after:：",
     "genres": "table.ui_tb1 tr:nth-child(5) td:nth-child(1)|after:：",
     "toc": {
@@ -27,7 +27,7 @@
     "pagination_mode": "single_page_ajax",
     "rate_limit_ms": 1000
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "WebBound",
   "language": "zh",
   "description": "xsw.tw (台灣小說網): info page -> /book/<id>/ TOC. Chapter text is AES-128-CBC ciphertext in the page (var encrypted/key/iv) and is decrypted with crypto.subtle. extractMetadata reads title/author from the Big5 TOC page when the extension garbles the UTF-8 info page (stale big5 meta), else defers to the selectors."

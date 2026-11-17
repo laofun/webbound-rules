@@ -53,7 +53,7 @@ A(await rejects(parser.extractChapter(ctx('<html>403</html>', B + '1369939/1.htm
 // 4. Metadata, fixed extension: script defers (null), generic selectors read the info page.
 for (const [name, url, want] of [
   ['book.html', bookUrl, { title: '山河入夢來', author: '山河初醒', status: '連載中', genres: '玄幻魔法', cover: 'https://img.xsw.tw/1369/1369939/1369939s.jpg', desc: '右手持劍是殺戮' }],
-  ['book_nocover.html', book2Url, { title: '讓你修仙，沒讓你禍害修仙界啊！', author: '釣魚佬釣大魚', status: '連載中', genres: '玄幻魔法', cover: '/style/noimg.jpg', desc: '17863年秦宇大帝' }],
+  ['book_nocover.html', book2Url, { title: '讓你修仙，沒讓你禍害修仙界啊！', author: '釣魚佬釣大魚', status: '連載中', genres: '玄幻魔法', cover: '/style/noimg.jpg', desc: '修仙曆：17863年秦宇大帝' }],
 ]) {
   A(await parser.extractMetadata(ctx(fx(name), url)) === null, `script should defer to the selectors on ${name}`);
   const m = extractMetadata(new DOMParser().parseFromString(fx(name), 'text/html'), rule.selectors);
@@ -62,6 +62,13 @@ for (const [name, url, want] of [
     `bad selector meta on ${name}: ${JSON.stringify(m)}`);
   A(desc.startsWith(want.desc), `bad desc on ${name}: ${desc.slice(0, 40)}`);
 }
+
+// 4b. desc: the "關於<title>：" prefix is optional on this site; without it, a "："
+// inside the intro must not cut the text.
+const descOf = (html) => htmlToText(extractMetadata(new DOMParser().parseFromString(html, 'text/html'), rule.selectors).description);
+A(descOf(fx('book_noprefix.html')).startsWith('陸江仙熬夜猝死'), 'desc without the 關於 prefix');
+const colon = '<div class="intro"><!--內容簡介-->師父說：下山去吧。<!--內容簡介結束--></div>';
+A(descOf(colon) === '師父說：下山去吧。', `desc cut at an inner colon: ${descOf(colon)}`);
 
 // 5. Metadata, older extension (garbled info page): title/author from the Big5 TOC page.
 const old = await parser.extractMetadata(ctx(garbled('book.html'), bookUrl));
