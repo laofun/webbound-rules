@@ -1,6 +1,7 @@
 // Save a page as a UTF-8 fixture, decoded the way the extension decodes it
 // (port of NovelPacker-Extension/src/features/crawler/parser/fetchHtml.ts:
-// Content-Type charset → <meta> charset → utf-8; gb2312 upgraded to gbk).
+// Content-Type charset (utf-8 only if the bytes are UTF-8) → <meta> charset → utf-8;
+// gb2312 upgraded to gbk).
 //   node scripts/fetch-fixture.mjs <url> <out-file> [charset]
 //   npm run fixture -- <url> src/<domain>/fixtures/book.html
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -11,6 +12,11 @@ const NON_UTF8 = /^(gb2312|gbk|gb18030|big5|shift[-_]?jis|euc[-_]?kr|euc[-_]?jp)
 
 export function pickCharset(contentType, buf) {
   let charset = (/charset\s*=\s*"?([^";\s]+)"?/i.exec(contentType || '') || [])[1]?.toLowerCase() || null;
+  // An explicit utf-8 header wins when the bytes really are UTF-8 (xsw.tw: UTF-8
+  // pages with a stale big5 meta); a utf-8 header over GBK bytes still sniffs the meta.
+  if (charset === 'utf-8' || charset === 'utf8') {
+    try { new TextDecoder('utf-8', { fatal: true }).decode(buf); return 'utf-8'; } catch { /* not UTF-8 */ }
+  }
   if (!charset || !NON_UTF8.test(charset)) {
     const head = new TextDecoder('ascii').decode(new Uint8Array(buf, 0, Math.min(1024, buf.byteLength)));
     const m = /<meta[^>]+charset\s*=\s*["']?([^"'>\s;]+)/i.exec(head)

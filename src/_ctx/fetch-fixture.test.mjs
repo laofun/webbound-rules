@@ -1,11 +1,14 @@
-// pickCharset mirrors the extension's fetchHtml: header → meta → utf-8, gb2312 → gbk.
+// pickCharset mirrors the extension's decodeHtml: header (utf-8 only if the bytes are
+// UTF-8) → meta → utf-8, gb2312 → gbk.
 import { pickCharset, decode } from '../../scripts/fetch-fixture.mjs';
 
 const A = (c, m) => { if (!c) { console.error('FAIL:', m); process.exit(1); } };
 const buf = (s) => new TextEncoder().encode(s).buffer;
 
 A(pickCharset('text/html; charset=GBK', buf('')) === 'gbk', 'header charset wins');
-A(pickCharset('text/html; charset=utf-8', buf('<meta charset="big5">')) === 'big5', 'utf-8 header defers to meta');
+A(pickCharset('text/html; charset=utf-8', buf('<meta charset="big5">山河')) === 'utf-8', 'utf-8 header + UTF-8 bytes beats a stale meta');
+const gbkPage = new Uint8Array([...new TextEncoder().encode('<meta charset="gbk">'), 0xd6, 0xd0]).buffer;
+A(pickCharset('text/html; charset=utf-8', gbkPage) === 'gbk', 'utf-8 header over GBK bytes defers to meta');
 A(pickCharset(null, buf('<meta http-equiv="Content-Type" content="text/html; charset=gb2312">')) === 'gbk', 'http-equiv + gb2312 upgrade');
 A(pickCharset('text/html', buf('<html>')) === 'utf-8', 'default utf-8');
 
