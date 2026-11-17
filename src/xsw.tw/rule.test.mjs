@@ -50,6 +50,37 @@ const missing = await parser.extractChapter(ctx(fx('chapter_missing.html'), B + 
 A(missing === '<p>该章节缺失txt文件</p>', `site placeholder chapter changed: ${missing}`);
 A(await rejects(parser.extractChapter(ctx('<html>403</html>', B + '1369939/1.html'))), 'extractChapter must throw without a payload');
 
+// 3b. Plain chapters (no payload): text inline in an `id=content name="content"` element
+// up to the 章節報錯 <center>. The site picks the element at random per request
+// (<p>, <chapter>, <article>, ...); chapter 1 of this book repeats the <H2> title as line 1.
+const clean = (b) => (b.match(/<p>/g) || []).length > 20 && !/&nbsp;|<br|<center|章節報錯|<\/?P\b|<article|<chapter/.test(b);
+const c1Url = 'https://xsw.tw/book/16817210/247319994.html', c2Url = 'https://xsw.tw/book/16817210/248508926.html';
+const plain = await parser.extractChapter(ctx(fx('chapter_plain.html'), c1Url));
+A(plain.startsWith('<p>陸江仙做了一個很長很長的夢') && clean(plain), `bad plain chapter 1: ${plain.slice(0, 60)}`);
+const plain2 = await parser.extractChapter(ctx(fx('chapter_p.html'), c2Url));
+A(plain2.startsWith('<p>他拎起這人來') && clean(plain2), `bad plain chapter 2: ${plain2.slice(0, 60)}`);
+// Any wrapper element, raw or as Chrome's outerHTML under Force Hybrid (attributes quoted,
+// <br>, and a <p> wrapper closed by the inner <P>), gives the same text.
+const wrap = (tag, outerHtml) => fx('chapter_p.html').replace(/<\w+ id=content name="content"><P>/, () => outerHtml
+  ? `<${tag} id="content" name="content">${tag === 'p' ? '</p><p>' : '<p>'}`
+  : `<${tag} id=content name="content"><P>`).replace(/<br\/>/g, outerHtml ? '<br>' : '<br/>');
+// A stray <content> line and &emsp; indents; the title line is still dropped.
+const emsp = await parser.extractChapter(ctx(fx('chapter_emsp.html'), 'https://xsw.tw/book/16817210/253978664.html'));
+A(emsp.startsWith('<p>群山萬壑，遍地墨青。</p>') && !/&emsp;|<content|第1259章/.test(emsp), `bad &emsp; chapter: ${emsp.slice(0, 80)}`);
+for (const tag of ['p', 'chapter', 'article', 'div']) for (const o of [false, true]) {
+  A(await parser.extractChapter(ctx(wrap(tag, o), c2Url)) === plain2, `wrapper <${tag}> outerHTML=${o} differs`);
+}
+// A <table> wrapper in Chrome's DOM: the text <p> and the <center> are foster-parented
+// before an empty table (shape checked against jsdom/parse5). Re-read the raw page.
+const raw2 = fx('chapter_p.html');
+const fostered = raw2.replace(/<(\w+) id=content name="content">([\s\S]*?)<\/\1>/, (_, t, inner) =>
+  inner.replace('<P>', '<p>').replace('</P>', '</p>').replace(/<br\/>/g, '<br>') + '<table id="content" name="content"></table>');
+A(fostered !== raw2, 'fostered fixture not built');
+const refetch = [];
+A(await parser.extractChapter(ctx(fostered, c2Url, async (u) => { refetch.push(u); return raw2; })) === plain2 && refetch.join() === c2Url,
+  'table wrapper under Force Hybrid should re-read the raw page once');
+A(await rejects(parser.extractChapter(ctx(fostered, c2Url, async () => '<html>403</html>'))), 'must throw when the raw re-read has no text');
+
 // 4. Metadata, fixed extension: script defers (null), generic selectors read the info page.
 for (const [name, url, want] of [
   ['book.html', bookUrl, { title: '山河入夢來', author: '山河初醒', status: '連載中', genres: '玄幻魔法', cover: 'https://img.xsw.tw/1369/1369939/1369939s.jpg', desc: '右手持劍是殺戮' }],

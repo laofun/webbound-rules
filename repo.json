@@ -189,7 +189,7 @@
       "name": "台灣小說網 (xsw.tw)",
       "domain": "xsw.tw",
       "rule_url": "./rules/xsw.tw.json",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": "WebBound",
       "description": "台灣小說網 (xsw.tw) — Chinese web novels (Traditional titles, Simplified chapter text).",
       "icon": "https://www.xsw.tw/favicon.ico",

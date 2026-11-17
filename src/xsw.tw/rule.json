@@ -26,10 +26,10 @@
     "pagination_mode": "single_page_ajax",
     "rate_limit_ms": 1000
   },
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "WebBound",
   "language": "zh",
-  "description": "xsw.tw (台灣小說網): info page -> /book/<id>/ TOC. Chapter text is AES-128-CBC ciphertext in the page (var encrypted/key/iv) and is decrypted with crypto.subtle. extractMetadata reads title/author from the Big5 TOC page when the extension garbles the UTF-8 info page (stale big5 meta), else defers to the selectors.",
+  "description": "xsw.tw (台灣小說網): info page -> /book/<id>/ TOC. Two chapter kinds: AES-128-CBC ciphertext in the page (var encrypted/key/iv), decrypted with crypto.subtle; or plain text inline in an id=content element whose tag changes per request (read from the raw HTML; under Force Hybrid a <table> wrapper triggers one raw re-read). extractMetadata reads title/author from the Big5 TOC page when an older extension garbles the UTF-8 info page (stale big5 meta), else defers to the selectors.",
   "marketplace": {
     "name": "台灣小說網 (xsw.tw)",
     "icon": "https://www.xsw.tw/favicon.ico",
