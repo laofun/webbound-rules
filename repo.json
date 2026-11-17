@@ -1,7 +1,7 @@
 {
   "repo_meta": {
     "name": "WebBound Official Rules",
-    "version": "1.7.0"
+    "version": "1.8.0"
   },
   "sources": [
     {
@@ -181,6 +181,18 @@
       "author": "WebBound",
       "description": "半夏小說 (xbanxia.cc) — Traditional-Chinese web novels.",
       "icon": "https://www.xbanxia.cc/static/favicon.ico",
+      "language": "zh",
+      "featured": false
+    },
+    {
+      "id": "xsw.tw",
+      "name": "台灣小說網 (xsw.tw)",
+      "domain": "xsw.tw",
+      "rule_url": "./rules/xsw.tw.json",
+      "version": "1.0.0",
+      "author": "WebBound",
+      "description": "台灣小說網 (xsw.tw) — Chinese web novels (Traditional titles, Simplified chapter text).",
+      "icon": "https://www.xsw.tw/favicon.ico",
       "language": "zh",
       "featured": false
     },
