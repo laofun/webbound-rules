@@ -47,8 +47,10 @@ function makeFetcher(rateMs, cookie) {
     }
     const buf = await res.arrayBuffer();
     const html = decode(buf, pickCharset(res.headers.get('content-type'), buf));
-    if (res.headers.get('cf-mitigated') || CHALLENGE.test(html.slice(0, 4000)))
-      throw new Blocked(`bot challenge (HTTP ${res.status}) at ${url} — verify in the browser / Hybrid`);
+    // A bare 403 is a bot wall that refuses Node outright (ixdzs8.com: Tengine 403
+    // to Node, 200 in Chrome).
+    if (res.status === 403 || res.headers.get('cf-mitigated') || CHALLENGE.test(html.slice(0, 4000)))
+      throw new Blocked(`bot challenge (HTTP ${res.status}) at ${url} — verify in the browser (DevTools) / Hybrid`);
     if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
     return html;
   };

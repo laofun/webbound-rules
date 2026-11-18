@@ -45,7 +45,7 @@
       "name": "爱下电子书 (ixdzs8.com)",
       "domain": "ixdzs8.com",
       "rule_url": "./rules/ixdzs8.com.json",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "WebBound",
       "description": "爱下电子书 (ixdzs8.com) — Chinese web novels (Simplified).",
       "icon": "https://ixdzs8.com/images/favicon.ico",
