@@ -1,7 +1,7 @@
 {
   "repo_meta": {
     "name": "WebBound Official Rules",
-    "version": "1.9.0"
+    "version": "1.10.0"
   },
   "sources": [
     {
@@ -157,6 +157,18 @@
       "author": "WebBound",
       "description": "同人小说网 (trxs.cc) — Chinese fan fiction. Use Force Hybrid Mode if Cloudflare blocks.",
       "icon": "https://www.trxs.cc/favicon.ico",
+      "language": "zh",
+      "featured": false
+    },
+    {
+      "id": "txt520.com",
+      "name": "txt520小說網",
+      "domain": "txt520.com",
+      "rule_url": "./rules/txt520.com.json",
+      "version": "1.0.0",
+      "author": "WebBound",
+      "description": "txt520小說網 (txt520.com) — Chinese web novels, read in 第N节 sections.",
+      "icon": "📙",
       "language": "zh",
       "featured": false
     },

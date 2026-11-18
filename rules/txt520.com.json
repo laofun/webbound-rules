@@ -1,0 +1,36 @@
+{
+  "domain": "txt520.com",
+  "url_pattern": "txt520\\.com/[a-z]+/\\d+\\.html",
+  "parser_type": "generic",
+  "selectors": {
+    "title": ".nav_name h1",
+    "author": ".nav_autor|after:：|trim",
+    "cover": "",
+    "desc": ".main_content .desc",
+    "status": "",
+    "genres": ".newsnav a:nth-of-type(2)",
+    "toc": {
+      "list_container": ".main_content .list",
+      "item": ".main_content .list a",
+      "total_page": "",
+      "next_page": "",
+      "page_url_pattern": "",
+      "toc_url": ""
+    },
+    "chapter": {
+      "content": ".box-artic .content",
+      "remove": [
+        "script",
+        "style"
+      ]
+    }
+  },
+  "config": {
+    "pagination_mode": "single_page_ajax",
+    "rate_limit_ms": 1000
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "zh",
+  "description": "txt520.com — txt520小說網, Chinese web novels (traditional-script text). Book page /<category>/<id>.html lists every section (第N节, slices of the TXT, not real chapters); chapter headings appear inside the text."
+}
