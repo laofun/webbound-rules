@@ -1,7 +1,7 @@
 {
   "repo_meta": {
     "name": "WebBound Official Rules",
-    "version": "1.10.0"
+    "version": "1.11.0"
   },
   "sources": [
     {
@@ -229,6 +229,18 @@
       "author": "WebBound",
       "description": "优书网 (youshu.me) dataset — books, reviews and reviewers by book ID, for the yousuu database snapshot. Runs in the Datasets view; needs a youshu.me tab that has passed Cloudflare and is logged in (reviews require login). Params: from/to = book ID range; mode \"update\" keeps reviews at or after `since` (site time), \"full\" takes every review page; reviews:false = books only.",
       "icon": "https://www.youshu.me/favicon.ico",
+      "language": "zh",
+      "featured": false
+    },
+    {
+      "id": "zhswx.com",
+      "name": "宙斯小说网",
+      "domain": "zhswx.com",
+      "rule_url": "./rules/zhswx.com.json",
+      "version": "1.0.0",
+      "author": "WebBound",
+      "description": "宙斯小说网 (zhswx.com) — Chinese web novels, simplified and traditional.",
+      "icon": "⚡",
       "language": "zh",
       "featured": false
     }

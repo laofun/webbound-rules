@@ -1,0 +1,36 @@
+{
+  "domain": "zhswx.com",
+  "url_pattern": "zhswx\\.com/book/\\d+\\.html",
+  "parser_type": "generic",
+  "selectors": {
+    "title": "#novel_title h1",
+    "author": "td.style2 div[style*='line-height'] > a",
+    "cover": "img[src*='/images/zhsid/']",
+    "desc": "td.style2 div[style*='line-height'] > p:nth-of-type(2)|after:】",
+    "status": "",
+    "genres": "#location a[href^='/list/']",
+    "toc": {
+      "list_container": "td.chapterlist",
+      "item": "td.chapterlist a",
+      "total_page": "",
+      "next_page": "",
+      "page_url_pattern": "",
+      "toc_url": "#novel_toolbar a[href*='/chapter/']"
+    },
+    "chapter": {
+      "content": "div[style*='text-indent: 2em']",
+      "remove": [
+        "script",
+        "style"
+      ]
+    }
+  },
+  "config": {
+    "pagination_mode": "single_page_ajax",
+    "rate_limit_ms": 1000
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "zh",
+  "description": "zhswx.com — 宙斯小说网, Chinese web novels (www = simplified, tw.zhswx.com = traditional). Book page /book/<id>.html links 阅读目录 to the single-page ToC /chapter/<id>.html; one page per chapter."
+}
