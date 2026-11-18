@@ -1,74 +1,59 @@
 ({
-  // The info page is UTF-8 but its <meta> says big5; extension builds before the
-  // decodeHtml fix trust the meta, so it arrives garbled. Then read title/author
-  // from the TOC page (real Big5); else return null so the selectors apply.
-  extractMetadata: async ({ html, url, fetch, utils }) => {
-    const parse = (h) => new DOMParser().parseFromString(h, 'text/html');
-    const info = parse(html);
-    if ((info.querySelector('h1.f20h em')?.textContent || '').includes('作者：')) return null;
-    const href = info.querySelector('span.btopt a')?.getAttribute('href');
-    if (!href) return null;
-    const toc = parse(await fetch(utils.resolveUrl(href, url)));
-    const title = utils.cleanText(toc.querySelector('.infot h1')?.textContent);
-    if (!title) return null;
-    const src = info.querySelector('div.box_intro div.pic img')?.getAttribute('src');
+  // Desktop info page (/book/<id>.html): return null so the selectors apply. Mobile
+  // info page (m.xsw.tw/<id>/): the selectors miss there (its div.intro is the
+  // 小說簡介 label), so read it here. Both intros are the same cut-off text.
+  extractMetadata: async ({ html, url, utils }) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const box = doc.querySelector('.block_txt2');
+    if (!box) return null;
+    const field = (k) => (Array.from(box.querySelectorAll('p'), (p) => utils.cleanText(p.textContent)).find((t) => t.startsWith(k)) || '').slice(k.length);
+    const src = doc.querySelector('.block_img2 img')?.getAttribute('src');
     return {
-      title,
-      author: utils.cleanText(toc.querySelector('.infot span')?.textContent).replace(/^作者：/, ''),
+      title: utils.cleanText(box.querySelector('h2')?.textContent),
+      author: field('作者：'),
       cover: src ? utils.resolveUrl(src, url) : '',
-      description: '',
-      status: '',
-      genres: '',
+      description: utils.cleanText(doc.querySelector('.intro_info')?.textContent).replace(/^關於[^：]*：\s*/, ''),
+      status: field('狀態：'),
+      genres: field('分類：'),
     };
   },
 
-  // Start URL is the info page (/book/<id>.html); the chapter list is on /book/<id>/.
-  extractToC: async ({ html, url, fetch, utils }) => {
-    const parse = (h) => new DOMParser().parseFromString(h, 'text/html');
-    let doc = parse(html);
-    if (!doc.querySelector('.liebiao')) {
-      const href = doc.querySelector('span.btopt a')?.getAttribute('href');
-      if (!href) throw new Error('xsw.tw: no "開始閱讀" link on ' + url);
-      url = utils.resolveUrl(href, url);
-      doc = parse(await fetch(url));
-    }
+  // The desktop TOC (/book/<id>/) lists every chapter on one page and is fresher
+  // than the 20-per-page mobile list; the chapter ids are the same on both. Emit
+  // mobile chapter URLs: desktop chapter pages carry only the first half of the text.
+  extractToC: async ({ url, fetch, utils }) => {
+    const id = (/xsw\.tw\/(?:book\/)?(\d+)/.exec(url) || [])[1];
+    if (!id) throw new Error('xsw.tw: no book id in ' + url);
+    const tocUrl = 'https://www.xsw.tw/book/' + id + '/';
+    const doc = new DOMParser().parseFromString(await fetch(tocUrl), 'text/html');
     const toc = Array.from(doc.querySelectorAll('.liebiao ul li a'), (a) => ({
       title: utils.cleanText(a.textContent),
-      url: utils.resolveUrl(a.getAttribute('href'), url),
+      url: utils.resolveUrl(a.getAttribute('href'), tocUrl).replace(/^https?:\/\/(?:www\.)?xsw\.tw\/book\/(\d+)\/(\d+)\.html$/, 'https://m.xsw.tw/$1/$2.html'),
     }));
-    if (!toc.length) throw new Error('xsw.tw: empty chapter list at ' + url);
+    if (!toc.length) throw new Error('xsw.tw: empty chapter list at ' + tocUrl);
     return toc;
   },
 
-  // Two page kinds. Encrypted: AES-128-CBC ciphertext in var encrypted/key/iv (hex
-  // key + iv, PKCS7) that page JS decrypts into #new_content. Plain: the text sits in
-  // an id=content name="content" element (tag randomised per request: p, chapter,
-  // article...) up to the 章節報錯 <center>. Read the raw string, not the DOM: a <p>
-  // wrapper is closed by the inner <P>, so the element itself comes out empty.
+  // Mobile chapter page: plain text in an id="nr1" element (tag randomised per
+  // request: div, nr1, chapter...) up to the 章節報錯 <center>. Read the raw string.
   extractChapter: async ({ html, url, fetch }) => {
-    const pick = (name) => (new RegExp('var\\s+' + name + '\\s*=\\s*"([^"]+)"').exec(html) || [])[1];
-    const enc = pick('encrypted'), key = pick('key'), iv = pick('iv');
-    let text;
-    if (enc && key && iv) {
-      const subtle = globalThis.crypto && globalThis.crypto.subtle;
-      if (!subtle) throw new Error('xsw.tw: crypto.subtle is unavailable in the sandbox');
-      const hex = (h) => Uint8Array.from(h.match(/../g), (b) => parseInt(b, 16));
-      const k = await subtle.importKey('raw', hex(key), 'AES-CBC', false, ['decrypt']);
-      text = new TextDecoder().decode(await subtle.decrypt({ name: 'AES-CBC', iv: hex(iv) }, k, Uint8Array.from(atob(enc), (c) => c.charCodeAt(0))));
-    } else {
-      const inline = (h) => (/name="content"[^>]*>\s*(?:<\/p>\s*)?<p\b[^>]*>([\s\S]*?)<center/i.exec(h) || [])[1];
-      // Force Hybrid passes Chrome's DOM, where a <table>/<tbody>/<select> wrapper has
-      // pushed the text out of place: re-read the raw page (in-tab fetch) then.
-      text = inline(html);
-      if (text === undefined) text = inline(await fetch(url));
-      if (text === undefined) throw new Error('xsw.tw: no chapter text at ' + url);
-    }
-    // Lines are plain text: drop any tag (wrapper <P>, stray <content>) and space entities.
+    // A desktop chapter URL (saved by rule versions before 1.1.0): the page holds
+    // half the text, so read the mobile page with the same ids instead.
+    const d = /xsw\.tw\/book\/(\d+)\/(\d+)\.html/.exec(url);
+    if (d) { url = 'https://m.xsw.tw/' + d[1] + '/' + d[2] + '.html'; html = await fetch(url); }
+    // Lines are plain text: drop any tag (stray <content>) and space entities.
     const norm = (s) => s.replace(/<[^>]*>/g, '').replace(/&(nbsp|ensp|emsp|thinsp);|&#12288;/g, ' ').replace(/\s+/g, ' ').trim();
-    const paras = text.split(/<br\s*\/?>/i).map(norm).filter(Boolean);
-    const h2 = /<h2>([^<]*)<\/h2>/i.exec(html);
-    if (h2 && paras[0] === norm(h2[1])) paras.shift();
-    if (!paras.length) throw new Error('xsw.tw: empty chapter at ' + url);
+    const lines = (h) => ((/id="?nr1"?[^>]*>([\s\S]*?)<center/i.exec(h) || [])[1] || '').split(/<br\s*\/?>/i).map(norm).filter(Boolean);
+    let paras = lines(html);
+    // Force Hybrid passes Chrome's DOM, where a <table>/<select> wrapper pushes the
+    // text out of place or eats the <br>s: re-read the raw page (one extra fetch for
+    // the one-line 該章節缺失txt文件 placeholder too).
+    if (paras.length < 2) paras = lines(await fetch(url));
+    if (!paras.length) throw new Error('xsw.tw: no chapter text at ' + url);
+    // Line 1 often repeats the title, with "/" where the title has "_": compare letters only.
+    const key = (s) => s.replace(/[^\p{L}\p{N}]/gu, '');
+    const title = /id="?nr_title"?[^>]*>([^<]*)</i.exec(html);
+    if (title && key(paras[0]) === key(title[1]) && paras.length > 1) paras.shift();
     return paras.map((p) => '<p>' + p + '</p>').join('');
   },
 })
