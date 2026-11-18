@@ -1,0 +1,38 @@
+{
+  "domain": "ixdzs8.com",
+  "url_pattern": "ixdzs8\\.com/read/\\d+/?(?:[?#]|$)",
+  "parser_type": "scriptable",
+  "selectors": {
+    "title": ".novel h1",
+    "author": ".novel a.bauthor",
+    "cover": ".n-img img",
+    "desc": "#intro",
+    "status": "span.lz",
+    "genres": "div.tags em",
+    "toc": {
+      "list_container": "",
+      "item": "#a-list ul.u-chapter > li > a",
+      "total_page": "",
+      "next_page": "",
+      "page_url_pattern": "",
+      "toc_url": ""
+    },
+    "chapter": {
+      "content": "article.page-content section",
+      "remove": []
+    }
+  },
+  "config": {
+    "rate_limit_ms": 1000
+  },
+  "version": "1.0.0",
+  "author": "WebBound",
+  "language": "zh",
+  "description": "ixdzs8.com (爱下电子书): book page /read/<id>/. The page lists only the first 80 chapters; the full ToC comes from POST /novel/html bid=<id> (what the 查看完整章节目录 button loads). One page per chapter, text in article.page-content section. Metadata from the selectors. Node fetch gets a 403 bot wall (test:live shows FAIL: HTTP 403); check live in a browser. A plain fetch without cookies or Referer works there, so no Force Hybrid needed.",
+  "marketplace": {
+    "name": "爱下电子书 (ixdzs8.com)",
+    "icon": "https://ixdzs8.com/images/favicon.ico",
+    "featured": false,
+    "description": "爱下电子书 (ixdzs8.com) — Chinese web novels (Simplified)."
+  }
+}

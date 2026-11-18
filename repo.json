@@ -1,7 +1,7 @@
 {
   "repo_meta": {
     "name": "WebBound Official Rules",
-    "version": "1.8.0"
+    "version": "1.9.0"
   },
   "sources": [
     {
@@ -37,6 +37,18 @@
       "author": "WebBound",
       "description": "ikanshu5.net — 五块五毛小说网: 玄幻, 修真, 都市, 穿越 novels. Full ToC + complete multi-page chapters.",
       "icon": "http://www.ikanshu5.net/favicon.ico",
+      "language": "zh",
+      "featured": false
+    },
+    {
+      "id": "ixdzs8.com",
+      "name": "爱下电子书 (ixdzs8.com)",
+      "domain": "ixdzs8.com",
+      "rule_url": "./rules/ixdzs8.com.json",
+      "version": "1.0.0",
+      "author": "WebBound",
+      "description": "爱下电子书 (ixdzs8.com) — Chinese web novels (Simplified).",
+      "icon": "https://ixdzs8.com/images/favicon.ico",
       "language": "zh",
       "featured": false
     },
