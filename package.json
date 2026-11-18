@@ -10,7 +10,8 @@
     "new": "node scripts/new.mjs",
     "test": "node scripts/test.mjs",
     "test:live": "node scripts/test-live.mjs",
-    "fixture": "node scripts/fetch-fixture.mjs"
+    "fixture": "node scripts/fetch-fixture.mjs",
+    "grab": "node scripts/grab.mjs"
   },
   "devDependencies": {
     "linkedom": "^0.18.0"
