@@ -370,7 +370,8 @@ See [`src/ikanshu5.net/parser.js`](../src/ikanshu5.net/parser.js).
 4. Save, then test (below).
 
 ### Option B — Hand-authoring (or AI-assisted)
-1. Open the TOC page's HTML (DevTools → Elements, or "View Source").
+1. Open the TOC page's raw HTML ("View Source"). DevTools → Elements shows the
+   live DOM, where ad scripts add `<ins>` / `google-anno` links that Fast Fetch never sees.
 2. Find selectors for: `title`, `author`, `cover`, `desc`, and the chapter links
    (`toc.item`). Open one chapter and find `chapter.content` + junk to `remove`.
 3. Decide pagination (single page? pattern? next link?) → §4.2.

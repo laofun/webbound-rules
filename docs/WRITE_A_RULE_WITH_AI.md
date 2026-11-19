@@ -12,7 +12,8 @@ deep reference if a site fights back.
 ## How to use it (3 steps)
 
 1. **Collect HTML from the target site.** Open each page, right-click → *View Page
-   Source* (or DevTools → Elements → copy the `<html>`), and grab:
+   Source* (not DevTools → Elements: ad scripts add elements to the live DOM
+   that the crawler never sees), and grab:
    - the **table-of-contents / chapter-list page** (required),
    - **one chapter page** (required),
    - the **book/info page** if it's separate from the TOC (optional but helps).

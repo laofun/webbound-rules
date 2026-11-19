@@ -64,3 +64,6 @@ The contract lives in the docs; this skill is the workflow. Read before writing:
 - Charset is auto-detected everywhere except Force Hybrid in-tab fetch; never
   save fixtures with raw `curl`.
 - Don't trust an old port's assumptions (charset, pagination) — re-check the site.
+- Pick selectors from the raw HTML (`fetch(url).then(r => r.text())` in the site tab,
+  or the fixture), not the live DOM: Google auto-ads inject `<ins>` and `google-anno`
+  links that Fast Fetch never sees (txt520.com).
